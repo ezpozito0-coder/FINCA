@@ -1939,7 +1939,7 @@
                                 <span style="width:22px; display:flex; justify-content:center; font-size:18px;">+</span>
                                 <span>Botón de usuario</span>
                             </button>
-                            <button type="button" onclick="abrirModalCoordenadasFinca()" style="display:flex; align-items:center; gap:14px; padding:8px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
+                            <button type="button" onclick="ocultarMenusAlpineQuest(); abrirModalPreferenciasAq();" style="display:flex; align-items:center; gap:14px; padding:8px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
                                 <span style="width:22px; display:flex; justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span>
                                 <span>Preferencias</span>
                             </button>
@@ -2376,6 +2376,18 @@
                                 <button type="button" onclick="cerrarModalFormatoCoordenadas()" style="background:transparent; border:none; color:#00796B; font-size:14px; font-weight:600; padding:6px 4px; cursor:pointer;">CANCELAR</button>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Modal Fullscreen "Preferencias" (AlpineQuest) -->
+                    <div id="modal-preferencias-alpine" style="display:none; position:fixed; inset:0; z-index:9998; background:#d4d6d8; color:#111827; font-family:var(--font-sans); flex-direction:column;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; background:#c5c9ce; border-bottom:1px solid #9ca3af; padding:12px 16px; flex-shrink:0;">
+                            <span style="font-size:18px; font-weight:600; color:#111827;">Preferencias</span>
+                            <div style="display:flex; align-items:center; gap:14px;">
+                                <button type="button" onclick="cerrarModalPreferenciasAq()" title="Cerrar" style="background:transparent; border:none; color:#111827; font-size:20px; font-weight:700; padding:2px 6px; cursor:pointer;">✕</button>
+                                <button type="button" onclick="restablecerPreferenciasAq()" title="Restablecer valores predeterminados" style="background:transparent; border:none; color:#111827; font-size:20px; font-weight:700; padding:2px 6px; cursor:pointer;">⋮</button>
+                            </div>
+                        </div>
+                        <div id="aq-pref-body" style="flex:1; overflow-y:auto; padding-bottom:24px;"></div>
                     </div>
 
                     <!-- =========================================================
@@ -6241,6 +6253,170 @@
             window.objetivoCentroCoords = { lat: targetLat, lng: targetLng, nombre: label };
             if (typeof actualizarHudAlpineQuest === 'function') actualizarHudAlpineQuest();
             if (typeof mostrarToastFinca === 'function') mostrarToastFinca(`Centrado en ${label}`);
+        }
+        const AQ_PREFS_KEY = 'finca_aq_prefs_v1';
+        const AQ_PREFS_DEFAULT = {
+            formatoCoords: 'Lat/Long (Deg Min Sec)',
+            formatoCoordsSec: 'Ninguna',
+            unidadLongitud: 'Métrico (m, km)',
+            unidadArea: 'Métrico (m², km²)',
+            unidadAngular: 'Grado sexa. (360°)',
+            unidadPendiente: 'Por ciento (%)',
+            unidadPresion: 'Milímetro de mercurio (mmHg)',
+            referenciaNorte: 'Norte verdadero (geográfico)',
+            ubicacionAlmac: 'Almacenamiento interno (/finca/)',
+            pantallaCompleta: true,
+            deshabilitarBloqueoTeclas: false,
+            pantallaSiempreEncendida: false,
+            confirmarSalida: false,
+            resolucionMapa: 'Normal (100%)',
+            aparienciaMenu: 'Inferior izquierda (AlpineQuest)',
+            cuadrosInfo: 'Estándar gris claro',
+            controlesZoom: 'Botones + / −',
+            densidadRejilla: 'Media',
+            accionPulsacionLarga: 'Crear placemark',
+            pellizcarAmpliar: true,
+            rotacionManual: true,
+            vistaPerspectiva: true,
+            exploracionAuto: true,
+            tamanoPantalla: 'Normal',
+            colorPredeterminado: 'Verde (#22c55e)',
+            colorDestino: 'Magenta (#c026d3)',
+            estiloPistas: 'Línea sólida (3 px)',
+            mostrarBordes: true,
+            mostrarSombras: true,
+            cursoActual: 'Flecha azul GPS',
+            bloquearDeNuevo: false,
+            ubicacionesAnteriores: true,
+            deshabilitarFondo: true,
+            ajusteEgm96: true,
+            avisoSenalPerdida: true,
+            preguntarActividad: true,
+            restablecerEstadisticas: true,
+            modoTablero: false,
+            tituloBrujula: 'Grados + Cardinal'
+        };
+        function getAqPrefs() {
+            try {
+                return { ...AQ_PREFS_DEFAULT, ...(JSON.parse(localStorage.getItem(AQ_PREFS_KEY) || '{}')) };
+            } catch (e) {
+                return { ...AQ_PREFS_DEFAULT };
+            }
+        }
+        function saveAqPrefs(p) {
+            try { localStorage.setItem(AQ_PREFS_KEY, JSON.stringify(p)); } catch (e) {}
+        }
+        function abrirModalPreferenciasAq() {
+            const m = document.getElementById('modal-preferencias-alpine');
+            if (!m) return;
+            renderPreferenciasAq();
+            m.style.display = 'flex';
+        }
+        function cerrarModalPreferenciasAq() {
+            const m = document.getElementById('modal-preferencias-alpine');
+            if (m) m.style.display = 'none';
+        }
+        function restablecerPreferenciasAq() {
+            saveAqPrefs({ ...AQ_PREFS_DEFAULT });
+            renderPreferenciasAq();
+            if (typeof mostrarToastFinca === 'function') mostrarToastFinca('Preferencias restablecidas');
+        }
+        async function togglePrefAq(key, val) {
+            const p = getAqPrefs();
+            p[key] = Boolean(val);
+            saveAqPrefs(p);
+            if (key === 'pellizcarAmpliar' && window.fincaLeafletMap) {
+                if (p[key]) window.fincaLeafletMap.touchZoom.enable();
+                else window.fincaLeafletMap.touchZoom.disable();
+            }
+            if (key === 'pantallaSiempreEncendida' && navigator.wakeLock) {
+                try {
+                    if (p[key]) window._aqWakeLock = await navigator.wakeLock.request('screen');
+                    else if (window._aqWakeLock) { await window._aqWakeLock.release(); window._aqWakeLock = null; }
+                } catch (e) {}
+            }
+            renderPreferenciasAq();
+        }
+        function ciclarPrefAq(key, opciones) {
+            const p = getAqPrefs();
+            const idx = opciones.indexOf(p[key]);
+            p[key] = opciones[(idx + 1) % opciones.length];
+            saveAqPrefs(p);
+            renderPreferenciasAq();
+            if (typeof mostrarToastFinca === 'function') mostrarToastFinca(p[key]);
+        }
+        function renderPreferenciasAq() {
+            const body = document.getElementById('aq-pref-body');
+            if (!body) return;
+            const p = getAqPrefs();
+            const secHdr = (t) => `<div style="font-size:12px; font-weight:700; color:#6b7280; letter-spacing:0.03em; padding:14px 16px 6px 16px; border-bottom:1px solid #b8bcc0;">${t}</div>`;
+            const rowTap = (title, sub, key, opts) => `
+                <button type="button" onclick="ciclarPrefAq('${key}', ${JSON.stringify(opts).replace(/"/g, '&quot;')})" style="width:100%; text-align:left; background:transparent; border:none; border-bottom:1px solid #c5c9ce; padding:12px 16px; cursor:pointer; display:block;">
+                    <div style="font-size:16.5px; font-weight:500; color:#111827; line-height:1.25;">${title}</div>
+                    <div style="font-size:13px; color:#4b5563; line-height:1.3; margin-top:2px;">${sub}</div>
+                </button>`;
+            const rowChk = (title, sub, key) => `
+                <label style="display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px 16px; border-bottom:1px solid #c5c9ce; cursor:pointer;">
+                    <div style="flex:1; min-width:0;">
+                        <div style="font-size:16.5px; font-weight:500; color:#111827; line-height:1.25;">${title}</div>
+                        <div style="font-size:13px; color:#4b5563; line-height:1.3; margin-top:2px;">${sub}</div>
+                    </div>
+                    <input type="checkbox" ${p[key] ? 'checked' : ''} onchange="togglePrefAq('${key}', this.checked)" style="width:19px; height:19px; accent-color:#00796B; flex-shrink:0; cursor:pointer;" />
+                </label>`;
+
+            body.innerHTML =
+                secHdr('UNIDADES DE VISUALIZACIÓN') +
+                rowTap('Formato de coordenadas', p.formatoCoords, 'formatoCoords', ['Lat/Long (Deg Min Sec)', 'Lat/Long (Deg Min)', 'Lat/Long (Deg)']) +
+                rowTap('Formato de coord. secundarias', p.formatoCoordsSec, 'formatoCoordsSec', ['Ninguna', 'UTM (WGS84)', 'MGRS']) +
+                rowTap('Unidad de longitud', p.unidadLongitud, 'unidadLongitud', ['Métrico (m, km)', 'Imperial (ft, mi)']) +
+                rowTap('Unidad de área', p.unidadArea, 'unidadArea', ['Métrico (m², km²)', 'Hectáreas (ha)']) +
+                rowTap('Unidad angular', p.unidadAngular, 'unidadAngular', ['Grado sexa. (360°)', 'Milésimas (6400)']) +
+                rowTap('Unidad de la pendiente', p.unidadPendiente, 'unidadPendiente', ['Por ciento (%)', 'Grados (°)']) +
+                rowTap('Unidad de presión', p.unidadPresion, 'unidadPresion', ['Milímetro de mercurio (mmHg)', 'Hectopascal (hPa)']) +
+                rowTap('Referencia norte', p.referenciaNorte, 'referenciaNorte', ['Norte verdadero (geográfico)', 'Norte magnético']) +
+
+                secHdr('CONFIGURACIONES TÉCNICAS') +
+                rowTap('Ubicación de almacenamiento', 'Definir dónde almacenar los mapas descargados.', 'ubicacionAlmac', ['Almacenamiento interno (/finca/)', 'Caché Offline PWA']) +
+                rowChk('Mapa en pantalla completa', 'Cuando esté en modo de pantalla completa, use el botón de menú para mostrar la barra de estado.', 'pantallaCompleta') +
+                rowChk('Deshabilitar bloqueo de teclas', 'No necesita desbloquear la pantalla de bloqueo de teclas para usar esta aplicación.', 'deshabilitarBloqueoTeclas') +
+                rowChk('Pantalla siempre encendida', 'Nunca apague la pantalla cuando muestre la vista del mapa.', 'pantallaSiempreEncendida') +
+                rowChk('Confirmar salida', 'Pregunte confirmación de salida antes de salir.', 'confirmarSalida') +
+
+                secHdr('CONFIGURACIÓN DEL LIENZO DEL MAPA') +
+                rowTap('Resolución de visualización del mapa', `Muestra el tamaño del mapa en la pantalla (${p.resolucionMapa}).`, 'resolucionMapa', ['Normal (100%)', 'Alta densidad (125%)', 'Compacta (85%)']) +
+                rowTap('Apariencia del menú', 'Establece el estilo y la orientación de los menús.', 'aparienciaMenu', ['Inferior izquierda (AlpineQuest)', 'Barra compacta']) +
+                rowTap('Cuadros de información', 'Defina el tamaño y el color de fondo en los cuadros de información que se muestran en el mapa.', 'cuadrosInfo', ['Estándar gris claro', 'Alto contraste']) +
+                rowTap('Controles de zoom', 'Defina qué controles de zoom se muestran en el mapa.', 'controlesZoom', ['Botones + / −', 'Solo gestos']) +
+                rowTap('Densidad y estilo de las rejillas', 'Defina cómo se muestran las cuadrículas en el mapa.', 'densidadRejilla', ['Baja', 'Media', 'Alta']) +
+                rowTap('Acción de mapa de pulsación larga', 'Defina qué acción activar cuando se presiona prolongadamente el mapa.', 'accionPulsacionLarga', ['Crear placemark', 'Fijar objetivo']) +
+                rowChk('Pellizcar para ampliar', 'Permite controlar el zoom del mapa lanzando dos dedos sobre el mapa.', 'pellizcarAmpliar') +
+                rowChk('Rotación manual del mapa', 'Permite controlar la orientación del mapa girando dos dedos sobre el mapa.', 'rotacionManual') +
+                rowChk('Vista del mapa en perspectiva', 'Permite controlar la perspectiva del mapa moviendo dos dedos en el mapa.', 'vistaPerspectiva') +
+                rowChk('Modo de exploración automática', 'Activa automáticamente el modo de exploración al bajar el mapa con dos dedos.', 'exploracionAuto') +
+
+                secHdr('PUNTOS DE INTERÉS') +
+                rowTap('Tamaño de la pantalla', 'Tamaño de las marcas de posición (rutas, puntos de referencia, iconos) que se muestran en el mapa.', 'tamanoPantalla', ['Pequeño', 'Normal', 'Grande']) +
+                rowTap('Color predeterminado', `Color predeterminado de los marcadores (${p.colorPredeterminado}).`, 'colorPredeterminado', ['Verde (#22c55e)', 'Rojo (#ef4444)', 'Amarillo (#eab308)', 'Azul (#3b82f6)']) +
+                rowTap('Color de destino', `Color de la marca de posición seleccionada (${p.colorDestino}).`, 'colorDestino', ['Magenta (#c026d3)', 'Cian (#06b6d4)']) +
+                rowTap('Estilo de pistas', 'Mostrar opciones para las pistas que se muestran en el mapa.', 'estiloPistas', ['Línea sólida (3 px)', 'Línea punteada']) +
+                rowChk('Mostrar bordes', 'Mostrar un borde de marcas de posición que se muestran en el mapa.', 'mostrarBordes') +
+                rowChk('Mostrar sombras', 'Muestra una sombra debajo de las marcas de posición que se muestran en el mapa.', 'mostrarSombras') +
+
+                secHdr('POSICIONAMIENTO') +
+                rowTap('Visualización del curso actual', 'Defina cómo mostrar el curso actual de GPS en el mapa.', 'cursoActual', ['Flecha azul GPS', 'Punto + rumbo']) +
+                rowChk('Bloqueará de nuevo', 'Volver a bloquear automáticamente el centro de la pantalla de la ubicación GPS después de 10s de inactividad.', 'bloquearDeNuevo') +
+                rowChk('Mostrar ubicaciones anteriores', 'Muestra las ubicaciones de GPS anteriores en el mapa.', 'ubicacionesAnteriores') +
+                rowChk('Deshabilitar en el fondo', 'Desactive la ubicación cuando la aplicación se ejecuta en segundo plano para ahorrar batería. (no se aplica a la grabadora de seguimiento)', 'deshabilitarFondo') +
+                rowChk('Ajuste GPS EGM96', 'Calcule elevaciones GPS más precisos mediante el modelo de geoide EGM96.', 'ajusteEgm96') +
+
+                secHdr('GRABADORA DE PISTA') +
+                rowChk('Advertencia de señal perdida', 'Avisadme si la señal de GPS se pierde o es muy débil.', 'avisoSenalPerdida') +
+                rowChk('Preguntar la actividad', 'Pregunta por la actividad actual al iniciar la grabadora de pistas o un nuevo segmento/vuelta.', 'preguntarActividad') +
+                rowChk('Restablecer estadísticas', 'Mientras graba una pista, restablece las estadísticas de «Hecho hasta ahora» al iniciar un nuevo segmento/vuelta.', 'restablecerEstadisticas') +
+                rowChk('Modo de tablero', 'Cuando está activo, el grabador de pistas se detiene automáticamente y se reanuda con la aplicación.', 'modoTablero') +
+
+                secHdr('BRÚJULA') +
+                rowTap('Visualización del título actual', 'Defina cómo mostrar el rumbo actual de la brújula en el mapa.', 'tituloBrujula', ['Grados + Cardinal', 'Solo grados (°)']);
         }
         function volverCarpetaExploradorPlacemarks() {
             const bd = document.getElementById('aq-exp-drawer-backdrop');
