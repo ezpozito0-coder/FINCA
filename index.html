@@ -1988,6 +1988,12 @@
                             <span style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:999px; background:#9ca3af; color:#fff; font-size:11px; font-weight:700;">?</span>
                         </div>
                         <div style="display:flex; flex-direction:column; gap:2px; font-size:16px; font-weight:500;">
+                            <button type="button" onclick="ocultarMenusAlpineQuest(); togglePanelCollaresSimulador();" style="display:flex; align-items:center; gap:14px; padding:8px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
+                                <span style="width:22px; display:flex; justify-content:center;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2" stroke-linecap="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="19" r="1.5" fill="#111827"/></svg>
+                                </span>
+                                <span>Collares LoRa</span>
+                            </button>
                             <button type="button" onclick="ocultarMenusAlpineQuest(); togglePanelCapasIndividuales();" style="display:flex; align-items:center; gap:14px; padding:8px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
                                 <span style="width:22px; display:flex; justify-content:center;">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
@@ -2198,10 +2204,6 @@
                                     <span>Línea de rumbo al centro</span>
                                     <input type="checkbox" id="chk-aq-compass" onchange="toggleLineaAzulRumbo(this.checked)" checked style="width:18px; height:18px; accent-color:#0d9488; cursor:pointer;" />
                                 </label>
-                                <div onclick="ocultarMenusAlpineQuest(); togglePanelCollaresSimulador();" style="font-size:12px; font-weight:700; color:#374151; display:flex; align-items:center; justify-content:space-between; cursor:pointer; padding-top:4px; border-top:1px solid #c3c6c9;">
-                                    <span>COLLARES LORA</span>
-                                    <span>&rsaquo;</span>
-                                </div>
                             </div>
                         </div>
                     </div>
