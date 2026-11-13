@@ -5772,17 +5772,94 @@
         window.ultimoRumboBrujulaDeg = 0;
         window._brujulaHasAbsolute = false;
         window._brujulaRafId = null;
+        window._mapaRotacionActualDeg = 0;
+        window._mapaRotSizeApplied = 0;
 
-        function aplicarRotacionMapaBrujula(deg) {
+        function _instalarParcheArrastreRotadoLeaflet() {
+            if (typeof L === 'undefined' || !L.Draggable || L.Draggable.prototype._fincaRotPatched) return;
+            L.Draggable.prototype._fincaRotPatched = true;
+            const origOnMove = L.Draggable.prototype._onMove;
+            L.Draggable.prototype._onMove = function (e) {
+                if (
+                    this._element &&
+                    this._element.classList &&
+                    this._element.classList.contains('leaflet-map-pane') &&
+                    window._mapaRotacionActualDeg &&
+                    this._startPoint &&
+                    (!e.touches || e.touches.length === 1)
+                ) {
+                    const first = (e.touches && e.touches.length === 1) ? e.touches[0] : e;
+                    const dx = first.clientX - this._startPoint.x;
+                    const dy = first.clientY - this._startPoint.y;
+                    const rad = (window._mapaRotacionActualDeg * Math.PI) / 180;
+                    const cos = Math.cos(rad);
+                    const sin = Math.sin(rad);
+                    const rx = dx * cos + dy * sin;
+                    const ry = -dx * sin + dy * cos;
+                    const fakeEv = {
+                        clientX: this._startPoint.x + rx,
+                        clientY: this._startPoint.y + ry,
+                        type: e.type,
+                        target: e.target,
+                        button: e.button,
+                        buttons: e.buttons,
+                        preventDefault: () => { try { e.preventDefault(); } catch {} },
+                        stopPropagation: () => { try { e.stopPropagation(); } catch {} }
+                    };
+                    return origOnMove.call(this, fakeEv);
+                }
+                return origOnMove.call(this, e);
+            };
+        }
+
+        function _aplicarCssRotacionMapa(deg) {
             const mapEl = document.getElementById('mapa-google-finca');
             if (!mapEl) return;
+            const parent = mapEl.parentElement;
             const d = Number(deg || 0);
+
             if (d === 0 && !window.brujulaCelularActiva && !window.aqRotarMapaPorGps) {
+                window._mapaRotacionActualDeg = 0;
                 mapEl.style.transform = '';
+                if (window._mapaRotSizeApplied !== 0) {
+                    window._mapaRotSizeApplied = 0;
+                    mapEl.style.position = '';
+                    mapEl.style.left = '';
+                    mapEl.style.top = '';
+                    mapEl.style.marginLeft = '';
+                    mapEl.style.marginTop = '';
+                    mapEl.style.width = '100%';
+                    mapEl.style.height = '100%';
+                    if (window.fincaLeafletMap) window.fincaLeafletMap.invalidateSize({ animate: false });
+                }
                 return;
             }
+
+            if (parent) {
+                const pw = parent.clientWidth || window.innerWidth || 400;
+                const ph = parent.clientHeight || window.innerHeight || 800;
+                const side = Math.ceil(Math.hypot(pw, ph)) + 32;
+                if (window._mapaRotSizeApplied !== side) {
+                    window._mapaRotSizeApplied = side;
+                    mapEl.style.position = 'absolute';
+                    mapEl.style.left = '50%';
+                    mapEl.style.top = '50%';
+                    mapEl.style.width = `${side}px`;
+                    mapEl.style.height = `${side}px`;
+                    mapEl.style.marginLeft = `${-Math.round(side / 2)}px`;
+                    mapEl.style.marginTop = `${-Math.round(side / 2)}px`;
+                    if (window.fincaLeafletMap) window.fincaLeafletMap.invalidateSize({ animate: false });
+                }
+            }
+
+            const rotDeg = -d;
+            window._mapaRotacionActualDeg = rotDeg;
             mapEl.style.transformOrigin = 'center center';
-            mapEl.style.transform = `translateZ(0) rotate(${(-d).toFixed(1)}deg) scale(1.42)`;
+            mapEl.style.transform = `translateZ(0) rotate(${rotDeg.toFixed(1)}deg)`;
+        }
+
+        function aplicarRotacionMapaBrujula(deg) {
+            _aplicarCssRotacionMapa(deg);
         }
 
         function abrirModalCalibrarBrujula() {
@@ -5809,13 +5886,24 @@
             const rotarMapa = document.getElementById('chk-aq-rotate-map')?.checked !== false;
             const heading = Number(window.ultimoRumboBrujulaDeg || 0);
 
-            const mapEl = document.getElementById('mapa-google-finca');
-            if (mapEl) {
-                if (activa && rotarMapa) {
-                    mapEl.style.transformOrigin = 'center center';
-                    mapEl.style.transform = `translateZ(0) rotate(${(-heading).toFixed(1)}deg) scale(1.42)`;
-                } else if (!window.aqRotarMapaPorGps) {
+            if (activa && rotarMapa) {
+                _aplicarCssRotacionMapa(heading);
+            } else if (!window.aqRotarMapaPorGps) {
+                window._mapaRotacionActualDeg = 0;
+                const mapEl = document.getElementById('mapa-google-finca');
+                if (mapEl) {
                     mapEl.style.transform = '';
+                    if (window._mapaRotSizeApplied !== 0) {
+                        window._mapaRotSizeApplied = 0;
+                        mapEl.style.position = '';
+                        mapEl.style.left = '';
+                        mapEl.style.top = '';
+                        mapEl.style.marginLeft = '';
+                        mapEl.style.marginTop = '';
+                        mapEl.style.width = '100%';
+                        mapEl.style.height = '100%';
+                        if (window.fincaLeafletMap) window.fincaLeafletMap.invalidateSize({ animate: false });
+                    }
                 }
             }
 
@@ -8353,6 +8441,7 @@
             const center = getFincaCenterCoords();
 
             if (!window.fincaLeafletMap) {
+                _instalarParcheArrastreRotadoLeaflet();
                 window.fincaLeafletMap = L.map('mapa-google-finca', {
                     center: [center.lat, center.lng],
                     zoom: 16,
