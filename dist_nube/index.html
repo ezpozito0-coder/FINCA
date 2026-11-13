@@ -2194,6 +2194,43 @@
                         </div>
                         <!-- Contenido Dinámico (Carpetas o Lista) -->
                         <div id="aq-exp-body" style="flex:1; overflow-y:auto; padding:10px 12px 80px 12px;"></div>
+                        <!-- Cajón Lateral Izquierdo (Drawer AlpineQuest) -->
+                        <div id="aq-exp-drawer-backdrop" onclick="if(event.target===this) toggleDrawerExploradorPlacemarks(false)" style="display:none; position:fixed; top:58px; left:0; right:0; bottom:0; z-index:10000; background:rgba(0,0,0,0.45);">
+                            <div style="width:74%; max-width:310px; height:100%; background:#d1d5db; border-right:1px solid #9ca3af; box-shadow:4px 0 18px rgba(0,0,0,0.3); overflow-y:auto; padding:14px 14px 24px 14px; box-sizing:border-box;">
+                                <div style="font-size:12px; font-weight:700; color:#4b5563; letter-spacing:0.03em; margin-bottom:10px;">MARCAS LOCALES</div>
+                                <div style="padding:8px 6px 12px 10px; border-bottom:1px solid #9ca3af; margin-bottom:8px;">
+                                    <div style="font-size:16px; font-weight:600; color:#374151;">Dispositivo (Caché Local)</div>
+                                    <div style="font-size:12px; font-style:italic; color:#4b5563; margin-bottom:6px;">/localStorage/finca/</div>
+                                    <div style="width:100%; height:14px; background:#b6bcc4; border-radius:4px; overflow:hidden; position:relative;">
+                                        <div id="aq-exp-storage-bar" style="height:100%; width:18%; background:#22c55e; transition:width 0.2s;"></div>
+                                        <div id="aq-exp-storage-txt" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#111827;">0 KB / 5 MB</div>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="seleccionarOrigenExplorador('local')" style="width:100%; text-align:left; background:transparent; border:none; padding:10px 6px; cursor:pointer; display:flex; align-items:flex-start; gap:8px;">
+                                    <span id="aq-exp-dot-local" style="font-size:16px; line-height:1.2; color:#111827; font-weight:700;">•</span>
+                                    <div>
+                                        <div style="font-size:16px; font-weight:600; color:#111827;">Marcas de la Finca</div>
+                                        <div style="font-size:12px; font-style:italic; color:#4b5563;">/SQLite / Offline/</div>
+                                    </div>
+                                </button>
+                                <button type="button" onclick="exportarPlacemarksGeoJson()" style="width:100%; text-align:left; background:transparent; border:none; padding:10px 6px 10px 22px; cursor:pointer; display:block;">
+                                    <div style="font-size:16px; font-weight:600; color:#374151;">Mis descargas</div>
+                                    <div style="font-size:12px; font-style:italic; color:#4b5563;">Exportar GeoJSON/</div>
+                                </button>
+                                <div style="border-top:1px solid #9ca3af; margin:14px 0 12px 0;"></div>
+                                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+                                    <div style="font-size:12px; font-weight:700; color:#4b5563; letter-spacing:0.03em; line-height:1.25;">MARCADORES DE<br>POSICIÓN EN LÍNEA</div>
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#4b5563"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.61-.22l-2.39.96a7.03 7.03 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 13.88 2h-3.76a.5.5 0 0 0-.49.42l-.36 2.54c-.58.23-1.13.54-1.63.94l-2.39-.96a.5.5 0 0 0-.61.22L2.72 8.48a.5.5 0 0 0 .12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L2.84 14.52a.5.5 0 0 0-.12.64l1.92 3.32c.14.24.43.33.61.22l2.39-.96c.5.4 1.05.71 1.63.94l.36 2.54c.05.24.25.42.49.42h3.76c.24 0 .44-.18.49-.42l.36-2.54c.58-.23 1.13-.54 1.63-.94l2.39.96c.24.11.49.02.61-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/></svg>
+                                </div>
+                                <button type="button" onclick="seleccionarOrigenExplorador('nube')" style="width:100%; text-align:left; background:transparent; border:none; padding:10px 6px; cursor:pointer; display:flex; align-items:flex-start; gap:8px;">
+                                    <span id="aq-exp-dot-nube" style="font-size:16px; line-height:1.2; color:transparent; font-weight:700;">•</span>
+                                    <div>
+                                        <div style="font-size:16px; font-weight:600; color:#374151;">Mis marcas</div>
+                                        <div style="font-size:12px; font-style:italic; color:#4b5563;">Google Sheets / Nube</div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
                         <!-- Botón Flotante + -->
                         <button type="button" onclick="cerrarExploradorPlacemarks(); abrirModalAlpineCrearPlacemark();" title="Crear placemark"
                             style="position:fixed; bottom:20px; right:20px; z-index:9999; width:56px; height:56px; border-radius:999px; background:#ffffff; color:#111827; border:none; box-shadow:0 4px 14px rgba(0,0,0,0.32); font-size:28px; font-weight:500; display:flex; align-items:center; justify-content:center; cursor:pointer;">+</button>
@@ -5304,23 +5341,108 @@
         }
 
         window.aqExploradorCarpetaActual = null;
+        window.aqExploradorOrigen = 'local';
         function abrirExploradorPlacemarks(carpeta) {
             window.aqExploradorCarpetaActual = carpeta || null;
             const modal = document.getElementById('modal-explorar-placemarks');
             if (!modal) return;
+            toggleDrawerExploradorPlacemarks(false);
             renderExploradorPlacemarks();
             modal.style.display = 'flex';
         }
         function cerrarExploradorPlacemarks() {
+            toggleDrawerExploradorPlacemarks(false);
             const modal = document.getElementById('modal-explorar-placemarks');
             if (modal) modal.style.display = 'none';
         }
+        function toggleDrawerExploradorPlacemarks(force) {
+            const bd = document.getElementById('aq-exp-drawer-backdrop');
+            const backBtn = document.getElementById('btn-aq-exp-back');
+            if (!bd) return;
+            const open = typeof force === 'boolean' ? force : (bd.style.display !== 'block');
+            bd.style.display = open ? 'block' : 'none';
+            if (open) {
+                try {
+                    let bytes = 0;
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const k = localStorage.key(i) || '';
+                        bytes += (k.length + (localStorage.getItem(k) || '').length) * 2;
+                    }
+                    const kb = Math.max(1, Math.round(bytes / 1024));
+                    const pct = Math.min(100, Math.max(4, Math.round((kb / 5120) * 100)));
+                    const bar = document.getElementById('aq-exp-storage-bar');
+                    const txt = document.getElementById('aq-exp-storage-txt');
+                    if (bar) bar.style.width = `${pct}%`;
+                    if (txt) txt.textContent = `${kb} KB / 5120 KB`;
+                } catch (e) {}
+                if (backBtn) {
+                    backBtn.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>';
+                }
+            } else if (backBtn) {
+                backBtn.innerHTML = window.aqExploradorCarpetaActual
+                    ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>'
+                    : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
+            }
+        }
+        async function seleccionarOrigenExplorador(origen) {
+            window.aqExploradorOrigen = origen === 'nube' ? 'nube' : 'local';
+            const dotLocal = document.getElementById('aq-exp-dot-local');
+            const dotNube = document.getElementById('aq-exp-dot-nube');
+            if (dotLocal) dotLocal.style.color = window.aqExploradorOrigen === 'local' ? '#111827' : 'transparent';
+            if (dotNube) dotNube.style.color = window.aqExploradorOrigen === 'nube' ? '#111827' : 'transparent';
+            toggleDrawerExploradorPlacemarks(false);
+            if (window.aqExploradorOrigen === 'nube') {
+                if (typeof loadStateFromGoogleSheetsCloud === 'function') {
+                    try {
+                        await loadStateFromGoogleSheetsCloud();
+                        if (typeof mostrarToastFinca === 'function') mostrarToastFinca('Marcas sincronizadas desde la nube');
+                    } catch (e) {
+                        if (typeof mostrarToastFinca === 'function') mostrarToastFinca('Sin conexión: mostrando caché local');
+                    }
+                }
+                window.aqExploradorCarpetaActual = 'desordenadas';
+            } else {
+                window.aqExploradorCarpetaActual = null;
+            }
+            renderExploradorPlacemarks();
+        }
+        function exportarPlacemarksGeoJson() {
+            const features = [];
+            (appState?.placemarks_mapa || []).forEach(p => {
+                if (p && p.lat != null && p.lng != null) {
+                    features.push({
+                        type: 'Feature',
+                        properties: { nombre: p.nombre || 'Marca', tipo: p.tipo || 'waypoint', nota: p.nota || '' },
+                        geometry: { type: 'Point', coordinates: [Number(p.lng), Number(p.lat)] }
+                    });
+                }
+            });
+            (appState?.geojson_potreros || []).forEach(pot => {
+                if (pot && pot.geometry) features.push(pot);
+            });
+            const blob = new Blob([JSON.stringify({ type: 'FeatureCollection', features }, null, 2)], { type: 'application/geo+json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `marcas_finca_${new Date().toISOString().slice(0, 10)}.geojson`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+            toggleDrawerExploradorPlacemarks(false);
+            if (typeof mostrarToastFinca === 'function') mostrarToastFinca(`GeoJSON exportado (${features.length} elementos)`);
+        }
         function volverCarpetaExploradorPlacemarks() {
+            const bd = document.getElementById('aq-exp-drawer-backdrop');
+            if (bd && bd.style.display === 'block') {
+                toggleDrawerExploradorPlacemarks(false);
+                return;
+            }
             if (window.aqExploradorCarpetaActual) {
                 window.aqExploradorCarpetaActual = null;
                 renderExploradorPlacemarks();
             } else {
-                cerrarExploradorPlacemarks();
+                toggleDrawerExploradorPlacemarks(true);
             }
         }
         function irAPlacemarkDesdeExplorador(lat, lng, nombre, fijarObjetivo) {
