@@ -1071,6 +1071,53 @@ function applySyncQueue(queue) {
                 }
                 processed++;
             }
+        } else if (item.action === 'produccion_editar') {
+            if (d.id) {
+                const row = db.prepare('SELECT * FROM produccion_diaria WHERE id = ?').get(Number(d.id));
+                if (row) {
+                    const cant = d.cantidad !== undefined ? Number(d.cantidad) : Number(row.cantidad);
+                    const precio = d.precio_unitario !== undefined ? Number(d.precio_unitario) : Number(row.precio_unitario || 2000);
+                    const total = cant * precio;
+                    db.prepare('UPDATE produccion_diaria SET fecha = ?, cantidad = ?, total_cop = ?, notas = ? WHERE id = ?')
+                        .run(d.fecha || row.fecha, cant, total, d.notas !== undefined ? d.notas : row.notas, Number(d.id));
+                    processed++;
+                }
+            }
+        } else if (item.action === 'produccion_eliminar') {
+            if (d.id) {
+                db.prepare('DELETE FROM produccion_diaria WHERE id = ?').run(Number(d.id));
+                processed++;
+            }
+        } else if (item.action === 'sobre_editar') {
+            if (d.id) {
+                const row = db.prepare('SELECT * FROM contabilidad_sobres WHERE id = ?').get(Number(d.id));
+                if (row) {
+                    db.prepare('UPDATE contabilidad_sobres SET fecha = ?, concepto = ?, monto_cop = ? WHERE id = ?')
+                        .run(d.fecha || row.fecha, d.concepto !== undefined ? d.concepto : row.concepto, d.monto_cop !== undefined ? Number(d.monto_cop) : Number(row.monto_cop), Number(d.id));
+                    processed++;
+                }
+            }
+        } else if (item.action === 'sobre_eliminar') {
+            if (d.id) {
+                db.prepare('DELETE FROM contabilidad_sobres WHERE id = ?').run(Number(d.id));
+                processed++;
+            }
+        } else if (item.action === 'placemark_eliminar') {
+            if (d.id) {
+                db.prepare('DELETE FROM mapa_placemarks WHERE id = ?').run(Number(d.id));
+                processed++;
+            }
+        } else if (item.action === 'geojson_potrero_eliminar') {
+            if (d.id) {
+                db.prepare('DELETE FROM geojson_potreros WHERE id = ?').run(Number(d.id));
+                processed++;
+            }
+        } else if (item.action === 'taller_actualizar') {
+            if (d.id) {
+                db.prepare('UPDATE inventario_taller_diy SET stock_actual = COALESCE(?, stock_actual), estado = COALESCE(?, estado) WHERE id = ?')
+                    .run(d.stock_actual !== undefined ? Number(d.stock_actual) : null, d.estado || null, Number(d.id));
+                processed++;
+            }
         }
     }
     return processed;

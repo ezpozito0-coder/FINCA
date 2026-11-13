@@ -1,4 +1,4 @@
-const CACHE_NAME = 'agromacarena-35ha-v3';
+const CACHE_NAME = 'agromacarena-35ha-v4';
 const TILE_CACHE_NAME = 'agromacarena-map-tiles-v1';
 const ASSETS = [
     './',

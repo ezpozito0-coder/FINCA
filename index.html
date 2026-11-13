@@ -999,17 +999,33 @@
              ================================================================= -->
         <section id="tab-animales" class="tab-panel space-y-5">
 
+            <!-- Resumen Simple de Campo: Para Hoy en el Corral -->
+            <div id="hoja-corral-hoy-encargado" class="grid grid-cols-3 gap-2">
+                <button type="button" onclick="toggleFiltroApartadoManga()" class="p-3 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] text-center cursor-pointer" style="min-height:64px;">
+                    <div id="corral-hoy-apartar" class="text-xl font-extrabold text-[#1A1A1A]">0</div>
+                    <div class="text-[11px] font-extrabold text-[#3E5245] uppercase">Apartar Hoy</div>
+                </button>
+                <div class="p-3 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] text-center flex flex-col justify-center" style="min-height:64px;">
+                    <div id="corral-hoy-retiro" class="text-xl font-extrabold text-[#1A1A1A]">0</div>
+                    <div class="text-[11px] font-extrabold text-[#3E5245] uppercase">Retiro Leche</div>
+                </div>
+                <div class="p-3 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] text-center flex flex-col justify-center" style="min-height:64px;">
+                    <div id="corral-hoy-partos" class="text-xl font-extrabold text-[#1A1A1A]">0</div>
+                    <div class="text-[11px] font-extrabold text-[#3E5245] uppercase">Parto / Secado</div>
+                </div>
+            </div>
+
             <!-- Tabla del Hato Lechero -->
             <div class="card-finca">
                 <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
                     <div class="flex flex-wrap items-center gap-2">
-                        <button type="button" onclick="toggleFormularioAgregarVaca()" class="btn-corral btn-green text-xs md:text-sm py-2 px-4">
+                        <button type="button" onclick="toggleFormularioAgregarVaca()" class="btn-corral btn-green text-sm py-2.5 px-5" style="min-height:48px;">
                             + Agregar
                         </button>
-                        <button type="button" onclick="abrirModalHistorialBajas()" class="btn-corral btn-dark text-xs md:text-sm py-2 px-4">
-                            Historial de Bajas (<span id="count-bajas-btn">0</span>)
+                        <button type="button" onclick="abrirModalHistorialBajas()" class="btn-corral btn-dark text-sm py-2.5 px-4" style="min-height:48px;">
+                            Bajas (<span id="count-bajas-btn">0</span>)
                         </button>
-                        <button type="button" onclick="abrirModalSiniganBpg()" class="btn-corral btn-dark text-xs md:text-sm py-2 px-4 flex items-center gap-1.5">
+                        <button id="btn-centro-sinigan-bpg" type="button" onclick="abrirModalSiniganBpg()" class="btn-corral btn-dark text-xs md:text-sm py-2 px-4 flex items-center gap-1.5" style="min-height:48px; display:none;">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
                             </svg>
@@ -1017,16 +1033,21 @@
                         </button>
                     </div>
 
-                    <div class="flex items-center gap-3">
-                        <div class="p-3 rounded-xl bg-amber-950/60 border border-amber-500/50 text-center">
-                            <div class="text-xs text-amber-300 font-bold">VACAS ÉLITE IATF (F1)</div>
-                            <div id="count-elite-iatf" class="text-2xl font-extrabold text-amber-400">6</div>
+                    <div class="flex items-center gap-2">
+                        <div class="p-2.5 rounded-xl bg-amber-950/60 border border-amber-500/50 text-center">
+                            <div class="text-[10px] text-amber-300 font-bold">INSEMINACIÓN</div>
+                            <div id="count-elite-iatf" class="text-xl font-extrabold text-amber-400">6</div>
                         </div>
-                        <div class="p-3 rounded-xl bg-emerald-950/60 border border-emerald-500/50 text-center">
-                            <div class="text-xs text-emerald-300 font-bold">LOTE MONTA TORO</div>
-                            <div id="count-toro-suegro" class="text-2xl font-extrabold text-emerald-400">13</div>
+                        <div class="p-2.5 rounded-xl bg-emerald-950/60 border border-emerald-500/50 text-center">
+                            <div class="text-[10px] text-emerald-300 font-bold">MONTA TORO</div>
+                            <div id="count-toro-suegro" class="text-xl font-extrabold text-emerald-400">13</div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Buscador Rápido para Campo -->
+                <div class="mb-3">
+                    <input type="search" id="buscar-vaca-hoja" oninput="window.paginaVacasActual=1; renderTab3VacasYAnillos();" placeholder="Buscar vaca, cría o número..." class="input-finca text-sm font-bold" style="min-height:48px;" />
                 </div>
 
                 <!-- Modal Flotante Delante de Todo: 1) Hembra o Macho -> 2) Categoría -> 3) Llenado de Información -->
@@ -1183,20 +1204,20 @@
                 <div id="vacas-paginacion-bar" class="flex flex-wrap items-center justify-between gap-2 pt-3 mt-2 border-t border-[#D5CBB2]">
                     <span id="vacas-paginacion-info" class="text-xs font-bold text-[#3E5245]">Mostrando 1–10 de 27</span>
                     <div class="flex items-center gap-2">
-                        <button id="btn-prev-vacas" type="button" onclick="cambiarPaginaVacas(-1)" style="display:none;" class="btn-corral btn-dark text-xs py-1.5 px-3 inline-flex items-center gap-1">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                        <button id="btn-prev-vacas" type="button" onclick="cambiarPaginaVacas(-1)" style="display:none; min-height:48px;" class="btn-corral btn-dark text-sm py-2 px-4 inline-flex items-center gap-1.5">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
                             <span>Anteriores 10</span>
                         </button>
-                        <button id="btn-next-vacas" type="button" onclick="cambiarPaginaVacas(1)" class="btn-corral btn-green text-xs py-1.5 px-4 inline-flex items-center gap-1.5">
+                        <button id="btn-next-vacas" type="button" onclick="cambiarPaginaVacas(1)" style="min-height:48px;" class="btn-corral btn-green text-sm py-2 px-5 inline-flex items-center gap-1.5">
                             <span>Siguientes 10</span>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Tarjetas de Control ICA / SINIGAN V6 + HERDEplus KPIs -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <!-- Tarjetas de Control ICA / SINIGAN V6 + HERDEplus KPIs (Solo Modo Dueño) -->
+            <div id="hoja-kpi-ica-grid" style="display:none;" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 <div class="p-3 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] space-y-1">
                     <div class="flex items-center gap-1.5 text-[11px] font-extrabold uppercase text-[#1A1A1A]">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -3093,14 +3114,20 @@
                         <input type="text" id="sinigan-cedula" placeholder="CC / NIT" class="input-finca text-xs" style="min-height:36px;" />
                     </div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div class="space-y-2">
                     <div>
-                        <label class="text-[11px] font-bold block mb-1">Códigos DIN Incluidos (separados por coma)</label>
-                        <input type="text" id="sinigan-dins" placeholder="CO-000000001001-0, ..." class="input-finca text-xs font-mono" style="min-height:36px;" />
+                        <label class="text-[11px] font-bold block mb-1">Tocar Animales para Incluir (Apta GSMI)</label>
+                        <div id="sinigan-selector-vacas" class="flex flex-wrap gap-1.5 p-2 rounded-lg bg-[#EFE9D6] border border-[#C8B998] max-h-24 overflow-y-auto"></div>
                     </div>
-                    <div>
-                        <label class="text-[11px] font-bold block mb-1">Destino o Detalle</label>
-                        <input type="text" id="sinigan-detalle" placeholder="Ej: Feria / Predio destino / Lote" class="input-finca text-xs" style="min-height:36px;" required />
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">Códigos DIN Incluidos (separados por coma)</label>
+                            <input type="text" id="sinigan-dins" placeholder="CO-000000001001-0, ..." class="input-finca text-xs font-mono" style="min-height:36px;" />
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">Destino o Detalle</label>
+                            <input type="text" id="sinigan-detalle" placeholder="Ej: Feria / Predio destino / Lote" class="input-finca text-xs" style="min-height:36px;" required />
+                        </div>
                     </div>
                 </div>
                 <div class="flex flex-wrap justify-between gap-2 pt-1">
@@ -3350,6 +3377,35 @@
             if (metaOptValor) metaOptValor.textContent = esDueno ? '$4.275.000' : '2.137.5 L';
             if (thBorrarSan) thBorrarSan.style.display = esDueno ? '' : 'none';
             if (nfcSimBox) nfcSimBox.style.display = esDueno ? 'block' : 'none';
+
+            // Simplificación de campo (Modo Encargado) vs Gestión Técnica (Modo Dueño)
+            const btnSinigan = document.getElementById('btn-centro-sinigan-bpg');
+            const gridIca = document.getElementById('hoja-kpi-ica-grid');
+            if (btnSinigan) btnSinigan.style.display = esDueno ? 'inline-flex' : 'none';
+            if (gridIca) gridIca.style.display = esDueno ? 'grid' : 'none';
+
+            const tab1 = document.querySelector('#btn-ficha-tab-identidad span');
+            const tab2 = document.querySelector('#btn-ficha-tab-mlp span');
+            const tab3 = document.querySelector('#btn-ficha-tab-sanidad span');
+            const tab4 = document.querySelector('#btn-ficha-tab-herde span');
+            if (tab1) tab1.textContent = esDueno ? '1. Identidad' : '1. Datos';
+            if (tab2) tab2.textContent = esDueno ? '2. Control MLP' : '2. Leche';
+            if (tab3) tab3.textContent = esDueno ? '3. Sanidad' : '3. Remedio';
+            if (tab4) tab4.textContent = esDueno ? '4. HERDEplus' : '4. Collar';
+        }
+
+        function mostrarToastFinca(msg) {
+            let t = document.getElementById('toast-finca-msg');
+            if (!t) {
+                t = document.createElement('div');
+                t.id = 'toast-finca-msg';
+                t.style.cssText = 'position:fixed;bottom:84px;left:50%;transform:translateX(-50%);z-index:10050;background:#1A1A1A;color:#F7F3E8;padding:10px 18px;border-radius:999px;font-size:13px;font-weight:800;box-shadow:0 8px 24px rgba(0,0,0,0.3);max-width:90vw;text-align:center;';
+                document.body.appendChild(t);
+            }
+            t.textContent = msg;
+            t.style.display = 'block';
+            clearTimeout(window._toastFincaTimer);
+            window._toastFincaTimer = setTimeout(() => { t.style.display = 'none'; }, 2800);
         }
 
         const DEFAULT_GSHEETS_URL = 'https://script.google.com/macros/s/AKfycbzgXQiTtcpJBLBk_Q4aqaR6xA8bHlsPvW808asZI_VEycQwIm5IQHcXPn8I8Xshyu98Kw/exec';
@@ -3890,8 +3946,10 @@
                     );
                 });
                 if (animalesRetiro.length > 0) {
-                    const nombres = animalesRetiro.map(a => `${a.codigo_nombre}${a.cii_visual_din ? ' (' + a.cii_visual_din + ')' : ''}`).join(', ');
-                    alertaRetiroTxt.textContent = `${animalesRetiro.length} vaca(s) en retiro BPMV: ${nombres}. Desviar leche al biodigestor / mosca soldado; no mezclar en cantinas.`;
+                    const nombres = animalesRetiro.map(a => window.modoDuenoActivo ? `${a.codigo_nombre}${a.cii_visual_din ? ' (' + a.cii_visual_din + ')' : ''}` : a.codigo_nombre).join(', ');
+                    alertaRetiroTxt.textContent = window.modoDuenoActivo
+                        ? `${animalesRetiro.length} vaca(s) en retiro BPMV: ${nombres}. Desviar leche al biodigestor / mosca soldado; no mezclar en cantinas.`
+                        : `NO echar al tanque leche de: ${nombres}. Echar al biodigestor.`;
                     alertaRetiroBox.style.display = 'flex';
                 } else {
                     alertaRetiroBox.style.display = 'none';
@@ -4101,11 +4159,31 @@
             const elApartado = document.getElementById('kpi-apartado-hoy');
             if (elApartado) elApartado.textContent = String(paraApartar);
 
+            // Resumen simple para Encargado: Para Hoy en el Corral
+            const elCorralApartar = document.getElementById('corral-hoy-apartar');
+            const elCorralRetiro = document.getElementById('corral-hoy-retiro');
+            const elCorralPartos = document.getElementById('corral-hoy-partos');
+            if (elCorralApartar) elCorralApartar.textContent = String(paraApartar);
+            if (elCorralRetiro) elCorralRetiro.textContent = String(enRetiroCount);
+            if (elCorralPartos) {
+                const proxPartosSec = bovinos.filter(b => {
+                    const dp = calcularDiasParaFecha(b.fecha_proximo_parto);
+                    const ds = calcularDiasParaFecha(b.fecha_secado);
+                    return (dp !== null && dp >= -3 && dp <= 7) || (ds !== null && ds >= -3 && ds <= 7);
+                }).length;
+                elCorralPartos.textContent = String(proxPartosSec);
+            }
+
+            const queryBusq = (document.getElementById('buscar-vaca-hoja')?.value || '').trim().toLowerCase();
             const filtrados = bovinos.filter(b => {
                 if (window.soloApartadoMangaHoy && (!b.orden_apartado_manga || b.orden_apartado_manga === 'NORMAL')) return false;
                 if (filtroVacasActual === 'ELITE') return Number(b.es_elite_iatf) === 1 && b.estado_reproductivo !== 'Reproductor_Activo';
                 if (filtroVacasActual === 'TORO') return Number(b.es_elite_iatf) === 0 && b.estado_reproductivo !== 'Reproductor_Activo';
                 if (filtroVacasActual === 'COLLAR') return !!b.collar_id;
+                if (queryBusq) {
+                    const haystack = `${b.codigo_nombre || ''} ${b.cii_visual_din || ''} ${b.collar_id || ''} ${b.cria_codigo || ''}`.toLowerCase();
+                    if (!haystack.includes(queryBusq)) return false;
+                }
                 return true;
             });
 
@@ -4818,7 +4896,7 @@
                         }).addTo(window.fincaBlueRulerLayer);
                     }
                 } else {
-                    // Imagen 2: Centrado sobre la ubicación GPS -> oculta fila 3, muestra candado 🔒, sin línea azul
+                    // Imagen 2: Centrado sobre la ubicación GPS -> oculta fila 3, muestra candado fijo, sin línea azul
                     if (elRulerRow) elRulerRow.style.display = 'none';
                     if (elGpsLock) elGpsLock.style.display = 'inline';
                     if (elCenterLabel) elCenterLabel.style.display = 'none';
@@ -5157,8 +5235,10 @@
                     localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
                 }
             } catch {
+                enqueueOfflineAction('placemark_eliminar', { id });
                 if (appState && Array.isArray(appState.placemarks_mapa)) {
                     appState.placemarks_mapa = appState.placemarks_mapa.filter(p => Number(p.id) !== Number(id));
+                    localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
                 }
             }
             renderTab5TelemetriaLoRaYTaller();
@@ -5440,7 +5520,9 @@
                     localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
                 }
             } catch {
+                enqueueOfflineAction('geojson_potrero_eliminar', { id: 'ALL' });
                 appState.geojson_potreros = [];
+                localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
             }
             renderTab5TelemetriaLoRaYTaller();
         }
@@ -6502,14 +6584,21 @@
             if (!row) return;
             if (!confirm(`¿Seguro que deseas borrar el registro del ${row.fecha} (${row.cantidad} ${row.producto} = ${formatCOP(row.total_cop)})?`)) return;
 
-            const res = await fetch(`${getApiBase()}/api/produccion/eliminar`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id })
-            });
-            const json = await res.json();
-            if (json.state) {
-                appState = json.state;
+            try {
+                const res = await fetch(`${getApiBase()}/api/produccion/eliminar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id })
+                });
+                const json = await res.json();
+                if (json.state) {
+                    appState = json.state;
+                    localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
+                    renderAll();
+                }
+            } catch {
+                enqueueOfflineAction('produccion_eliminar', { id });
+                appState.produccion_diaria = (appState.produccion_diaria || []).filter(p => Number(p.id) !== Number(id));
                 localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
                 renderAll();
             }
@@ -6525,22 +6614,25 @@
             const nuevoMontoStr = prompt(`Corregir Monto en COP (${mov.sobre_destino}):`, mov.monto_cop);
             if (nuevoMontoStr === null) return;
             const monto_cop = Number(nuevoMontoStr);
-            if (isNaN(monto_cop) || monto_cop < 0) return alert('Monto inválido');
+            if (isNaN(monto_cop) || monto_cop < 0) return mostrarToastFinca('Monto inválido');
 
-            const res = await fetch(`${getApiBase()}/api/sobres/editar`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    id,
-                    fecha: mov.fecha,
-                    sobre_destino: mov.sobre_destino,
-                    concepto: nuevoConcepto,
-                    monto_cop
-                })
-            });
-            const json = await res.json();
-            if (json.state) {
-                appState = json.state;
+            const editPayload = { id, fecha: mov.fecha, sobre_destino: mov.sobre_destino, concepto: nuevoConcepto, monto_cop };
+            try {
+                const res = await fetch(`${getApiBase()}/api/sobres/editar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(editPayload)
+                });
+                const json = await res.json();
+                if (json.state) {
+                    appState = json.state;
+                    localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
+                    renderAll();
+                }
+            } catch {
+                enqueueOfflineAction('sobre_editar', editPayload);
+                mov.concepto = nuevoConcepto;
+                mov.monto_cop = monto_cop;
                 localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
                 renderAll();
             }
@@ -6551,14 +6643,21 @@
             if (!mov) return;
             if (!confirm(`¿Borrar este movimiento de ${mov.sobre_destino} (${mov.concepto}: ${formatCOP(mov.monto_cop)})? El saldo del sobre se recalculará inmediatamente.`)) return;
 
-            const res = await fetch(`${getApiBase()}/api/sobres/eliminar`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id })
-            });
-            const json = await res.json();
-            if (json.state) {
-                appState = json.state;
+            try {
+                const res = await fetch(`${getApiBase()}/api/sobres/eliminar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id })
+                });
+                const json = await res.json();
+                if (json.state) {
+                    appState = json.state;
+                    localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
+                    renderAll();
+                }
+            } catch {
+                enqueueOfflineAction('sobre_eliminar', { id });
+                appState.contabilidad_sobres = (appState.contabilidad_sobres || []).filter(m => Number(m.id) !== Number(id));
                 localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
                 renderAll();
             }
@@ -7203,7 +7302,7 @@
                 }
             }
             renderAll();
-            alert('Identidad DIN ICA / ISO 11784 y genealogía guardadas.');
+            mostrarToastFinca('Datos guardados');
         }
 
         function renderTablaMlpAnimal(animalOrId) {
@@ -7288,7 +7387,7 @@
             }
             renderTablaMlpAnimal(id_animal);
             renderTab3VacasYAnillos();
-            alert(`Control MLP guardado (${litros_total_dia.toFixed(1)} L/día).`);
+            mostrarToastFinca(`Leche guardada: ${litros_total_dia.toFixed(1)} L/día`);
         }
 
         function renderHerdePlusSensores(animal) {
@@ -7356,7 +7455,7 @@
                 }
             }
             renderAll();
-            alert(`Orden de Apartado en Manga actualizada: ${orden_apartado_manga}`);
+            mostrarToastFinca(`Apartado: ${orden_apartado_manga}`);
         }
 
         function renderTablaSanidadAnimal(animalId) {
@@ -7480,8 +7579,31 @@
             const elConc = document.getElementById('sinigan-conciliacion-label');
             if (elConc) elConc.textContent = `Inventario conciliado DIN: ${conDin}/${bovinos.length} bovinos`;
 
+            const selBox = document.getElementById('sinigan-selector-vacas');
+            if (selBox) {
+                selBox.innerHTML = bovinos.map(b => {
+                    const din = b.cii_visual_din || `CO-00000000${String(1000 + Number(b.id)).slice(-4)}-0`;
+                    return `<button type="button" onclick="toggleDinSinigan('${din}', this)" class="px-2 py-1 rounded bg-[#FFFDF8] border border-[#1A1A1A] text-[11px] font-bold cursor-pointer">${b.codigo_nombre}</button>`;
+                }).join('');
+            }
+
             renderTablaMovimientosSinigan();
             modal.style.display = 'flex';
+        }
+
+        function toggleDinSinigan(din, btn) {
+            const inp = document.getElementById('sinigan-dins');
+            if (!inp) return;
+            const lista = inp.value.split(',').map(s => s.trim()).filter(Boolean);
+            const idx = lista.indexOf(din);
+            if (idx >= 0) {
+                lista.splice(idx, 1);
+                if (btn) { btn.style.background = '#FFFDF8'; btn.style.color = '#1A1A1A'; }
+            } else {
+                lista.push(din);
+                if (btn) { btn.style.background = '#1A1A1A'; btn.style.color = '#F7F3E8'; }
+            }
+            inp.value = lista.join(', ');
         }
 
         function cerrarModalSiniganBpg() {
@@ -7512,7 +7634,7 @@
                 localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
             }
             renderAll();
-            alert('Configuración oficial del predio ICA / Ley 2585 guardada.');
+            mostrarToastFinca('Datos del predio ICA guardados');
         }
 
         function renderTablaMovimientosSinigan() {
@@ -7523,15 +7645,43 @@
                 tbody.innerHTML = '<tr><td colspan="5" class="text-center py-3 text-gray-500">Sin movimientos SINIGAN V6 registrados aún.</td></tr>';
                 return;
             }
-            tbody.innerHTML = movs.map(m => `
+            tbody.innerHTML = movs.map(m => {
+                const est = m.estado_guia || 'Pendiente_Subir_SINIGAN';
+                const sigEst = est === 'Pendiente_Subir_SINIGAN' ? 'Guia_Abierta_Origen' : (est === 'Guia_Abierta_Origen' ? 'Guia_Cerrada_Destino_QR' : 'Pendiente_Subir_SINIGAN');
+                return `
                 <tr>
                     <td class="whitespace-nowrap font-bold">${m.fecha}</td>
                     <td><span class="badge bg-[#1A1A1A] text-[#F7F3E8] text-[10px]">${m.tipo_evento}</span></td>
                     <td class="font-mono text-[11px]">${m.animales_din_json || '-'}</td>
                     <td class="text-xs">${m.destino_o_detalle || ''}${m.cedula_transportador ? ' • CC: ' + m.cedula_transportador : ''}</td>
-                    <td class="text-[11px] font-bold">${m.estado_guia || 'Pendiente_Subir_SINIGAN'}</td>
-                </tr>
-            `).join('');
+                    <td class="text-[11px] font-bold">
+                        <button type="button" onclick="cambiarEstadoMovimientoSinigan(${m.id}, '${sigEst}')" class="px-2 py-0.5 rounded bg-[#EFE9D6] border border-[#1A1A1A] text-[10px] font-extrabold cursor-pointer" title="Tocar para cambiar estado">${est}</button>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        async function cambiarEstadoMovimientoSinigan(id, estado_guia) {
+            const payload = { id, estado_guia };
+            try {
+                const res = await fetch(`${getApiBase()}/api/sinigan/movimiento/estado`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const json = await res.json();
+                if (json.state) {
+                    appState = json.state;
+                    localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
+                }
+            } catch {
+                enqueueOfflineAction('sinigan_movimiento_estado', payload);
+                const m = (appState?.movimientos_sinigan_hit || []).find(x => Number(x.id) === Number(id));
+                if (m) m.estado_guia = estado_guia;
+                localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
+            }
+            renderTablaMovimientosSinigan();
+            mostrarToastFinca(`Guía actualizada: ${estado_guia}`);
         }
 
         async function guardarMovimientoSinigan(e) {
@@ -7564,7 +7714,7 @@
             document.getElementById('sinigan-dins').value = '';
             document.getElementById('sinigan-detalle').value = '';
             renderTablaMovimientosSinigan();
-            alert('Evento SINIGAN V6 / GSMI pre-liquidado.');
+            mostrarToastFinca('Evento SINIGAN / GSMI guardado');
         }
 
         function exportarResumenAuditoriaBpg() {
@@ -7847,15 +7997,26 @@
         }
 
         async function toggleItemTaller(id, completado, collares_armados) {
-            const res = await fetch(`${getApiBase()}/api/taller/actualizar`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id, completado, collares_armados })
-            });
-            const json = await res.json();
-            if (json.state) {
-                appState = json.state;
-                renderAll();
+            try {
+                const res = await fetch(`${getApiBase()}/api/taller/actualizar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id, completado, collares_armados })
+                });
+                const json = await res.json();
+                if (json.state) {
+                    appState = json.state;
+                    localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
+                    renderAll();
+                }
+            } catch {
+                enqueueOfflineAction('taller_actualizar', { id, stock_actual: collares_armados, estado: completado ? 'Listo' : 'Pendiente' });
+                const item = (appState.taller_diy_checklist || []).find(t => Number(t.id) === Number(id));
+                if (item) {
+                    if (collares_armados !== undefined) item.collares_armados = collares_armados;
+                    localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
+                    renderAll();
+                }
             }
         }
 
