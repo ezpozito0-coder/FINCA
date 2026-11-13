@@ -6916,18 +6916,86 @@
             if (flagColors[item]) {
                 return `<svg width="18" height="18" viewBox="0 0 24 24" fill="${flagColors[item]}" style="flex-shrink:0;"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6h-5.6z"/></svg>`;
             }
-            if (item === 'Picture') {
-                return `<svg width="18" height="18" viewBox="0 0 24 24" fill="#111827" style="flex-shrink:0;"><path d="M9 4L7.5 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-3.5L15 4H9zm3 13a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></svg>`;
+            const k = String(item || '').toLowerCase();
+            const svg = (inner) => `<svg width="18" height="18" viewBox="0 0 24 24" fill="${catColor}" style="flex-shrink:0;">${inner}</svg>`;
+            const svgS = (inner) => `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${catColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">${inner}</svg>`;
+
+            if (k === 'picture') return `<svg width="18" height="18" viewBox="0 0 24 24" fill="#111827" style="flex-shrink:0;"><path d="M9 4L7.5 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-3.5L15 4H9zm3 13a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></svg>`;
+            if (k === 'audio') return `<svg width="18" height="18" viewBox="0 0 24 24" fill="#111827" style="flex-shrink:0;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>`;
+            if (k === 'music') return `<svg width="18" height="18" viewBox="0 0 24 24" fill="#111827" style="flex-shrink:0;"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>`;
+
+            // Puntos sólidos de encabezado de categoría
+            if (['tourism', 'transportation', 'accomodation', 'food', 'historical', 'natural', 'man made', 'amenity', 'sport', 'health', 'danger area', 'glacier', 'sinkhole', 'stone', 'volcano', 'reservoir', 'reservoir covered', 'storage tank', 'tower', 'water well', 'monitoring station'].includes(k)) {
+                return svg(`<circle cx="12" cy="12" r="8"/>`);
             }
-            if (item === 'Audio') {
-                return `<svg width="18" height="18" viewBox="0 0 24 24" fill="#111827" style="flex-shrink:0;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>`;
-            }
-            if (item === 'Music') {
-                return `<svg width="18" height="18" viewBox="0 0 24 24" fill="#111827" style="flex-shrink:0;"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>`;
-            }
-            if (['Tourism', 'Transportation', 'Accomodation', 'Food', 'Historical', 'Natural', 'Man made', 'Amenity', 'Sport', 'Health', 'Danger area', 'Glacier', 'Sinkhole', 'Stone', 'Volcano', 'Reservoir', 'Reservoir covered', 'Storage tank', 'Tower', 'Water well', 'Monitoring station'].includes(item)) {
-                return `<svg width="18" height="18" viewBox="0 0 24 24" style="flex-shrink:0;"><circle cx="12" cy="12" r="8" fill="${catColor}"/></svg>`;
-            }
+
+            // TOURISM
+            if (k === 'attraction') return svgS(`<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>`);
+            if (k === 'castle' || k === 'fort') return svg(`<path d="M3 21V9h3v3h3V6h2v3h2V6h2v6h3V9h3v12H3zm7-3h4v-4h-4v4z"/>`);
+            if (k === 'art') return svg(`<path d="M12 3a9 9 0 0 0 0 18c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8z"/>`);
+            if (k === 'clock') return svgS(`<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/>`);
+            if (k === 'information') return svg(`<path d="M11 7h2v2h-2V7zm0 4h2v6h-2v-6zm1-9a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/>`);
+            if (k === 'museum' || k === 'monument' || k === 'art gallery') return svg(`<path d="M12 3L2 8v2h20V8L12 3zM4 12v7h3v-7H4zm6 0v7h4v-7h-4zm7 0v7h3v-7h-3zM2 20v2h20v-2H2z"/>`);
+            if (k === 'picnic') return svgS(`<line x1="4" y1="8" x2="20" y2="8"/><line x1="2" y1="14" x2="22" y2="14"/><line x1="8" y1="8" x2="6" y2="19"/><line x1="16" y1="8" x2="18" y2="19"/>`);
+            if (k === 'view point') return svgS(`<circle cx="12" cy="12" r="2"/><line x1="12" y1="3" x2="12" y2="7"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="3" y1="12" x2="7" y2="12"/><line x1="17" y1="12" x2="21" y2="12"/><line x1="5.6" y1="5.6" x2="8.5" y2="8.5"/><line x1="15.5" y1="15.5" x2="18.4" y2="18.4"/><line x1="18.4" y1="5.6" x2="15.5" y2="8.5"/><line x1="8.5" y1="15.5" x2="5.6" y2="18.4"/>`);
+            if (k === 'guidepost' || k === 'trail head' || k === 'indication') return svgS(`<line x1="12" y1="3" x2="12" y2="21"/><polyline points="12 6 19 6 17 9 19 12 12 12"/>`);
+            if (k === 'windmill') return svgS(`<line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/><polygon points="12 12 9 21 15 21"/>`);
+
+            // TRANSPORT
+            if (k.includes('airport') || k.includes('airplane') || k === 'aerodrome') return svg(`<path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>`);
+            if (k.includes('helicopter')) return svgS(`<line x1="4" y1="6" x2="20" y2="6"/><line x1="12" y1="6" x2="12" y2="10"/><rect x="6" y="10" width="12" height="6" rx="3"/><line x1="7" y1="19" x2="17" y2="19"/>`);
+            if (k.includes('bicycle')) return svgS(`<circle cx="6" cy="16" r="3.5"/><circle cx="18" cy="16" r="3.5"/><polyline points="6 16 10 9 15 9 18 16"/><line x1="10" y1="9" x2="12" y2="16"/>`);
+            if (k.includes('car') || k === 'taxi' || k === 'offroad') return svg(`<path d="M5 11l1.5-4.5h11L19 11m-1.5 5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm-11 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM4 11v7h2v-2h12v2h2v-7H4z"/>`);
+            if (k.includes('bus') || k.includes('train') || k.includes('tram') || k === 'subway') return svg(`<rect x="5" y="4" width="14" height="14" rx="2"/><circle cx="8" cy="15" r="1.2" fill="#fff"/><circle cx="16" cy="15" r="1.2" fill="#fff"/><rect x="7" y="6" width="10" height="5" fill="#fff"/>`);
+            if (k.includes('boat') || k === 'ferry' || k === 'marina' || k === 'port') return svg(`<path d="M4 17l2-7h12l2 7-8 3-8-3zm6-11h4v4h-4V6z"/>`);
+            if (k.includes('fuel')) return svg(`<path d="M18 10a1 1 0 0 1-1-1V7l-2-2 1.4-1.4 3.2 3.2c.3.3.4.7.4 1.1V17a2 2 0 0 1-4 0v-5h-2v9H4V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v5h2v7a.5.5 0 0 0 1 0v-7zM6 5v5h6V5H6z"/>`);
+            if (k.includes('parking')) return svg(`<text x="6" y="18" font-size="17" font-weight="900" font-family="sans-serif">P</text>`);
+            if (k === 'walk' || k === 'walking' || k === 'hiking' || k === 'running') return svgS(`<circle cx="13" cy="4" r="2"/><path d="M9 20l2-6 3-3 2 3 3 1"/><path d="M11 10l-3 3"/>`);
+            if (k.includes('motorcycle') || k === 'atv' || k === 'scooter') return svgS(`<circle cx="5.5" cy="16" r="3"/><circle cx="18.5" cy="16" r="3"/><path d="M8.5 16h5l3-6h-4l-2 3"/>`);
+
+            // ACCOMMODATION
+            if (k === 'camping') return svgS(`<polygon points="12 4 3 19 21 19"/><line x1="12" y1="12" x2="12" y2="19"/>`);
+            if (k === 'hotel' || k === 'motel' || k === 'hostel' || k === 'bed and breakfast' || k === 'alpinehut' || k === 'shelter') return svg(`<path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/>`);
+
+            // FOOD
+            if (k === 'cafe') return svg(`<path d="M18 8h1a3 3 0 0 1 0 6h-1v2a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V6h15v2zm0 4h1a1 1 0 0 0 0-2h-1v2z"/>`);
+            if (k === 'bar' || k === 'pub' || k === 'biergarten') return svg(`<path d="M21 5V3H3v2l8 9v5H6v2h12v-2h-5v-5l8-9z"/>`);
+            if (k === 'bbq' || k === 'restaurant' || k === 'food court') return svgS(`<line x1="7" y1="4" x2="7" y2="20"/><path d="M5 4v5a2 2 0 0 0 4 0V4"/><path d="M16 4v16"/><path d="M16 4c2 0 3 2 3 5h-3"/>`);
+            if (k === 'drinking water') return svgS(`<path d="M7 10h8v10H7z"/><path d="M11 4v4h5"/>`);
+            if (k === 'pizza' || k === 'fast food' || k === 'ice cream') return svg(`<path d="M12 2L3 20h18L12 2zm0 6a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm-2 6a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z"/>`);
+
+            // NATURAL & WATER
+            if (k === 'tree' || k === 'wood' || k === 'park') return svg(`<circle cx="12" cy="9" r="5"/><rect x="10.5" y="13" width="3" height="7"/>`);
+            if (k === 'peak' || k === 'cliff') return svgS(`<polygon points="3 19 10 6 14 13 17 9 21 19"/>`);
+            if (k === 'animal' || k === 'veterinary') return svg(`<circle cx="7" cy="9" r="1.8"/><circle cx="11" cy="6.5" r="1.8"/><circle cx="15" cy="7.5" r="1.8"/><circle cx="17.5" cy="11" r="1.8"/><path d="M12 12c-3 0-5 2.2-5 4.5 0 1.6 1.5 2.5 5 2.5s5-.9 5-2.5c0-2.3-2-4.5-5-4.5z"/>`);
+            if (k === 'fish' || k === 'fishing') return svg(`<path d="M12 7c-4.5 0-8 3-9 5 1 2 4.5 5 9 5 3.2 0 5.8-1.4 7.5-3.2L22 16V8l-2.5 2.2C17.8 8.4 15.2 7 12 7z"/>`);
+            if (k === 'water' || k === 'waterfall' || k === 'weir') return svgS(`<path d="M3 8c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M3 13c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M3 18c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>`);
+            if (k === 'dam') return svg(`<path d="M3 20V5h4l4 15H3zm9-3h9v3h-9v-3zm1-4h7v2h-7v-2z"/>`);
+            if (k === 'source' || k === 'spring' || k === 'hot spring') return svgS(`<circle cx="10" cy="8" r="2.5"/><path d="M11 10.5c2 2 2 5 0 8.5"/>`);
+            if (k === 'tower water' || k === 'tower communication' || k === 'tower lookout') return svgS(`<polygon points="12 3 7 20 17 20"/><line x1="8" y1="14" x2="16" y2="14"/>`);
+            if (k === 'cave') return svgS(`<path d="M3 19a9 9 0 0 1 18 0"/><path d="M8 19a4 4 0 0 1 8 0"/>`);
+            if (k === 'mushroom') return svg(`<path d="M4 12a8 8 0 0 1 16 0H4zm6 0h4v8h-4v-8z"/>`);
+
+            // MAN MADE & AMENITY
+            if (k === 'mine' || k === 'mine abandoned') return svgS(`<line x1="4" y1="20" x2="17" y2="7"/><path d="M13 4c3 1 5 3 6 6"/><line x1="20" y1="20" x2="7" y2="7"/>`);
+            if (k === 'surveillance') return svg(`<path d="M3 9l14-4 2 5-14 4-2-5zm6 5v5H7v-4l2-1z"/>`);
+            if (k === 'bunker' || k === 'checkpoint' || k === 'military') return svgS(`<circle cx="12" cy="12" r="5"/><line x1="12" y1="3" x2="12" y2="7"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="3" y1="12" x2="7" y2="12"/><line x1="17" y1="12" x2="21" y2="12"/>`);
+            if (k === 'atm' || k === 'bank' || k === 'currency exchange') return svg(`<text x="6" y="18" font-size="16" font-weight="800" font-family="sans-serif">$</text>`);
+            if (k === 'telephone' || k === 'emergency phone') return svg(`<path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/>`);
+            if (k === 'school' || k === 'college' || k === 'university' || k === 'library') return svg(`<path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zm-7 9.18V16l7 3.82L19 16v-3.82L12 16l-7-3.82z"/>`);
+            if (k === 'police' || k === 'court') return svgS(`<path d="M12 2l7 4v6c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-4z"/>`);
+            if (k === 'recycling') return svgS(`<polyline points="7 8 12 3 17 8"/><polyline points="19 13 17 19 11 19"/><polyline points="5 13 7 19 11 19"/>`);
+            if (k.includes('toilet')) return svgS(`<circle cx="9" cy="6" r="2"/><line x1="9" y1="9" x2="9" y2="19"/><circle cx="16" cy="6" r="2"/><polygon points="16 9 13 16 19 16"/>`);
+
+            // SPORT & HEALTH
+            if (k === 'soccer') return svgS(`<circle cx="12" cy="12" r="8"/><polygon points="12 8 15 10.5 13.8 14 10.2 14 9 10.5"/>`);
+            if (k === 'tennis') return svgS(`<circle cx="10" cy="9" r="5"/><line x1="13.5" y1="12.5" x2="19" y2="19"/><circle cx="18" cy="7" r="1.5"/>`);
+            if (k === 'cycling') return svgS(`<circle cx="6" cy="16" r="3"/><circle cx="18" cy="16" r="3"/><polyline points="6 16 11 9 16 9 18 16"/>`);
+            if (k === 'swimming' || k === 'swimming indoor' || k === 'diving' || k === 'scuba diving') return svgS(`<circle cx="16" cy="7" r="2"/><path d="M4 15c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 4 0"/>`);
+            if (k === 'hospital' || k === 'hospital emergency' || k === 'pharmacy') return svg(`<path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>`);
+            if (k === 'ambulance') return svg(`<path d="M18 11h-3V7H3v10h2a2 2 0 1 0 4 0h6a2 2 0 1 0 4 0h2v-4l-3-2zM8 10h2V8h2v2h2v2h-2v2h-2v-2H8v-2z"/>`);
+            if (k === 'doctors' || k === 'dentist' || k === 'optician') return svgS(`<line x1="12" y1="4" x2="12" y2="20"/><path d="M8 8c0-2 8-2 8 0s-8 3-8 5 8 2 8 0"/>`);
+
             return `<svg width="18" height="18" viewBox="0 0 24 24" style="flex-shrink:0;"><circle cx="12" cy="12" r="7.5" fill="none" stroke="${catColor}" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="${catColor}"/></svg>`;
         }
 
