@@ -2432,6 +2432,226 @@
                         </div>
                     </div>
 
+                    <!-- Modal Material AlpineQuest: Waypoint -->
+                    <div id="modal-waypoint-alpine" onclick="if(event.target===this) cerrarModalWaypointAlpine()" style="display:none; position:fixed; inset:0; z-index:9996; background:rgba(0,0,0,0.55); align-items:center; justify-content:center; padding:16px; font-family:var(--font-sans);">
+                        <div style="width:100%; max-width:390px; background:#ffffff; color:#111827; border-radius:4px; box-shadow:0 14px 36px rgba(0,0,0,0.45); padding:20px 22px 14px; position:relative; max-height:90vh; overflow-y:auto;">
+                            <!-- Header -->
+                            <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px;">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2">
+                                    <path d="M12 2.5C9.2 2.5 7 4.7 7 7.5c0 3.6 5 9.5 5 9.5s5-5.9 5-9.5c0-2.8-2.2-5-5-5z"/>
+                                    <circle cx="12" cy="7.5" r="1.6" fill="#111827" stroke="none"/>
+                                    <circle cx="12" cy="21" r="1.8" fill="#111827" stroke="none"/>
+                                </svg>
+                                <span id="wp-modal-titulo" style="font-size:19px; font-weight:500; color:#1f2937;">Waypoint</span>
+                            </div>
+
+                            <!-- Nombre -->
+                            <div style="margin-bottom:14px;">
+                                <label for="wp-nombre-input" style="display:block; font-size:12.5px; font-weight:500; color:#00897B; margin-bottom:3px;">Nombre</label>
+                                <input type="text" id="wp-nombre-input" placeholder="Opcional"
+                                    onkeydown="if(event.key==='Enter'){event.preventDefault();guardarWaypointAlpine();}"
+                                    style="width:100%; border:none; border-bottom:1.5px solid #00897B; padding:5px 2px; font-size:16px; color:#111827; background:transparent; outline:none;" />
+                            </div>
+
+                            <!-- Selector 1: Ubicación -->
+                            <div style="position:relative; margin-bottom:6px;">
+                                <button type="button" onclick="toggleDropdownWpUbicacion()" style="width:100%; display:flex; align-items:center; justify-content:space-between; background:transparent; border:none; padding:10px 2px; cursor:pointer; text-align:left;">
+                                    <span style="display:flex; align-items:center; gap:12px; min-width:0;">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2" style="flex-shrink:0;">
+                                            <path d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/>
+                                            <circle cx="12" cy="12" r="2" fill="#111827" stroke="none"/>
+                                        </svg>
+                                        <span id="wp-ubicacion-label" style="font-size:15.5px; color:#111827; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Pantalla central de coordenadas</span>
+                                    </span>
+                                    <span style="font-size:11px; color:#4b5563; margin-left:8px;">&#9660;</span>
+                                </button>
+                                <!-- Dropdown Ubicación -->
+                                <div id="wp-dropdown-ubicacion" style="display:none; position:absolute; top:0; left:0; right:0; background:#ffffff; border-radius:3px; box-shadow:0 4px 16px rgba(0,0,0,0.28); z-index:20; overflow:hidden;">
+                                    <div onclick="seleccionarModoUbicacionWp('centro')" style="padding:12px 14px; border-bottom:1px solid #e5e7eb; cursor:pointer; display:flex; align-items:flex-start; gap:12px;">
+                                        <span style="font-size:16px; line-height:1.2; color:#111827;">&#8226;</span>
+                                        <div>
+                                            <div style="font-size:15.5px; color:#111827;">Pantalla central de coordenadas</div>
+                                            <div id="wp-coords-subtitulo" style="font-size:12.5px; font-style:italic; color:#6b7280; margin-top:2px;">04&#176;43'31.89" N 74&#176;16'16.77" W</div>
+                                        </div>
+                                    </div>
+                                    <div onclick="seleccionarModoUbicacionWp('editar')" style="padding:12px 14px; cursor:pointer; display:flex; align-items:center; gap:12px;">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#111827"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.42l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"/></svg>
+                                        <span style="font-size:15.5px; color:#111827;">Editar</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Editor inline de coordenadas (cuando se elige Editar) -->
+                            <div id="wp-editar-coords-box" style="display:none; background:#f3f4f6; border-radius:4px; padding:10px; margin-bottom:10px; gap:8px;">
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                                    <div>
+                                        <label style="display:block; font-size:11px; font-weight:600; color:#4b5563;">Latitud</label>
+                                        <input type="number" step="0.000001" id="wp-edit-lat" style="width:100%; border:none; border-bottom:1px solid #00897B; background:transparent; padding:4px 2px; font-size:13.5px; font-family:monospace; color:#111827; outline:none;" />
+                                    </div>
+                                    <div>
+                                        <label style="display:block; font-size:11px; font-weight:600; color:#4b5563;">Longitud</label>
+                                        <input type="number" step="0.000001" id="wp-edit-lng" style="width:100%; border:none; border-bottom:1px solid #00897B; background:transparent; padding:4px 2px; font-size:13.5px; font-family:monospace; color:#111827; outline:none;" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Selector 2: Carpeta / Marcas desordenadas -->
+                            <div style="position:relative; margin-bottom:14px;">
+                                <button type="button" onclick="toggleDropdownWpCarpeta()" style="width:100%; display:flex; align-items:center; justify-content:space-between; background:transparent; border:none; padding:10px 2px; cursor:pointer; text-align:left;">
+                                    <span style="display:flex; align-items:center; gap:12px;">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#111827">
+                                            <path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
+                                        </svg>
+                                        <span id="wp-carpeta-label" style="font-size:15.5px; color:#111827;">Marcas desordenadas</span>
+                                    </span>
+                                    <span style="font-size:11px; color:#4b5563; margin-left:8px;">&#9660;</span>
+                                </button>
+                                <div id="wp-dropdown-carpeta" style="display:none; position:absolute; top:0; left:0; right:0; background:#ffffff; border-radius:3px; box-shadow:0 4px 16px rgba(0,0,0,0.28); z-index:20; overflow:hidden;">
+                                    <div onclick="seleccionarCarpetaWp('Marcas desordenadas')" style="padding:11px 14px; border-bottom:1px solid #e5e7eb; font-size:15px; color:#111827; cursor:pointer;">Marcas desordenadas</div>
+                                    <div onclick="seleccionarCarpetaWp('Potreros y Cercas')" style="padding:11px 14px; border-bottom:1px solid #e5e7eb; font-size:15px; color:#111827; cursor:pointer;">Potreros y Cercas</div>
+                                    <div onclick="seleccionarCarpetaWp('Infraestructura y Agua')" style="padding:11px 14px; border-bottom:1px solid #e5e7eb; font-size:15px; color:#111827; cursor:pointer;">Infraestructura y Agua</div>
+                                    <div onclick="seleccionarCarpetaWp('Ganado y Collares')" style="padding:11px 14px; font-size:15px; color:#111827; cursor:pointer;">Ganado y Collares</div>
+                                </div>
+                            </div>
+
+                            <!-- Campo expandible: Icono -->
+                            <div id="wp-row-icono" style="display:none; align-items:center; gap:10px; margin-bottom:14px;">
+                                <input type="text" id="wp-icono-input" placeholder="Icono" readonly onclick="abrirModalWaypointIcono()"
+                                    style="flex:1; border:none; border-bottom:1.5px solid #9ca3af; padding:6px 2px; font-size:15.5px; color:#111827; background:transparent; outline:none; cursor:pointer;" />
+                                <button type="button" onclick="abrirModalWaypointIcono()" title="Elegir icono"
+                                    style="width:46px; height:36px; background:#e0e0e0; border:none; border-radius:3px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 1px 2px rgba(0,0,0,0.18);">
+                                    <svg width="17" height="17" viewBox="0 0 24 24" fill="#111827"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6h-5.6z"/></svg>
+                                </button>
+                            </div>
+
+                            <!-- Campo expandible: Comentario -->
+                            <div id="wp-row-comentario" style="display:none; margin-bottom:16px;">
+                                <label for="wp-comentario-input" style="display:block; font-size:12.5px; font-weight:500; color:#00897B; margin-bottom:3px;">Comentario</label>
+                                <input type="text" id="wp-comentario-input" placeholder="Opcional"
+                                    style="width:100%; border:none; border-bottom:1.5px solid #9ca3af; padding:5px 2px; font-size:15.5px; color:#111827; background:transparent; outline:none;" />
+                            </div>
+
+                            <!-- Resumen de extras (Color / Estilo / Azimut / Url / etc.) -->
+                            <div id="wp-extras-resumen" style="display:none; flex-wrap:wrap; gap:6px; margin-bottom:12px;"></div>
+
+                            <!-- Barra de botones grises: Bandera, Paleta, Comentario, MÁS... -->
+                            <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
+                                <button type="button" id="wp-btn-flag" onclick="mostrarCampoIconoWp()" title="Icono"
+                                    style="width:38px; height:36px; background:#e0e0e0; border:none; border-radius:3px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 1px 2px rgba(0,0,0,0.18); flex-shrink:0;">
+                                    <svg width="17" height="17" viewBox="0 0 24 24" fill="#111827"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6h-5.6z"/></svg>
+                                </button>
+                                <button type="button" id="wp-btn-color" onclick="abrirSelectorColorWp()" title="Color"
+                                    style="width:38px; height:36px; background:#e0e0e0; border:none; border-radius:3px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 1px 2px rgba(0,0,0,0.18); flex-shrink:0; position:relative;">
+                                    <svg width="17" height="17" viewBox="0 0 24 24" fill="#111827"><path d="M12 3a9 9 0 0 0 0 18c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                                    <span id="wp-color-dot" style="position:absolute; bottom:3px; right:3px; width:8px; height:8px; border-radius:999px; background:#22c55e; border:1px solid #fff;"></span>
+                                </button>
+                                <button type="button" id="wp-btn-comment" onclick="mostrarCampoComentarioWp()" title="Comentario"
+                                    style="width:38px; height:36px; background:#e0e0e0; border:none; border-radius:3px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 1px 2px rgba(0,0,0,0.18); flex-shrink:0;">
+                                    <svg width="17" height="17" viewBox="0 0 24 24" fill="#111827"><path d="M3 10h11v2H3v-2zm0-4h11v2H3V6zm0 8h7v2H3v-2zm13-1v8l5-4-5-4z" style="display:none;"/><path d="M3 6h12v2H3V6zm0 4h12v2H3v-2zm0 4h8v2H3v-2zm16.7-1.3l1 1c.4.4.4 1 0 1.4l-5.6 5.6H13v-2.1l5.6-5.6c.4-.4 1-.4 1.1-.3z"/></svg>
+                                </button>
+                                <button type="button" onclick="abrirModalWaypointMas()"
+                                    style="flex:1; height:36px; background:#e0e0e0; border:none; border-radius:3px; font-size:13.5px; font-weight:500; color:#111827; letter-spacing:0.03em; cursor:pointer; box-shadow:0 1px 2px rgba(0,0,0,0.18);">
+                                    M&Aacute;S...
+                                </button>
+                            </div>
+
+                            <!-- Footer CANCELAR / OK -->
+                            <div style="display:flex; justify-content:flex-end; align-items:center; gap:20px; padding-top:4px;">
+                                <button type="button" onclick="cerrarModalWaypointAlpine()" style="background:transparent; border:none; color:#00897B; font-size:14px; font-weight:600; padding:6px 8px; cursor:pointer; letter-spacing:0.03em;">CANCELAR</button>
+                                <button type="button" onclick="guardarWaypointAlpine()" style="background:transparent; border:none; color:#00897B; font-size:14px; font-weight:600; padding:6px 10px; cursor:pointer; letter-spacing:0.03em;">OK</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Material: Selector de Icono de Waypoint -->
+                    <div id="modal-waypoint-icono" onclick="if(event.target===this) cerrarModalWaypointIcono()" style="display:none; position:fixed; inset:0; z-index:9998; background:rgba(0,0,0,0.55); align-items:center; justify-content:center; padding:16px; font-family:var(--font-sans);">
+                        <div style="width:100%; max-width:390px; max-height:84vh; background:#ffffff; color:#111827; border-radius:4px; box-shadow:0 14px 36px rgba(0,0,0,0.45); display:flex; flex-direction:column; overflow:hidden;">
+                            <div style="padding:18px 20px 8px;">
+                                <div style="font-size:18px; font-weight:600; color:#111827; margin-bottom:10px;">Icono</div>
+                                <div style="display:flex; align-items:center; border-bottom:1px solid #9ca3af; padding-bottom:4px;">
+                                    <input type="text" id="wp-icono-filtro" placeholder="Filtrar" oninput="renderizarCategoriasIconoWp()"
+                                        style="flex:1; border:none; outline:none; font-size:15.5px; color:#111827; background:transparent; padding:4px 2px;" />
+                                    <button type="button" onclick="document.getElementById('wp-icono-filtro').value=''; renderizarCategoriasIconoWp();" style="background:transparent; border:none; color:#374151; font-size:18px; padding:2px 6px; cursor:pointer;">&#10005;</button>
+                                </div>
+                            </div>
+                            <div id="wp-icono-lista" style="flex:1; overflow-y:auto; padding:4px 20px 8px;"></div>
+                            <div style="display:flex; justify-content:flex-end; padding:10px 18px 14px; border-top:1px solid #f3f4f6;">
+                                <button type="button" onclick="cerrarModalWaypointIcono()" style="background:transparent; border:none; color:#00897B; font-size:14px; font-weight:600; padding:6px 8px; cursor:pointer;">CANCELAR</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Material: Más... opciones de Waypoint -->
+                    <div id="modal-waypoint-mas" onclick="if(event.target===this) cerrarModalWaypointMas()" style="display:none; position:fixed; inset:0; z-index:9998; background:rgba(0,0,0,0.55); align-items:center; justify-content:center; padding:16px; font-family:var(--font-sans);">
+                        <div style="width:100%; max-width:340px; max-height:84vh; background:#ffffff; color:#111827; border-radius:4px; box-shadow:0 14px 36px rgba(0,0,0,0.45); display:flex; flex-direction:column; overflow:hidden;">
+                            <div style="padding:18px 22px 10px; font-size:19px; font-weight:500; color:#111827;">M&aacute;s...</div>
+                            <div style="flex:1; overflow-y:auto; padding:4px 14px 8px;">
+                                <div onclick="accionMasWaypoint('color')" style="display:flex; align-items:center; gap:18px; padding:11px 8px; cursor:pointer;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#1f2937"><path d="M12 3a9 9 0 0 0 0 18c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                                    <span style="font-size:16px; color:#1f2937;">Color</span>
+                                </div>
+                                <div onclick="accionMasWaypoint('imagen')" style="display:flex; align-items:center; gap:18px; padding:11px 8px; cursor:pointer;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#1f2937"><path d="M9 4L7.5 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-3.5L15 4H9zm3 13a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></svg>
+                                    <span style="font-size:16px; color:#1f2937;">Imagen</span>
+                                </div>
+                                <div onclick="accionMasWaypoint('galeria')" style="display:flex; align-items:center; gap:18px; padding:11px 8px; cursor:pointer;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#1f2937"><path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                                    <span style="font-size:16px; color:#1f2937;">Galer&iacute;a</span>
+                                </div>
+                                <div onclick="accionMasWaypoint('audio')" style="display:flex; align-items:center; gap:18px; padding:11px 8px; cursor:pointer;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#1f2937"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+                                    <span style="font-size:16px; color:#1f2937;">Audio</span>
+                                </div>
+                                <div onclick="accionMasWaypoint('estilo')" style="display:flex; align-items:center; gap:18px; padding:11px 8px; cursor:pointer;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#1f2937"><path d="M18 4V3c0-.55-.45-1-1-1H5c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1h12c.55 0 1-.45 1-1V6h1v4H9v11c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-9h8V4h-3z"/></svg>
+                                    <span style="font-size:16px; color:#1f2937;">Estilo</span>
+                                </div>
+                                <div onclick="accionMasWaypoint('azimut')" style="display:flex; align-items:center; gap:18px; padding:11px 8px; cursor:pointer;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1f2937" stroke-width="2"><circle cx="12" cy="12" r="9"/><polygon points="15.5,8.5 13,13 8.5,15.5 11,11" fill="#1f2937" stroke="none"/></svg>
+                                    <span style="font-size:16px; color:#1f2937;">Azimut</span>
+                                </div>
+                                <div onclick="accionMasWaypoint('url')" style="display:flex; align-items:center; gap:18px; padding:11px 8px; cursor:pointer;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#1f2937"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+                                    <span style="font-size:16px; color:#1f2937;">Url</span>
+                                </div>
+                                <div onclick="accionMasWaypoint('keywords')" style="display:flex; align-items:center; gap:18px; padding:11px 8px; cursor:pointer;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#1f2937"><path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"/></svg>
+                                    <span style="font-size:16px; color:#1f2937;">Keywords</span>
+                                </div>
+                                <div onclick="accionMasWaypoint('descripcion')" style="display:flex; align-items:center; gap:18px; padding:11px 8px; cursor:pointer;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#1f2937"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2zm0-4H7V7h10v2zm-4 8H7v-2h6v2z"/></svg>
+                                    <span style="font-size:16px; color:#1f2937;">Descripci&oacute;n</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; justify-content:flex-end; padding:10px 18px 14px;">
+                                <button type="button" onclick="cerrarModalWaypointMas()" style="background:transparent; border:none; color:#00897B; font-size:14px; font-weight:600; padding:6px 8px; cursor:pointer;">CANCELAR</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Material: Selector de Color de Waypoint -->
+                    <div id="modal-waypoint-color" onclick="if(event.target===this) this.style.display='none'" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.55); align-items:center; justify-content:center; padding:16px; font-family:var(--font-sans);">
+                        <div style="width:100%; max-width:320px; background:#ffffff; color:#111827; border-radius:4px; box-shadow:0 14px 36px rgba(0,0,0,0.45); padding:18px 20px 12px;">
+                            <div style="font-size:18px; font-weight:500; color:#111827; margin-bottom:14px;">Color</div>
+                            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:14px;">
+                                <button type="button" onclick="seleccionarColorWp('#22c55e')" style="height:38px; border-radius:4px; background:#22c55e; border:2px solid #e5e7eb; cursor:pointer;" title="Verde"></button>
+                                <button type="button" onclick="seleccionarColorWp('#ef4444')" style="height:38px; border-radius:4px; background:#ef4444; border:2px solid #e5e7eb; cursor:pointer;" title="Rojo"></button>
+                                <button type="button" onclick="seleccionarColorWp('#3b82f6')" style="height:38px; border-radius:4px; background:#3b82f6; border:2px solid #e5e7eb; cursor:pointer;" title="Azul"></button>
+                                <button type="button" onclick="seleccionarColorWp('#eab308')" style="height:38px; border-radius:4px; background:#eab308; border:2px solid #e5e7eb; cursor:pointer;" title="Amarillo"></button>
+                                <button type="button" onclick="seleccionarColorWp('#f97316')" style="height:38px; border-radius:4px; background:#f97316; border:2px solid #e5e7eb; cursor:pointer;" title="Naranja"></button>
+                                <button type="button" onclick="seleccionarColorWp('#a855f7')" style="height:38px; border-radius:4px; background:#a855f7; border:2px solid #e5e7eb; cursor:pointer;" title="Morado"></button>
+                                <button type="button" onclick="seleccionarColorWp('#0d9488')" style="height:38px; border-radius:4px; background:#0d9488; border:2px solid #e5e7eb; cursor:pointer;" title="Teal"></button>
+                                <button type="button" onclick="seleccionarColorWp('#111827')" style="height:38px; border-radius:4px; background:#111827; border:2px solid #e5e7eb; cursor:pointer;" title="Negro"></button>
+                            </div>
+                            <div style="display:flex; justify-content:flex-end;">
+                                <button type="button" onclick="document.getElementById('modal-waypoint-color').style.display='none'" style="background:transparent; border:none; color:#00897B; font-size:14px; font-weight:600; padding:6px 8px; cursor:pointer;">CANCELAR</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="file" id="wp-file-imagen" accept="image/*" style="display:none;" onchange="adjuntarArchivoWp(this, 'imagen')" />
+                    <input type="file" id="wp-file-audio" accept="audio/*" style="display:none;" onchange="adjuntarArchivoWp(this, 'audio')" />
+
                     <!-- Panel Flotante: Crear Placemark Real en el Punto Central -->
                     <div id="panel-crear-placemark" style="display:none; position:absolute; bottom:66px; left:10px; right:10px; max-width:340px; z-index:472; background:#d4d6d8; color:#111827; border-radius:6px; padding:12px; box-shadow:0 6px 20px rgba(0,0,0,0.55);"
                         class="space-y-2">
@@ -6663,28 +6883,356 @@
             abrirPanelCrearPlacemarkCentro(tipo);
         }
 
+        const WP_ICON_CATEGORIES = [
+            { cat: 'IMPORTED', items: ['Pin importado', 'Marca KML', 'Waypoint GPX'] },
+            { cat: 'PLACEMARK', items: ['Bandera', 'Pin', 'Estrella', 'Objetivo', 'Chincheta', 'Círculo'] },
+            { cat: 'TOURISM', items: ['Mirador', 'Campamento', 'Sendero', 'Información'] },
+            { cat: 'TRANSPORT', items: ['Portada / Entrada', 'Camino / Trocha', 'Vehículo', 'Parqueadero'] },
+            { cat: 'ACCOMMODATION', items: ['Casa Finca', 'Cabina', 'Refugio'] },
+            { cat: 'FOOD', items: ['Saladero', 'Comedero', 'Bodega Alimento'] },
+            { cat: 'NATURAL', items: ['Potrero', 'Árbol', 'Bosque', 'Loma', 'Nacedero'] },
+            { cat: 'WATER', items: ['Bebedero', 'Quebrada', 'Laguna', 'Pozo', 'Alcantarilla'] },
+            { cat: 'MAN MADE', items: ['Corral', 'Establo', 'Cerca', 'Broche', 'Antena LoRa'] },
+            { cat: 'AMENITY', items: ['Herramienta', 'Báscula', 'Bomba Agua'] },
+            { cat: 'SPORT', items: ['Recorrido', 'Meta', 'Control'] },
+            { cat: 'HEALTH', items: ['Botiquín', 'Veterinaria', 'Vacunación'] },
+            { cat: 'WORSHIP', items: ['Cruz', 'Capilla'] },
+            { cat: 'SHOPPING', items: ['Entrega Leche', 'Acopio', 'Insumos'] },
+            { cat: 'POWER', items: ['Panel Solar', 'Batería', 'Poste Eléctrico'] },
+            { cat: 'GEOCACHING', items: ['Caché', 'Pista', 'Coordenada'] },
+            { cat: 'OTRO', items: ['Alerta', 'Nota', 'Sensor'] }
+        ];
+        window.wpExpandedIconCats = {};
+
         function abrirPanelCrearPlacemarkCentro(tipo = 'Waypoint') {
             ocultarPopupCentroAlpine();
             ocultarMenusAlpineQuest();
             cerrarModalAlpineCrearPlacemark();
-            cerrarPanelesFlotantesAlpine('panel-crear-placemark');
-            const panel = document.getElementById('panel-crear-placemark');
-            if (!panel) return;
-            window.placemarkTipoActual = tipo || 'Waypoint';
-            const tituloLbl = document.getElementById('titulo-panel-placemark-rapido');
-            if (tituloLbl) tituloLbl.textContent = `Nuevo ${window.placemarkTipoActual} en Punto Central`;
+            cerrarPanelesFlotantesAlpine('modal-waypoint-alpine');
+            const modal = document.getElementById('modal-waypoint-alpine');
+            if (!modal) return;
+
             const mira = window.fincaLeafletMap ? window.fincaLeafletMap.getCenter() : getFincaCenterCoords();
-            const coordsLbl = document.getElementById('placemark-coords-label');
-            if (coordsLbl) {
-                coordsLbl.textContent = `${mira.lat.toFixed(6)}, ${mira.lng.toFixed(6)}`;
+            window.placemarkTipoActual = tipo || 'Waypoint';
+            window.wpDraft = {
+                tipo: window.placemarkTipoActual,
+                modoUbicacion: 'centro',
+                lat: Number(mira.lat.toFixed(6)),
+                lng: Number(mira.lng.toFixed(6)),
+                carpeta: 'Marcas desordenadas',
+                icono: '',
+                color: '#22c55e',
+                comentario: '',
+                estilo: '',
+                azimut: '',
+                url: '',
+                keywords: '',
+                descripcion: '',
+                imagenNombre: '',
+                audioNombre: ''
+            };
+
+            const tituloEl = document.getElementById('wp-modal-titulo');
+            if (tituloEl) tituloEl.textContent = tipo && tipo !== 'Waypoint' ? tipo : 'Waypoint';
+            const nomInput = document.getElementById('wp-nombre-input');
+            if (nomInput) nomInput.value = '';
+            const coordsSub = document.getElementById('wp-coords-subtitulo');
+            if (coordsSub) {
+                coordsSub.textContent = typeof formatearCoordsAlpine === 'function'
+                    ? formatearCoordsAlpine(mira.lat, mira.lng)
+                    : `${mira.lat.toFixed(6)}, ${mira.lng.toFixed(6)}`;
             }
-            const nameInput = document.getElementById('placemark-nombre-input');
-            if (nameInput) {
-                const count = (appState?.placemarks_mapa || []).length + 1;
-                const prefijo = tipo && tipo !== 'Waypoint' ? tipo : 'Punto';
-                nameInput.value = `${prefijo} #${count}`;
+            const ubLbl = document.getElementById('wp-ubicacion-label');
+            if (ubLbl) ubLbl.textContent = 'Pantalla central de coordenadas';
+            const carpLbl = document.getElementById('wp-carpeta-label');
+            if (carpLbl) carpLbl.textContent = 'Marcas desordenadas';
+            const editLat = document.getElementById('wp-edit-lat');
+            const editLng = document.getElementById('wp-edit-lng');
+            if (editLat) editLat.value = window.wpDraft.lat;
+            if (editLng) editLng.value = window.wpDraft.lng;
+
+            document.getElementById('wp-dropdown-ubicacion').style.display = 'none';
+            document.getElementById('wp-dropdown-carpeta').style.display = 'none';
+            document.getElementById('wp-editar-coords-box').style.display = 'none';
+            document.getElementById('wp-row-icono').style.display = 'none';
+            document.getElementById('wp-row-comentario').style.display = 'none';
+            document.getElementById('wp-btn-flag').style.display = 'flex';
+            document.getElementById('wp-btn-comment').style.display = 'flex';
+            document.getElementById('wp-icono-input').value = '';
+            document.getElementById('wp-comentario-input').value = '';
+            const colorDot = document.getElementById('wp-color-dot');
+            if (colorDot) colorDot.style.background = '#22c55e';
+            actualizarResumenExtrasWp();
+
+            modal.style.display = 'flex';
+            if (tipo === 'Punto de imagen') {
+                setTimeout(() => document.getElementById('wp-file-imagen')?.click(), 180);
+            } else if (tipo === 'Punto de audio') {
+                setTimeout(() => document.getElementById('wp-file-audio')?.click(), 180);
+            } else {
+                setTimeout(() => nomInput?.focus(), 120);
             }
-            panel.style.display = 'block';
+        }
+
+        function cerrarModalWaypointAlpine() {
+            const modal = document.getElementById('modal-waypoint-alpine');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function toggleDropdownWpUbicacion() {
+            const dd = document.getElementById('wp-dropdown-ubicacion');
+            const ddCarp = document.getElementById('wp-dropdown-carpeta');
+            if (ddCarp) ddCarp.style.display = 'none';
+            if (dd) dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function seleccionarModoUbicacionWp(modo) {
+            const dd = document.getElementById('wp-dropdown-ubicacion');
+            if (dd) dd.style.display = 'none';
+            if (!window.wpDraft) return;
+            window.wpDraft.modoUbicacion = modo;
+            const box = document.getElementById('wp-editar-coords-box');
+            const lbl = document.getElementById('wp-ubicacion-label');
+            if (modo === 'editar') {
+                if (box) box.style.display = 'block';
+                if (lbl) lbl.textContent = 'Editar coordenadas';
+            } else {
+                if (box) box.style.display = 'none';
+                if (lbl) lbl.textContent = 'Pantalla central de coordenadas';
+            }
+        }
+
+        function toggleDropdownWpCarpeta() {
+            const dd = document.getElementById('wp-dropdown-carpeta');
+            const ddUb = document.getElementById('wp-dropdown-ubicacion');
+            if (ddUb) ddUb.style.display = 'none';
+            if (dd) dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function seleccionarCarpetaWp(nombre) {
+            const dd = document.getElementById('wp-dropdown-carpeta');
+            if (dd) dd.style.display = 'none';
+            if (window.wpDraft) window.wpDraft.carpeta = nombre;
+            const lbl = document.getElementById('wp-carpeta-label');
+            if (lbl) lbl.textContent = nombre;
+        }
+
+        function mostrarCampoIconoWp() {
+            const row = document.getElementById('wp-row-icono');
+            const btn = document.getElementById('wp-btn-flag');
+            if (row) row.style.display = 'flex';
+            if (btn) btn.style.display = 'none';
+        }
+
+        function mostrarCampoComentarioWp() {
+            const row = document.getElementById('wp-row-comentario');
+            const btn = document.getElementById('wp-btn-comment');
+            if (row) row.style.display = 'block';
+            if (btn) btn.style.display = 'none';
+            setTimeout(() => document.getElementById('wp-comentario-input')?.focus(), 80);
+        }
+
+        function abrirSelectorColorWp() {
+            const modal = document.getElementById('modal-waypoint-color');
+            if (modal) modal.style.display = 'flex';
+        }
+
+        function seleccionarColorWp(hex) {
+            if (window.wpDraft) window.wpDraft.color = hex;
+            const dot = document.getElementById('wp-color-dot');
+            if (dot) dot.style.background = hex;
+            const modal = document.getElementById('modal-waypoint-color');
+            if (modal) modal.style.display = 'none';
+            actualizarResumenExtrasWp();
+        }
+
+        function abrirModalWaypointIcono() {
+            const modal = document.getElementById('modal-waypoint-icono');
+            if (!modal) return;
+            const filtro = document.getElementById('wp-icono-filtro');
+            if (filtro) filtro.value = '';
+            renderizarCategoriasIconoWp();
+            modal.style.display = 'flex';
+        }
+
+        function cerrarModalWaypointIcono() {
+            const modal = document.getElementById('modal-waypoint-icono');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function toggleCategoriaIconoWp(cat) {
+            window.wpExpandedIconCats[cat] = !window.wpExpandedIconCats[cat];
+            renderizarCategoriasIconoWp();
+        }
+
+        function seleccionarIconoWp(cat, nombre) {
+            if (window.wpDraft) window.wpDraft.icono = nombre ? `${cat}: ${nombre}` : '';
+            const inp = document.getElementById('wp-icono-input');
+            if (inp) inp.value = window.wpDraft.icono;
+            if (nombre) mostrarCampoIconoWp();
+            cerrarModalWaypointIcono();
+        }
+
+        function renderizarCategoriasIconoWp() {
+            const cont = document.getElementById('wp-icono-lista');
+            if (!cont) return;
+            const q = (document.getElementById('wp-icono-filtro')?.value || '').trim().toLowerCase();
+            let html = '';
+            if (!q) {
+                html += `<div onclick="seleccionarIconoWp('', '')" style="padding:12px 2px; font-size:16px; color:#111827; cursor:pointer;">Ninguna</div>`;
+            }
+            WP_ICON_CATEGORIES.forEach(group => {
+                const matchCat = group.cat.toLowerCase().includes(q);
+                const itemsFiltrados = q ? (matchCat ? group.items : group.items.filter(it => it.toLowerCase().includes(q))) : group.items;
+                if (q && !itemsFiltrados.length) return;
+                const expanded = q ? true : !!window.wpExpandedIconCats[group.cat];
+                const catEsc = group.cat.replace(/'/g, "\\'");
+                html += `
+                    <div onclick="toggleCategoriaIconoWp('${catEsc}')" style="display:flex; align-items:center; gap:14px; padding:12px 2px; cursor:pointer; user-select:none;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4b5563" stroke-width="2.4" style="transform:${expanded ? 'rotate(180deg)' : 'rotate(0deg)'}; transition:transform 0.15s;"><polyline points="6 9 12 15 18 9"/></svg>
+                        <span style="font-size:14.5px; font-weight:500; color:#6b7280; letter-spacing:0.02em;">${group.cat}</span>
+                    </div>
+                `;
+                if (expanded) {
+                    html += `<div style="padding:2px 0 8px 28px; display:flex; flex-direction:column; gap:2px;">`;
+                    itemsFiltrados.forEach(item => {
+                        const itemEsc = item.replace(/'/g, "\\'");
+                        html += `<div onclick="seleccionarIconoWp('${catEsc}', '${itemEsc}')" style="padding:7px 8px; border-radius:3px; font-size:14.5px; color:#1f2937; cursor:pointer; background:#f9fafb;">${item}</div>`;
+                    });
+                    html += `</div>`;
+                }
+            });
+            cont.innerHTML = html;
+        }
+
+        function abrirModalWaypointMas() {
+            const modal = document.getElementById('modal-waypoint-mas');
+            if (modal) modal.style.display = 'flex';
+        }
+
+        function cerrarModalWaypointMas() {
+            const modal = document.getElementById('modal-waypoint-mas');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function adjuntarArchivoWp(input, tipo) {
+            const file = input?.files?.[0];
+            if (!file || !window.wpDraft) return;
+            if (tipo === 'imagen') window.wpDraft.imagenNombre = file.name;
+            if (tipo === 'audio') window.wpDraft.audioNombre = file.name;
+            actualizarResumenExtrasWp();
+        }
+
+        function accionMasWaypoint(op) {
+            cerrarModalWaypointMas();
+            if (!window.wpDraft) return;
+            if (op === 'color') {
+                abrirSelectorColorWp();
+            } else if (op === 'imagen' || op === 'galeria') {
+                document.getElementById('wp-file-imagen')?.click();
+            } else if (op === 'audio') {
+                document.getElementById('wp-file-audio')?.click();
+            } else if (op === 'estilo') {
+                const v = prompt('Estilo del marcador (Píldora, Pin, Círculo):', window.wpDraft.estilo || 'Píldora');
+                if (v !== null) window.wpDraft.estilo = v.trim();
+            } else if (op === 'azimut') {
+                const v = prompt('Azimut en grados (0° - 360°):', window.wpDraft.azimut || '');
+                if (v !== null) window.wpDraft.azimut = v.trim();
+            } else if (op === 'url') {
+                const v = prompt('URL asociada al Waypoint:', window.wpDraft.url || 'https://');
+                if (v !== null) window.wpDraft.url = v.trim();
+            } else if (op === 'keywords') {
+                const v = prompt('Keywords / etiquetas (separadas por coma):', window.wpDraft.keywords || '');
+                if (v !== null) window.wpDraft.keywords = v.trim();
+            } else if (op === 'descripcion') {
+                const v = prompt('Descripción detallada:', window.wpDraft.descripcion || '');
+                if (v !== null) window.wpDraft.descripcion = v.trim();
+            }
+            actualizarResumenExtrasWp();
+        }
+
+        function actualizarResumenExtrasWp() {
+            const box = document.getElementById('wp-extras-resumen');
+            if (!box || !window.wpDraft) return;
+            const tags = [];
+            if (window.wpDraft.estilo) tags.push(`Estilo: ${window.wpDraft.estilo}`);
+            if (window.wpDraft.azimut) tags.push(`Azimut: ${window.wpDraft.azimut}°`);
+            if (window.wpDraft.url && window.wpDraft.url !== 'https://') tags.push(`Url: ${window.wpDraft.url}`);
+            if (window.wpDraft.keywords) tags.push(`Keywords: ${window.wpDraft.keywords}`);
+            if (window.wpDraft.descripcion) tags.push(`Desc: ${window.wpDraft.descripcion}`);
+            if (window.wpDraft.imagenNombre) tags.push(`Img: ${window.wpDraft.imagenNombre}`);
+            if (window.wpDraft.audioNombre) tags.push(`Audio: ${window.wpDraft.audioNombre}`);
+            if (!tags.length) {
+                box.style.display = 'none';
+                box.innerHTML = '';
+                return;
+            }
+            box.style.display = 'flex';
+            box.innerHTML = tags.map(t => `<span style="font-size:11.5px; background:#f3f4f6; color:#374151; border:1px solid #d1d5db; border-radius:4px; padding:2px 7px;">${t}</span>`).join('');
+        }
+
+        async function guardarWaypointAlpine() {
+            const draft = window.wpDraft || {};
+            const count = (appState?.placemarks_mapa || []).length + 1;
+            const nombreRaw = document.getElementById('wp-nombre-input')?.value.trim();
+            const prefijo = draft.tipo && draft.tipo !== 'Waypoint' ? draft.tipo : 'Waypoint';
+            const nombre = nombreRaw || `${prefijo} #${count}`;
+
+            let lat = draft.lat;
+            let lng = draft.lng;
+            if (draft.modoUbicacion === 'editar') {
+                const latIn = Number(document.getElementById('wp-edit-lat')?.value);
+                const lngIn = Number(document.getElementById('wp-edit-lng')?.value);
+                if (Number.isFinite(latIn) && Number.isFinite(lngIn)) {
+                    lat = Number(latIn.toFixed(6));
+                    lng = Number(lngIn.toFixed(6));
+                }
+            } else {
+                const mira = window.fincaLeafletMap ? window.fincaLeafletMap.getCenter() : getFincaCenterCoords();
+                lat = Number(mira.lat.toFixed(6));
+                lng = Number(mira.lng.toFixed(6));
+            }
+
+            const comentario = document.getElementById('wp-comentario-input')?.value.trim() || '';
+            const notasPartes = [];
+            if (draft.carpeta) notasPartes.push(`Carpeta: ${draft.carpeta}`);
+            if (draft.icono) notasPartes.push(`Icono: ${draft.icono}`);
+            if (comentario) notasPartes.push(comentario);
+            if (draft.descripcion) notasPartes.push(draft.descripcion);
+            if (draft.azimut) notasPartes.push(`Azimut: ${draft.azimut}°`);
+            if (draft.keywords) notasPartes.push(`Keywords: ${draft.keywords}`);
+            if (draft.url && draft.url !== 'https://') notasPartes.push(`Url: ${draft.url}`);
+            if (draft.imagenNombre) notasPartes.push(`Imagen: ${draft.imagenNombre}`);
+            if (draft.audioNombre) notasPartes.push(`Audio: ${draft.audioNombre}`);
+
+            const payload = {
+                nombre,
+                latitud: lat,
+                longitud: lng,
+                color: draft.color || '#22c55e',
+                notas: notasPartes.join(' | ') || 'Creado desde la mira central'
+            };
+
+            try {
+                const res = await fetch(`${getApiBase()}/api/mapa/placemarks/guardar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const json = await res.json();
+                if (json.state) {
+                    appState = json.state;
+                    localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
+                }
+            } catch {
+                enqueueOfflineAction('placemark_agregar', payload);
+                if (!appState.placemarks_mapa) appState.placemarks_mapa = [];
+                appState.placemarks_mapa.push({ id: Date.now(), ...payload });
+                localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
+            }
+
+            cerrarModalWaypointAlpine();
+            renderTab5TelemetriaLoRaYTaller();
         }
 
         async function guardarPlacemarkCentroSQLite() {
