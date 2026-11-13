@@ -5446,7 +5446,8 @@
         }
         function toggleEtiquetasPlacemarksAq(visible) {
             window.aqOcultarEtiquetasPlacemarks = !visible;
-            if (typeof initOrUpdateGoogleMapFinca === 'function') initOrUpdateGoogleMapFinca();
+            if (typeof renderTab5TelemetriaLoRaYTaller === 'function') renderTab5TelemetriaLoRaYTaller();
+            else if (typeof initOrUpdateGoogleMapFinca === 'function') initOrUpdateGoogleMapFinca();
         }
 
         function toggleHudAlpineQuestVisibility() {
@@ -7048,6 +7049,7 @@
 
         // --- INICIALIZACIÓN Y CAPAS GEOJSON DEL VISOR ALPINEQUEST ---
         function initOrUpdateGoogleMapFinca(collaresActivos) {
+            if (!Array.isArray(collaresActivos)) collaresActivos = Array.isArray(ultimosCollaresRenderizados) ? ultimosCollaresRenderizados : [];
             const mapEl = document.getElementById('mapa-google-finca');
             if (!mapEl || typeof L === 'undefined') return;
 
@@ -7273,7 +7275,7 @@
                         fillColor: esHoy ? '#22C55E' : '#15803D',
                         fillOpacity: esHoy ? 0.46 : 0.16
                     }).bindTooltip(esHoy ? `POTRERO #${num} (19 VACAS HOY)` : `Potrero #${num}`, {
-                        permanent: esHoy,
+                        permanent: esHoy && !window.aqOcultarEtiquetasPlacemarks,
                         direction: 'center',
                         className: 'font-bold text-xs'
                     }).bindPopup(`
@@ -7297,7 +7299,7 @@
                             weight: 3,
                             fillColor: cp.color || '#22c55e',
                             fillOpacity: 0.35
-                        }).bindTooltip(`${cp.nombre} (${cp.area_ha} ha)`, { permanent: true, direction: 'center' })
+                        }).bindTooltip(`${cp.nombre} (${cp.area_ha} ha)`, { permanent: !window.aqOcultarEtiquetasPlacemarks, direction: 'center' })
                           .bindPopup(`<b>${cp.nombre}</b><br/>Área calculada: <b>${cp.area_ha} ha</b><br/>Guardado en SQLite`)
                           .addTo(window.fincaLayerGroupPotreros);
                     }
@@ -7369,11 +7371,14 @@
                     : c.alerta_estado === 'CELO_DETECTADO' ? '#d97706' : '#dc2626';
                 const labelPin = nombresCortos[c.collar_id] || c.collar_id;
 
+                const collarHtml = window.aqOcultarEtiquetasPlacemarks
+                    ? `<div style="width:16px;height:16px;border-radius:999px;background:${bgPin};border:2.5px solid #FFF;box-shadow:0 2px 8px rgba(0,0,0,0.65);transform:translate(-50%,-50%);cursor:pointer;"></div>`
+                    : `<div style="background:${bgPin};color:#FFF;border:2px solid #FFF;border-radius:999px;padding:3px 9px;font-weight:800;font-size:11px;white-space:nowrap;box-shadow:0 3px 10px rgba(0,0,0,0.6);transform:translate(-50%,-50%);cursor:pointer;display:flex;align-items:center;gap:5px;"><span style="width:7px;height:7px;border-radius:50%;background:#FFF;display:inline-block;"></span>${labelPin}</div>`;
                 const collarIcon = L.divIcon({
                     className: '',
-                    html: `<div style="background:${bgPin};color:#FFF;border:2px solid #FFF;border-radius:999px;padding:3px 9px;font-weight:800;font-size:11px;white-space:nowrap;box-shadow:0 3px 10px rgba(0,0,0,0.6);transform:translate(-50%,-50%);cursor:pointer;display:flex;align-items:center;gap:5px;"><span style="width:7px;height:7px;border-radius:50%;background:#FFF;display:inline-block;"></span>${labelPin}</div>`,
-                    iconSize: [160, 26],
-                    iconAnchor: [80, 13]
+                    html: collarHtml,
+                    iconSize: window.aqOcultarEtiquetasPlacemarks ? [16, 16] : [160, 26],
+                    iconAnchor: window.aqOcultarEtiquetasPlacemarks ? [8, 8] : [80, 13]
                 });
 
                 const marker = L.marker([pinLat, pinLng], { icon: collarIcon });
