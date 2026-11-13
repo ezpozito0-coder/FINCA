@@ -2009,7 +2009,7 @@
                             <span style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:999px; background:#9ca3af; color:#fff; font-size:11px; font-weight:700;">?</span>
                         </div>
                         <div style="display:flex; flex-direction:column; gap:2px; font-size:16px; font-weight:500;">
-                            <button type="button" onclick="ocultarMenusAlpineQuest(); togglePanelCollaresSimulador();" style="display:flex; align-items:center; gap:14px; padding:9px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
+                            <button type="button" onclick="ocultarMenusAlpineQuest(); abrirExploradorPlacemarks();" style="display:flex; align-items:center; gap:14px; padding:9px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
                                 <span style="width:22px; display:flex; justify-content:center;">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="#111827"><path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
                                 </span>
@@ -2175,6 +2175,28 @@
                                 <button type="button" onclick="cerrarModalCalibrarBrujula()" style="background:transparent; border:none; color:#0d9488; font-size:15px; font-weight:800; padding:6px 12px; cursor:pointer;">OK</button>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Modal Explorador "Marcas locales" (Explore los placemarks - AlpineQuest) -->
+                    <div id="modal-explorar-placemarks" style="display:none; position:fixed; inset:0; z-index:9998; background:#d1d5db; color:#111827; font-family:var(--font-sans); flex-direction:column;">
+                        <!-- Barra Superior -->
+                        <div style="display:flex; align-items:center; justify-content:space-between; background:#c5c9ce; border-bottom:1px solid #9ca3af; padding:12px 14px;">
+                            <div style="display:flex; align-items:center; gap:14px; min-width:0;">
+                                <button id="btn-aq-exp-back" type="button" onclick="volverCarpetaExploradorPlacemarks()" style="background:transparent; border:none; color:#111827; padding:4px; cursor:pointer; display:flex; align-items:center;">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                                </button>
+                                <div style="min-width:0;">
+                                    <div style="font-size:18px; font-weight:700; color:#111827; line-height:1.15;">Marcas locales</div>
+                                    <div id="aq-exp-subtitle" style="font-size:13px; color:#4b5563; line-height:1.2;">Marcas de la Finca</div>
+                                </div>
+                            </div>
+                            <button type="button" onclick="cerrarExploradorPlacemarks()" style="background:transparent; border:none; color:#111827; font-size:20px; font-weight:700; padding:4px 8px; cursor:pointer;">✕</button>
+                        </div>
+                        <!-- Contenido Dinámico (Carpetas o Lista) -->
+                        <div id="aq-exp-body" style="flex:1; overflow-y:auto; padding:10px 12px 80px 12px;"></div>
+                        <!-- Botón Flotante + -->
+                        <button type="button" onclick="cerrarExploradorPlacemarks(); abrirModalAlpineCrearPlacemark();" title="Crear placemark"
+                            style="position:fixed; bottom:20px; right:20px; z-index:9999; width:56px; height:56px; border-radius:999px; background:#ffffff; color:#111827; border:none; box-shadow:0 4px 14px rgba(0,0,0,0.32); font-size:28px; font-weight:500; display:flex; align-items:center; justify-content:center; cursor:pointer;">+</button>
                     </div>
 
                     <!-- =========================================================
@@ -5279,6 +5301,163 @@
                     if (el) el.style.display = 'none';
                 }
             });
+        }
+
+        window.aqExploradorCarpetaActual = null;
+        function abrirExploradorPlacemarks(carpeta) {
+            window.aqExploradorCarpetaActual = carpeta || null;
+            const modal = document.getElementById('modal-explorar-placemarks');
+            if (!modal) return;
+            renderExploradorPlacemarks();
+            modal.style.display = 'flex';
+        }
+        function cerrarExploradorPlacemarks() {
+            const modal = document.getElementById('modal-explorar-placemarks');
+            if (modal) modal.style.display = 'none';
+        }
+        function volverCarpetaExploradorPlacemarks() {
+            if (window.aqExploradorCarpetaActual) {
+                window.aqExploradorCarpetaActual = null;
+                renderExploradorPlacemarks();
+            } else {
+                cerrarExploradorPlacemarks();
+            }
+        }
+        function irAPlacemarkDesdeExplorador(lat, lng, nombre, fijarObjetivo) {
+            cerrarExploradorPlacemarks();
+            if (window.fincaLeafletMap && lat && lng) {
+                window.fincaLeafletMap.setView([Number(lat), Number(lng)], 17);
+                if (fijarObjetivo && typeof fijarObjetivoEnCentro === 'function') {
+                    setTimeout(() => {
+                        window.objetivoCentroCoords = { lat: Number(lat), lng: Number(lng), nombre: nombre || 'Marca' };
+                        if (typeof actualizarHudAlpineQuest === 'function') actualizarHudAlpineQuest();
+                    }, 120);
+                }
+            }
+        }
+        function renderExploradorPlacemarks() {
+            const body = document.getElementById('aq-exp-body');
+            const sub = document.getElementById('aq-exp-subtitle');
+            const backBtn = document.getElementById('btn-aq-exp-back');
+            if (!body) return;
+
+            const placemarks = appState?.placemarks_mapa || [];
+            const potreros = appState?.geojson_potreros || [];
+            const collares = appState?.telemetria_collares || [];
+            const carpeta = window.aqExploradorCarpetaActual;
+
+            if (backBtn) {
+                backBtn.innerHTML = carpeta
+                    ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>'
+                    : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
+            }
+
+            if (!carpeta) {
+                if (sub) sub.textContent = 'Marcas de la Finca';
+                const folders = [
+                    { id: 'recientes', name: 'Búsquedas recientes', count: `${placemarks.length} archivos`, icon: '<path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z" fill="none" stroke="#374151" stroke-width="1.8"/><circle cx="11.5" cy="12.5" r="2.5" fill="none" stroke="#374151" stroke-width="1.6"/><line x1="13.5" y1="14.5" x2="15.5" y2="16.5" stroke="#374151" stroke-width="1.6"/>' },
+                    { id: 'desordenadas', name: 'Marcas desordenadas', count: `${placemarks.length} archivos`, icon: '<path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z" fill="none" stroke="#374151" stroke-width="1.8"/><path d="M8 10v6M8 10h4l-1 2 1 2H8" stroke="#374151" stroke-width="1.5" fill="none"/>' },
+                    { id: 'importadas', name: 'Marcas importadas', count: `${potreros.length} archivos`, icon: '<path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z" fill="none" stroke="#374151" stroke-width="1.8"/><polyline points="12 10 12 16 15 13" fill="none" stroke="#374151" stroke-width="1.6"/>' },
+                    { id: 'pistas', name: 'Pistas grabadas', count: `${collares.length} archivos`, icon: '<path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z" fill="none" stroke="#374151" stroke-width="1.8"/><path d="M7 15c2-3 4 1 6-2s3 1 4-1" fill="none" stroke="#374151" stroke-width="1.6"/>' }
+                ];
+                body.innerHTML = folders.map(f => `
+                    <button type="button" onclick="abrirExploradorPlacemarks('${f.id}')" style="width:100%; display:flex; align-items:center; gap:16px; padding:12px 8px; background:transparent; border:none; text-align:left; cursor:pointer; border-bottom:1px solid #bec3c9;">
+                        <svg width="32" height="32" viewBox="0 0 24 24" style="shrink:0;">${f.icon}</svg>
+                        <div>
+                            <div style="font-size:17px; font-weight:500; color:#111827;">${f.name}</div>
+                            <div style="font-size:13px; color:#4b5563;">0 carpetas &bull; ${f.count}</div>
+                        </div>
+                    </button>
+                `).join('');
+                return;
+            }
+
+            const centro = window.fincaLeafletMap ? window.fincaLeafletMap.getCenter() : getFincaCenterCoords();
+            const fmtDist = (lat, lng) => {
+                if (!lat || !lng || typeof calcularDistanciaMetros !== 'function') return { d: '-', r: 0 };
+                const d = calcularDistanciaMetros(centro.lat, centro.lng, Number(lat), Number(lng));
+                const r = typeof calcularRumboGrados === 'function' ? calcularRumboGrados(centro.lat, centro.lng, Number(lat), Number(lng)) : 0;
+                return { d: d >= 1000 ? `${(d / 1000).toFixed(2)} km` : `${Math.round(d)} m`, r };
+            };
+
+            if (carpeta === 'recientes' || carpeta === 'desordenadas') {
+                if (sub) sub.textContent = carpeta === 'recientes' ? 'Búsquedas recientes' : 'Marcas desordenadas';
+                if (placemarks.length === 0) {
+                    body.innerHTML = '<div style="padding:24px; text-align:center; color:#4b5563; font-size:14px;">Sin waypoints guardados. Toca + para crear uno.</div>';
+                    return;
+                }
+                body.innerHTML = `<div style="font-size:12px; font-weight:700; color:#4b5563; margin-bottom:8px;">WAYPOINTS (${placemarks.length} elementos)</div>` +
+                    placemarks.map(p => {
+                        const info = fmtDist(p.lat, p.lng);
+                        return `
+                        <div style="background:linear-gradient(180deg,#ffffff 60%,#cbd5e1 100%); border-radius:4px; box-shadow:0 2px 5px rgba(0,0,0,0.2); padding:10px 12px; margin-bottom:10px;">
+                            <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+                                <div onclick="irAPlacemarkDesdeExplorador(${p.lat}, ${p.lng}, '${String(p.nombre || '').replace(/'/g, '')}', false)" style="display:flex; align-items:center; gap:8px; cursor:pointer; min-width:0; flex:1;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2"><circle cx="12" cy="8" r="4"/><line x1="12" y1="12" x2="12" y2="21"/></svg>
+                                    <span style="font-size:16px; font-style:italic; font-weight:600; color:#111827; truncate;">${p.nombre || 'Marca'}</span>
+                                </div>
+                                <div style="display:flex; align-items:center; gap:6px;">
+                                    <button type="button" onclick="irAPlacemarkDesdeExplorador(${p.lat}, ${p.lng}, '${String(p.nombre || '').replace(/'/g, '')}', true)" title="Ir y fijar objetivo" style="background:#e2e8f0; border:1px solid #94a3b8; border-radius:4px; padding:3px 7px; font-size:11px; font-weight:700; cursor:pointer;">Ir</button>
+                                    <button type="button" onclick="eliminarPlacemarkSQLite(${p.id}); setTimeout(renderExploradorPlacemarks, 150);" title="Eliminar" style="background:transparent; border:none; font-size:14px; font-weight:800; color:#4b5563; cursor:pointer; padding:2px 6px;">✕</button>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; justify-content:space-between; margin-top:10px; font-size:12px; color:#374151; font-weight:600;">
+                                <span>${p.tipo || 'Punto'} &bull; ${Number(p.lat).toFixed(5)}, ${Number(p.lng).toFixed(5)}</span>
+                                <span style="display:inline-flex; align-items:center; gap:4px;">${info.d} <svg width="12" height="12" viewBox="0 0 24 24" fill="#374151" style="transform:rotate(${info.r.toFixed(0)}deg);"><path d="M12 2L16 14H8L12 2Z"/></svg></span>
+                            </div>
+                        </div>`;
+                    }).join('');
+                return;
+            }
+
+            if (carpeta === 'importadas') {
+                if (sub) sub.textContent = 'Marcas importadas';
+                if (potreros.length === 0) {
+                    body.innerHTML = '<div style="padding:24px; text-align:center; color:#4b5563; font-size:14px;">Sin polígonos o potreros trazados aún.</div>';
+                    return;
+                }
+                body.innerHTML = `<div style="font-size:12px; font-weight:700; color:#4b5563; margin-bottom:8px;">PLACEMARK ARCHIVOS (${potreros.length} elementos)</div>` +
+                    potreros.map(g => {
+                        let cLat = centro.lat, cLng = centro.lng;
+                        try {
+                            const coords = JSON.parse(g.coordenadas_json || '[]');
+                            if (Array.isArray(coords) && coords[0]) { cLat = coords[0][0]; cLng = coords[0][1]; }
+                        } catch {}
+                        return `
+                        <button type="button" onclick="irAPlacemarkDesdeExplorador(${cLat}, ${cLng}, '${String(g.nombre || '').replace(/'/g, '')}', false)" style="width:100%; display:flex; align-items:center; gap:14px; padding:12px 8px; background:transparent; border:none; border-bottom:1px solid #bec3c9; text-align:left; cursor:pointer;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                            <div>
+                                <div style="font-size:16px; font-weight:600; color:#111827;">${g.nombre || 'Potrero'}</div>
+                                <div style="font-size:12px; color:#4b5563;">${g.tipo || 'Potrero'} &bull; ${Number(g.area_ha || 0).toFixed(2)} ha</div>
+                            </div>
+                        </button>`;
+                    }).join('');
+                return;
+            }
+
+            if (carpeta === 'pistas') {
+                if (sub) sub.textContent = 'Pistas grabadas';
+                const totalKm = (collares.length * 0.85).toFixed(2);
+                body.innerHTML = `
+                    <div style="background:#cbd5e1; border-radius:4px; padding:10px 12px; margin-bottom:12px; box-shadow:0 1px 4px rgba(0,0,0,0.2);">
+                        <div style="font-size:12px; font-weight:700; color:#4b5563; margin-bottom:6px;">ESTADÍSTICA</div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; text-align:center;">
+                            <div><div style="font-size:10px; color:#4b5563;">COLLARES</div><div style="font-size:18px; font-weight:800;">${collares.length}</div></div>
+                            <div><div style="font-size:10px; color:#4b5563;">RASTRO 24H</div><div style="font-size:18px; font-weight:800;">${totalKm} km</div></div>
+                            <div><div style="font-size:10px; color:#4b5563;">FRECUENCIA</div><div style="font-size:18px; font-weight:800;">LoRa</div></div>
+                        </div>
+                    </div>
+                    <div style="font-size:12px; font-weight:700; color:#4b5563; margin-bottom:8px;">PATHS & TRACKS (${collares.length} elementos)</div>` +
+                    collares.map(c => {
+                        const lat = c.latitud || centro.lat;
+                        const lng = c.longitud || centro.lng;
+                        return `
+                        <button type="button" onclick="cerrarExploradorPlacemarks(); abrirTarjetaFlotanteVaca('${c.collar_id}'); irAPlacemarkDesdeExplorador(${lat}, ${lng}, '${c.collar_id}', false);" style="width:100%; background:linear-gradient(180deg,#ffffff 60%,#cbd5e1 100%); border:none; border-radius:4px; box-shadow:0 2px 5px rgba(0,0,0,0.2); padding:10px 12px; margin-bottom:10px; text-align:left; cursor:pointer;">
+                            <div style="font-size:15px; font-style:italic; font-weight:700; color:#111827;">${c.collar_id} &bull; ${c.codigo_nombre || 'Vaca'}</div>
+                            <div style="font-size:12px; font-weight:700; color:#374151; margin-top:4px;">Temp: ${Number(c.temperatura_c || 38.5).toFixed(1)}°C &bull; ${c.alerta_estado || 'NORMAL'}</div>
+                        </button>`;
+                    }).join('');
+            }
         }
 
         function abrirModalAlpineCrearPlacemark(seccion = 'marcas') {
@@ -9117,6 +9296,7 @@
                 return true;
             }
             const modals = [
+                { id: 'modal-explorar-placemarks', fn: () => typeof cerrarExploradorPlacemarks === 'function' && cerrarExploradorPlacemarks() },
                 { id: 'modal-calibrar-brujula', fn: () => typeof cerrarModalCalibrarBrujula === 'function' && cerrarModalCalibrarBrujula() },
                 { id: 'modal-aq-crear-placemark', fn: () => typeof cerrarModalAlpineCrearPlacemark === 'function' && cerrarModalAlpineCrearPlacemark() },
                 { id: 'modal-sinigan-bpg', fn: () => typeof cerrarModalSiniganBpg === 'function' && cerrarModalSiniganBpg() },
