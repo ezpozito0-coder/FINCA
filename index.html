@@ -1501,7 +1501,7 @@
                     <!-- Mira central AlpineQuest + Aguja / Haz de Brújula -->
                     <div id="aq-compass-center-overlay" style="display:none; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:444; pointer-events:none;">
                         <!-- Aguja Roja/Blanca N-S (Visualización de la brújula ON) -->
-                        <svg id="aq-compass-needle-svg" width="156" height="156" viewBox="0 0 160 160" style="transition:transform 0.12s linear; filter:drop-shadow(0 2px 5px rgba(0,0,0,0.55));">
+                        <svg id="aq-compass-needle-svg" width="156" height="156" viewBox="0 0 160 160" style="will-change:transform; filter:drop-shadow(0 2px 5px rgba(0,0,0,0.55));">
                             <polygon points="80,8 94,80 66,80" fill="#dc2626" stroke="#7f1d1d" stroke-width="1"/>
                             <polygon points="80,152 94,80 66,80" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1"/>
                             <text x="80" y="64" text-anchor="middle" font-size="13" font-weight="800" fill="#ffffff" font-family="sans-serif">N</text>
@@ -1509,7 +1509,7 @@
                             <circle cx="80" cy="80" r="4.5" fill="#e5e7eb" stroke="#374151" stroke-width="1.5"/>
                         </svg>
                         <!-- Haz Direccional Azul (Visualización de la brújula OFF) -->
-                        <svg id="aq-compass-cone-svg" width="130" height="130" viewBox="0 0 130 130" style="display:none; transition:transform 0.12s linear;">
+                        <svg id="aq-compass-cone-svg" width="130" height="130" viewBox="0 0 130 130" style="display:none; will-change:transform;">
                             <defs>
                                 <linearGradient id="aqConeGrad" x1="0" y1="1" x2="0" y2="0">
                                     <stop offset="0%" stop-color="#2563eb" stop-opacity="0.65"/>
@@ -2626,7 +2626,7 @@
                     </div>
 
                     <!-- LIENZO LEAFLET MAP -->
-                    <div id="mapa-google-finca" onclick="ocultarMenusAlpineQuest()" style="width: 100%; height: 100%; z-index: 10;"></div>
+                    <div id="mapa-google-finca" onclick="ocultarMenusAlpineQuest()" style="width: 100%; height: 100%; z-index: 10; will-change: transform; backface-visibility: hidden;"></div>
                 </div>
 
                 <!-- SVG oculto de respaldo -->
@@ -5253,7 +5253,7 @@
                     : `${Math.round(distTargetM)} m`;
                 const desnivelTargetStr = `${desnivelTarget >= 0 ? '+' : ''}${desnivelTarget} m`;
 
-                if (elTargetBox) elTargetBox.style.display = 'flex';
+                if (elTargetBox) elTargetBox.style.display = window.aqOcultarHudTarget ? 'none' : 'flex';
                 if (elTargetHudDist) elTargetHudDist.textContent = distTargetStr;
                 if (elTargetHudBear) elTargetHudBear.textContent = `${rumboTarget.toFixed(1)}°`;
                 if (elTargetHudElev) elTargetHudElev.textContent = desnivelTargetStr;
@@ -5321,12 +5321,21 @@
                 if (b) {
                     b.style.background = 'transparent';
                     b.style.color = '#FFFFFF';
+                    b.style.borderRadius = '4px';
                 }
             });
             const compOpt = document.getElementById('aq-compass-options-panel');
             if (compOpt) compOpt.style.display = 'none';
             const svg1 = document.getElementById('aq-svg-1');
             if (svg1) svg1.setAttribute('stroke', '#FFFFFF');
+            if (window.brujulaCelularActiva) {
+                const btn5 = document.getElementById('aq-btn-5');
+                if (btn5) {
+                    btn5.style.background = '#86efac';
+                    btn5.style.color = '#14532d';
+                    btn5.style.borderRadius = '8px';
+                }
+            }
         }
 
         function toggleMenuAlpineQuest(num) {
@@ -5356,8 +5365,9 @@
             panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
         }
         function toggleHudBoxAq(id, visible) {
+            if (id === 'hud-target-box') window.aqOcultarHudTarget = !visible;
             const el = document.getElementById(id);
-            if (el) el.style.display = visible ? '' : 'none';
+            if (el) el.style.display = visible ? (id === 'hud-target-box' ? 'flex' : '') : 'none';
         }
         function toggleToolbarVisibilidadAq(mostrar) {
             const tb = document.getElementById('aq-bottom-toolbar');
@@ -5472,6 +5482,20 @@
 
         window.brujulaCelularActiva = false;
         window.ultimoRumboBrujulaDeg = 0;
+        window._brujulaHasAbsolute = false;
+        window._brujulaRafId = null;
+
+        function aplicarRotacionMapaBrujula(deg) {
+            const mapEl = document.getElementById('mapa-google-finca');
+            if (!mapEl) return;
+            const d = Number(deg || 0);
+            if (d === 0 && !window.brujulaCelularActiva && !window.aqRotarMapaPorGps) {
+                mapEl.style.transform = '';
+                return;
+            }
+            mapEl.style.transformOrigin = 'center center';
+            mapEl.style.transform = `translateZ(0) rotate(${(-d).toFixed(1)}deg) scale(1.42)`;
+        }
 
         function abrirModalCalibrarBrujula() {
             const m = document.getElementById('modal-calibrar-brujula');
@@ -5491,9 +5515,44 @@
             const idx = Math.round(((deg % 360) / 45)) % 8;
             return `${deg.toFixed(1)}° ${dirs[idx]}`;
         }
-        function actualizarOpcionesBrujulaUi() {
+        function _renderBrujulaTransforms() {
+            window._brujulaRafId = null;
             const activa = !!window.brujulaCelularActiva;
             const rotarMapa = document.getElementById('chk-aq-rotate-map')?.checked !== false;
+            const heading = Number(window.ultimoRumboBrujulaDeg || 0);
+
+            const mapEl = document.getElementById('mapa-google-finca');
+            if (mapEl) {
+                if (activa && rotarMapa) {
+                    mapEl.style.transformOrigin = 'center center';
+                    mapEl.style.transform = `translateZ(0) rotate(${(-heading).toFixed(1)}deg) scale(1.42)`;
+                } else if (!window.aqRotarMapaPorGps) {
+                    mapEl.style.transform = '';
+                }
+            }
+
+            const hudDeg = document.getElementById('hud-compass-deg');
+            const hudArrow = document.getElementById('hud-compass-arrow');
+            const needleSvg = document.getElementById('aq-compass-needle-svg');
+            const coneSvg = document.getElementById('aq-compass-cone-svg');
+            const btn5Svg = document.getElementById('aq-btn-5-svg');
+
+            if (hudDeg) hudDeg.textContent = _formatoCardinalAq(heading);
+            if (hudArrow) hudArrow.style.transform = `rotate(${heading.toFixed(1)}deg)`;
+            if (needleSvg) {
+                const needleRot = rotarMapa ? -heading : heading;
+                needleSvg.style.transform = `rotate(${needleRot.toFixed(1)}deg)`;
+            }
+            if (coneSvg) {
+                const coneRot = rotarMapa ? 0 : heading;
+                coneSvg.style.transform = `rotate(${coneRot.toFixed(1)}deg)`;
+            }
+            if (btn5Svg) {
+                btn5Svg.style.transform = activa ? `rotate(${(-heading).toFixed(1)}deg)` : '';
+            }
+        }
+        function actualizarOpcionesBrujulaUi() {
+            const activa = !!window.brujulaCelularActiva;
             const verAguja = document.getElementById('chk-aq-compass-visual')?.checked !== false;
             const verHud = document.getElementById('chk-aq-compass-hud')?.checked !== false;
 
@@ -5501,7 +5560,7 @@
             const knob = document.getElementById('aq-compass-switch-knob');
             const body = document.getElementById('aq-compass-options-body');
             const btn5 = document.getElementById('aq-btn-5');
-            const btn5Svg = document.getElementById('aq-btn-5-svg');
+            const menu5 = document.getElementById('aq-menu-5');
 
             if (track) track.style.background = activa ? '#0d9488' : '#9ca3af';
             if (knob) knob.style.transform = activa ? 'translateX(22px)' : 'translateX(0)';
@@ -5509,7 +5568,7 @@
                 body.style.opacity = activa ? '1' : '0.45';
                 body.style.pointerEvents = activa ? 'auto' : 'none';
             }
-            if (btn5) {
+            if (btn5 && (!menu5 || menu5.style.display === 'none')) {
                 btn5.style.background = activa ? '#86efac' : 'transparent';
                 btn5.style.color = activa ? '#14532d' : '#FFFFFF';
                 btn5.style.borderRadius = activa ? '8px' : '4px';
@@ -5525,49 +5584,39 @@
             if (needleSvg) needleSvg.style.display = verAguja ? 'block' : 'none';
             if (coneSvg) coneSvg.style.display = verAguja ? 'none' : 'block';
 
-            const mapEl = document.getElementById('mapa-google-finca');
-            const heading = Number(window.ultimoRumboBrujulaDeg || 0);
-            if (mapEl) {
-                if (activa && rotarMapa) {
-                    mapEl.style.transformOrigin = 'center center';
-                    mapEl.style.transform = `rotate(${(-heading).toFixed(1)}deg) scale(1.42)`;
-                } else {
-                    mapEl.style.transform = '';
-                }
-            }
-
-            const hudDeg = document.getElementById('hud-compass-deg');
-            const hudArrow = document.getElementById('hud-compass-arrow');
-            if (hudDeg) hudDeg.textContent = _formatoCardinalAq(heading);
-            if (hudArrow) hudArrow.style.transform = `rotate(${heading.toFixed(1)}deg)`;
-            if (needleSvg) {
-                const needleRot = rotarMapa ? -heading : heading;
-                needleSvg.style.transform = `rotate(${needleRot.toFixed(1)}deg)`;
-            }
-            if (coneSvg) {
-                const coneRot = rotarMapa ? 0 : heading;
-                coneSvg.style.transform = `rotate(${coneRot.toFixed(1)}deg)`;
-            }
-            if (btn5Svg) {
-                btn5Svg.style.transform = activa ? `rotate(${(-heading).toFixed(1)}deg)` : '';
-            }
+            _renderBrujulaTransforms();
         }
         function _onDeviceCompassEvent(e) {
             if (!window.brujulaCelularActiva) return;
-            let heading = null;
+            const isAbs = e.type === 'deviceorientationabsolute' || e.absolute === true || typeof e.webkitCompassHeading === 'number';
+            if (isAbs) window._brujulaHasAbsolute = true;
+            else if (window._brujulaHasAbsolute) return; // Evita saltos mezclando sensor absoluto y relativo
+
+            let rawHeading = null;
             if (typeof e.webkitCompassHeading === 'number' && !isNaN(e.webkitCompassHeading)) {
-                heading = e.webkitCompassHeading;
+                rawHeading = e.webkitCompassHeading;
             } else if (typeof e.alpha === 'number' && !isNaN(e.alpha)) {
-                heading = (360 - e.alpha) % 360;
+                rawHeading = (360 - e.alpha) % 360;
             }
-            if (heading === null) return;
-            window.ultimoRumboBrujulaDeg = (heading + 360) % 360;
-            actualizarOpcionesBrujulaUi();
+            if (rawHeading === null) return;
+            rawHeading = (rawHeading + 360) % 360;
+
+            // Filtro paso-bajo circular (suaviza ruido del magnetómetro y cruce 359° <-> 0°)
+            const current = Number(window.ultimoRumboBrujulaDeg || 0);
+            let diff = ((rawHeading - current + 540) % 360) - 180;
+            if (Math.abs(diff) < 0.8) return;
+            window.ultimoRumboBrujulaDeg = (current + diff * 0.18 + 360) % 360;
+
+            if (!window._brujulaRafId) {
+                window._brujulaRafId = requestAnimationFrame(_renderBrujulaTransforms);
+            }
         }
         async function toggleBrujulaCelular(activar) {
             const chk = document.getElementById('chk-aq-device-compass');
             if (!activar) {
                 window.brujulaCelularActiva = false;
+                window._brujulaHasAbsolute = false;
+                if (window._brujulaRafId) { cancelAnimationFrame(window._brujulaRafId); window._brujulaRafId = null; }
                 window.removeEventListener('deviceorientationabsolute', _onDeviceCompassEvent, true);
                 window.removeEventListener('deviceorientation', _onDeviceCompassEvent, true);
                 actualizarOpcionesBrujulaUi();
@@ -5590,6 +5639,7 @@
                     return;
                 }
                 window.brujulaCelularActiva = true;
+                window._brujulaHasAbsolute = false;
                 window.addEventListener('deviceorientationabsolute', _onDeviceCompassEvent, true);
                 window.addEventListener('deviceorientation', _onDeviceCompassEvent, true);
                 actualizarOpcionesBrujulaUi();
