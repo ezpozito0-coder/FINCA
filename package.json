@@ -1,0 +1,30 @@
+{
+  "name": "finca-agromacarena-35ha",
+  "version": "1.0.0",
+  "description": "Plataforma Integral Offline-First Contable, Agropecuaria, Constructiva e IoT LoRa para Finca AgroMacarena 35ha (La Macarena, Meta, Colombia)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "reset-db": "node -e \"const fs=require('fs'); if(fs.existsSync('finca_macarena.db')) fs.unlinkSync('finca_macarena.db');\" && node server.js",
+    "apk:init": "npx @capacitor/cli init \"AgroMacarena 35ha\" com.agromacarena.finca --web-dir .",
+    "apk:android": "npx @capacitor/cli add android && npx @capacitor/cli copy android && npx @capacitor/cli open android"
+  },
+  "keywords": [
+    "agtech",
+    "finca",
+    "la-macarena",
+    "sqlite",
+    "offline-first",
+    "lora",
+    "esp32",
+    "capacitor",
+    "gyrolando"
+  ],
+  "author": "Arquitectura AgTech - Finca AgroMacarena 35ha",
+  "license": "MIT",
+  "devDependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/core": "^6.0.0"
+  }
+}

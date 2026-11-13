@@ -1,0 +1,28 @@
+{
+  "id": "./",
+  "name": "FINCA - Gestión Ganadera y LoRa",
+  "short_name": "FINCA",
+  "description": "Sistema Offline-First de Administración Ganadera F1 Gyrolando, Ordeño, Obras, Economía Circular y Telemetría LoRa 35ha.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F7F3E8",
+  "theme_color": "#F7F3E8",
+  "lang": "es-CO",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "./icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
