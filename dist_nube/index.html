@@ -6896,11 +6896,11 @@
             { cat: 'AMENITY', color: '#995808', items: ['Amenity', 'Atm', 'Bank', 'Bench', 'College', 'Court', 'Currency exchange', 'Embassy', 'Fire hydrant', 'Fire station', 'Grave', 'Nursery', 'Library', 'Park', 'Playground', 'Police', 'Postbox', 'Postoffice', 'Prison', 'Recycling', 'School', 'Telephone', 'Toilets', 'Toilets disabled', 'Toilets men', 'Toilets women', 'Town hall', 'University', 'Waste bin', 'Waste disposal'] },
             { cat: 'SPORT', color: '#2E9E1B', items: ['Sport', 'Archery', 'Baseball', 'Canoe', 'Cricket', 'Cycling', 'Diving', 'Fishing', 'Golf', 'Golf miniature', 'Gym', 'Gymnasium', 'Hiking', 'Horse racing', 'Iceskating', 'Jetski', 'Leisure centre', 'Motorracing', 'Paragliding', 'Roller', 'Running', 'Sailing', 'Scuba diving', 'Shooting', 'Skateboarding', 'Skiing crosscountry', 'Skiing downhill', 'Skimo', 'Snooker', 'Snowshoeing', 'Soccer', 'Stadium', 'Swimming indoor', 'Swimming', 'Tennis', 'Walking', 'Windsurfing'] },
             { cat: 'HEALTH', color: '#D80088', items: ['Health', 'Dentist', 'Doctors', 'Hospital', 'Hospital emergency', 'Ambulance', 'Optician', 'Pharmacy', 'Veterinary'] },
-            { cat: 'WORSHIP', color: '#111827', items: ['Worship', 'Bahai', 'Cruz', 'Capilla'] },
-            { cat: 'SHOPPING', color: '#DB2777', items: ['Shopping', 'Entrega Leche', 'Acopio', 'Insumos'] },
-            { cat: 'POWER', color: '#CA8A04', items: ['Power', 'Panel Solar', 'Batería', 'Poste Eléctrico'] },
-            { cat: 'GEOCACHING', color: '#15803D', items: ['Geocaching', 'Caché', 'Pista', 'Coordenada'] },
-            { cat: 'OTRO', color: '#4B5563', items: ['Otro', 'Alerta', 'Nota', 'Sensor'] }
+            { cat: 'WORSHIP', color: '#111827', items: ['Worship', 'Bahai', 'Buddhist', 'Christian', 'Hindu', 'Islamic', 'Jain', 'Jewish', 'Shinto', 'Sikh'] },
+            { cat: 'SHOPPING', color: '#A21CAF', items: ['Shopping', 'Alcohol', 'Bakery', 'Bicycle', 'Book', 'Butcher', 'Car', 'Car repair', 'Clothes', 'Computer', 'Confectionery', 'Convenience', 'Copyshop', 'Department store', 'Diy', 'Estate agent', 'Fishes', 'Florist', 'Garden centre', 'Gift', 'Greengrocer', 'Hairdresser', 'Hearing aid', 'Hifi', 'Jewelry', 'Kiosk', 'Laundrette', 'Marketplace', 'Mobile phone', 'Motorcycle', 'Music', 'Newspaper', 'Pet', 'Photo', 'Supermarket', 'Tackle', 'Tobacco', 'Toys', 'Vending machine', 'Video rental'] },
+            { cat: 'POWER', color: '#F97316', items: ['Power', 'Station coal', 'Station gas', 'Station solar', 'Station water', 'Station wind', 'Transformer', 'High power tower', 'Low power tower'] },
+            { cat: 'GEOCACHING', color: '#15803D', items: ['Geocaching', 'Traditional cache', 'Multi-cache', 'Earthcache', 'Virtual cache', 'Webcam cache', 'Mystery cache', 'Letterbox cache', 'Wherigo cache', 'Event cache', 'Owned cache', 'Disabled cache', 'Found it', 'Reference point', 'Virtual stage', 'Physical stage', 'Final location'] },
+            { cat: 'OTRO', color: '#111827', items: ['Other', 'Avalanche 1', 'Avalanche 2', 'Avalanche 3', 'Avalanche 4'] }
         ];
         window.wpExpandedIconCats = {};
 
@@ -6926,7 +6926,7 @@
             if (k === 'music') return `<svg width="18" height="18" viewBox="0 0 24 24" fill="#111827" style="flex-shrink:0;"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>`;
 
             // Puntos sólidos de encabezado de categoría
-            if (['tourism', 'transportation', 'accomodation', 'food', 'historical', 'natural', 'man made', 'amenity', 'sport', 'health', 'danger area', 'glacier', 'sinkhole', 'stone', 'volcano', 'reservoir', 'reservoir covered', 'storage tank', 'tower', 'water well', 'monitoring station'].includes(k)) {
+            if (['tourism', 'transportation', 'accomodation', 'food', 'historical', 'natural', 'man made', 'amenity', 'sport', 'health', 'shopping', 'power', 'other', 'danger area', 'glacier', 'sinkhole', 'stone', 'volcano', 'reservoir', 'reservoir covered', 'storage tank', 'tower', 'water well', 'monitoring station'].includes(k)) {
                 return svg(`<circle cx="12" cy="12" r="8"/>`);
             }
 
@@ -6996,6 +6996,47 @@
             if (k === 'hospital' || k === 'hospital emergency' || k === 'pharmacy') return svg(`<path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>`);
             if (k === 'ambulance') return svg(`<path d="M18 11h-3V7H3v10h2a2 2 0 1 0 4 0h6a2 2 0 1 0 4 0h2v-4l-3-2zM8 10h2V8h2v2h2v2h-2v2h-2v-2H8v-2z"/>`);
             if (k === 'doctors' || k === 'dentist' || k === 'optician') return svgS(`<line x1="12" y1="4" x2="12" y2="20"/><path d="M8 8c0-2 8-2 8 0s-8 3-8 5 8 2 8 0"/>`);
+
+            // WORSHIP
+            if (k === 'christian') return svg(`<path d="M10 3h4v5h5v4h-5v9h-4v-9H5V8h5V3z"/>`);
+            if (k === 'islamic') return svg(`<path d="M14 4a8 8 0 1 0 6 13.3A6.5 6.5 0 0 1 14 4zm3 4l.8 1.8 1.9.2-1.4 1.3.4 1.9-1.7-1-1.7 1 .4-1.9-1.4-1.3 1.9-.2L17 8z"/>`);
+            if (k === 'jewish') return svgS(`<polygon points="12 3 19 16 5 16"/><polygon points="12 21 5 8 19 8"/>`);
+            if (k === 'buddhist' || k === 'bahai') return svgS(`<circle cx="12" cy="12" r="7"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="5.6" y1="5.6" x2="18.4" y2="18.4"/><line x1="18.4" y1="5.6" x2="5.6" y2="18.4"/>`);
+            if (k === 'shinto') return svgS(`<line x1="4" y1="6" x2="20" y2="6"/><line x1="6" y1="10" x2="18" y2="10"/><line x1="8" y1="6" x2="8" y2="20"/><line x1="16" y1="6" x2="16" y2="20"/>`);
+            if (k === 'worship') return svg(`<circle cx="12" cy="6" r="2.2"/><path d="M9 11l3-2 2 4v6h-4v-5l-2 2z"/>`);
+
+            // SHOPPING
+            if (k === 'supermarket' || k === 'convenience' || k === 'marketplace') return svgS(`<circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/><path d="M3 4h3l2.5 10h9.5l2-7H7"/>`);
+            if (k === 'clothes' || k === 'department store') return svg(`<path d="M16 4l4 3-2 3-2-1v11H8V9l-2 1-2-3 4-3h2a2 2 0 0 0 4 0h2z"/>`);
+            if (k === 'book') return svg(`<path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2V5zm4 2v8h2V7H8z"/>`);
+            if (k === 'gift') return svgS(`<rect x="4" y="9" width="16" height="11"/><line x1="12" y1="9" x2="12" y2="20"/><line x1="4" y1="14" x2="20" y2="14"/><path d="M12 9c-2-3-5-3-5-1s3 1 5 1zm0 0c2-3 5-3 5-1s-3 1-5 1z"/>`);
+            if (k === 'jewelry') return svgS(`<polygon points="6 4 18 4 21 9 12 20 3 9"/>`);
+            if (k === 'mobile phone') return svgS(`<rect x="7" y="3" width="10" height="18" rx="2"/><line x1="11" y1="17" x2="13" y2="17"/>`);
+            if (k === 'computer') return svgS(`<rect x="4" y="4" width="16" height="11" rx="1"/><line x1="2" y1="19" x2="22" y2="19"/>`);
+            if (k === 'photo') return svg(`<path d="M9 4L7.5 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-3.5L15 4H9zm3 13a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/>`);
+            if (k === 'pet') return svg(`<circle cx="7" cy="9" r="1.8"/><circle cx="11" cy="6.5" r="1.8"/><circle cx="15" cy="7.5" r="1.8"/><circle cx="17.5" cy="11" r="1.8"/><path d="M12 12c-3 0-5 2.2-5 4.5 0 1.6 1.5 2.5 5 2.5s5-.9 5-2.5c0-2.3-2-4.5-5-4.5z"/>`);
+            if (k === 'fishes' || k === 'tackle') return svg(`<path d="M12 7c-4.5 0-8 3-9 5 1 2 4.5 5 9 5 3.2 0 5.8-1.4 7.5-3.2L22 16V8l-2.5 2.2C17.8 8.4 15.2 7 12 7z"/>`);
+
+            // POWER
+            if (k === 'station solar') return svgS(`<circle cx="16" cy="6" r="2.5"/><polygon points="3 18 7 12 17 12 13 18"/><line x1="5" y1="15" x2="15" y2="15"/>`);
+            if (k === 'station wind') return svgS(`<line x1="12" y1="11" x2="12" y2="20"/><line x1="12" y1="11" x2="7" y2="5"/><line x1="12" y1="11" x2="18" y2="8"/><line x1="12" y1="11" x2="11" y2="18"/>`);
+            if (k === 'station coal' || k === 'station gas' || k === 'station water') return svg(`<path d="M4 20V10l4 3v-3l4 3V6h4v14H4z"/>`);
+            if (k === 'high power tower' || k === 'low power tower') return svgS(`<line x1="12" y1="3" x2="12" y2="21"/><line x1="6" y1="8" x2="18" y2="8"/><line x1="8" y1="13" x2="16" y2="13"/>`);
+            if (k === 'transformer') return svgS(`<path d="M6 5v14M18 5v14M9 7a2 2 0 0 1 0 4 2 2 0 0 1 0 4 2 2 0 0 1 0 4M15 7a2 2 0 0 0 0 4 2 2 0 0 0 0 4 2 2 0 0 0 0 4"/>`);
+
+            // GEOCACHING & OTRO
+            if (k.includes('cache') || k === 'geocaching') {
+                const cMap = { 'multi-cache': '#F59E0B', 'earthcache': '#0284C7', 'virtual cache': '#0EA5E9', 'webcam cache': '#0EA5E9', 'mystery cache': '#1D4ED8', 'letterbox cache': '#1D4ED8', 'wherigo cache': '#1D4ED8', 'event cache': '#B91C1C', 'owned cache': '#65A30D', 'disabled cache': '#DC2626' };
+                const gcColor = cMap[k] || '#15803D';
+                return `<svg width="18" height="18" viewBox="0 0 24 24" style="flex-shrink:0;"><circle cx="12" cy="12" r="8.5" fill="${gcColor}"/><rect x="7" y="9" width="10" height="6" rx="1" fill="none" stroke="#fff" stroke-width="1.6"/></svg>`;
+            }
+            if (k === 'found it') return `<svg width="18" height="18" viewBox="0 0 24 24" style="flex-shrink:0;"><circle cx="12" cy="12" r="8.5" fill="#FACC15" stroke="#111827" stroke-width="1.4"/><circle cx="9.5" cy="10" r="1" fill="#111827"/><circle cx="14.5" cy="10" r="1" fill="#111827"/><path d="M8.5 14a4 4 0 0 0 7 0" fill="none" stroke="#111827" stroke-width="1.5"/></svg>`;
+            if (k === 'final location') return `<svg width="18" height="18" viewBox="0 0 24 24" fill="#DC2626" style="flex-shrink:0;"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6h-5.6z"/></svg>`;
+            if (k === 'reference point') return `<svg width="18" height="18" viewBox="0 0 24 24" style="flex-shrink:0;"><circle cx="12" cy="12" r="7.5" fill="#FCA5A5" stroke="#DC2626" stroke-width="1.6"/><circle cx="12" cy="12" r="2.5" fill="#DC2626"/></svg>`;
+            if (k.startsWith('avalanche')) {
+                const avMap = { 'avalanche 1': '#65A30D', 'avalanche 2': '#FACC15', 'avalanche 3': '#F97316', 'avalanche 4': '#DC2626' };
+                return `<svg width="18" height="18" viewBox="0 0 24 24" style="flex-shrink:0;"><polygon points="12 3 21 12 12 21 3 12" fill="${avMap[k] || '#F97316'}" stroke="#111827" stroke-width="1.3"/><polygon points="12 4 19 11 5 11" fill="#111827"/></svg>`;
+            }
 
             return `<svg width="18" height="18" viewBox="0 0 24 24" style="flex-shrink:0;"><circle cx="12" cy="12" r="7.5" fill="none" stroke="${catColor}" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="${catColor}"/></svg>`;
         }
