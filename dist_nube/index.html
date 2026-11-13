@@ -2690,59 +2690,103 @@
     </div>
 
     <!-- =====================================================================
-         MODAL FLOTANTE: HOJA DE VIDA 4.0 (4 SUB-PESTAÑAS ICA / MLP / BPMV / HERDEplus)
+         MODAL FLOTANTE: HOJA DE VIDA 4.0 (PASAPORTE BOVINO ICA / MLP / BPMV / HERDEplus)
          ===================================================================== -->
     <div id="modal-ficha-clinica-animal" onclick="if(event.target===this) cerrarFichaClinicaAnimal()"
-        style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(15, 25, 19, 0.58); backdrop-filter:blur(2px); align-items:center; justify-content:center; padding:16px;">
-        <div class="p-5 rounded-2xl bg-[#F3EFE2] border-2 border-[#1A1A1A] w-full max-w-2xl space-y-4" style="box-shadow:0 20px 50px rgba(0,0,0,0.45); max-height:92vh; overflow-y:auto;">
-            <div class="flex items-center justify-between border-b border-[#D5CBB2] pb-2">
-                <div>
-                    <h3 id="ficha-clinica-titulo" class="text-base font-extrabold text-[#1C2E24]">Hoja de Vida 4.0 del Animal</h3>
-                    <p id="ficha-clinica-subtitulo" class="text-xs text-[#4A5D52]"></p>
+        style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(15, 25, 19, 0.62); backdrop-filter:blur(2px); align-items:center; justify-content:center; padding:8px;">
+        <div class="rounded-2xl bg-[#F7F3E8] border-2 border-[#1A1A1A] w-full max-w-3xl overflow-y-auto" style="box-shadow:0 20px 50px rgba(0,0,0,0.45); max-height:94vh;">
+            <!-- Cabecera Sticky Tipo Pasaporte Bovino -->
+            <div class="sticky top-0 z-20 bg-[#F7F3E8] border-b-2 border-[#1A1A1A] px-4 py-3 space-y-2.5">
+                <div class="flex items-start justify-between gap-2">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <div class="w-11 h-11 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] flex items-center justify-center shrink-0">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 9c0-2 2-3 4-3h8c2 0 4 1 4 3v5c0 2-1.5 3-3 3l-1 3h-2l-.5-2h-3L10 20H8l-1-3c-1.5 0-3-1-3-3V9z"/><path d="M4 8L2 5"/><path d="M20 8l2-3"/><circle cx="9" cy="11" r="1" fill="#1A1A1A"/><circle cx="15" cy="11" r="1" fill="#1A1A1A"/>
+                            </svg>
+                        </div>
+                        <div class="min-w-0">
+                            <h3 id="ficha-clinica-titulo" class="text-base sm:text-lg font-extrabold text-[#1A1A1A] truncate">Hoja de Vida 4.0</h3>
+                            <p id="ficha-clinica-subtitulo" class="text-[11px] font-semibold text-[#3E5245] truncate"></p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 shrink-0">
+                        <button type="button" onclick="imprimirHojaVidaAnimal()" title="Imprimir Hoja de Vida" class="px-2.5 py-1.5 rounded-lg bg-[#FFFDF8] border border-[#1A1A1A] text-xs font-extrabold cursor-pointer inline-flex items-center gap-1">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                            <span class="hidden sm:inline">Imprimir</span>
+                        </button>
+                        <button type="button" onclick="cerrarFichaClinicaAnimal()" class="px-2.5 py-1.5 rounded-lg bg-[#1A1A1A] text-[#F7F3E8] text-xs font-extrabold cursor-pointer">✕</button>
+                    </div>
                 </div>
-                <button type="button" onclick="cerrarFichaClinicaAnimal()" class="px-2.5 py-1 rounded-lg bg-[#EFE9D6] border border-[#1A1A1A] text-xs font-extrabold cursor-pointer">✕</button>
+                <!-- Placa DIN Oficial + Sellos -->
+                <div class="flex flex-wrap items-center gap-1.5">
+                    <span id="ficha-passport-din-plate" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#FFFDF8] border-2 border-[#1A1A1A] font-mono text-xs text-[#1A1A1A]">CO-00000000<b>1001-0</b></span>
+                    <span id="ficha-passport-gsmi" class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-[#1A1A1A] text-[#F7F3E8] text-[10px] font-extrabold">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span>Apta GSMI</span>
+                    </span>
+                    <span id="ficha-passport-apartado" style="display:none;" class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-[#FFFDF8] border-2 border-[#1A1A1A] text-[10px] font-extrabold text-[#1A1A1A]"></span>
+                </div>
             </div>
 
-            <!-- Resumen Rápido -->
-            <div id="ficha-resumen-repro-box" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 p-3 rounded-xl bg-[#FFFDF8] border border-[#C8B998] text-xs">
-                <div>
-                    <span class="text-[10px] font-bold text-[#4A5D4E] block">PROGRAMA Y ESTADO REPRODUCTIVO</span>
-                    <b id="ficha-estado-repro-txt" class="text-sm text-[#1C2E24]">Parida</b>
+            <div class="p-4 space-y-4">
+                <!-- Resumen KPI de 4 Bloques -->
+                <div id="ficha-resumen-repro-box" class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                    <div class="p-2.5 rounded-xl bg-[#FFFDF8] border border-[#1A1A1A]">
+                        <div class="flex items-center gap-1 text-[10px] font-extrabold uppercase text-[#3E5245]">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>
+                            <span>Reproducción</span>
+                        </div>
+                        <b id="ficha-estado-repro-txt" class="text-xs sm:text-sm text-[#1A1A1A] block mt-0.5 truncate">Parida</b>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-[#FFFDF8] border border-[#1A1A1A]">
+                        <div class="flex items-center gap-1 text-[10px] font-extrabold uppercase text-[#3E5245]">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            <span>Parto / Secado</span>
+                        </div>
+                        <b id="ficha-parto-txt" class="text-xs sm:text-sm text-[#1B5E3A] block mt-0.5 truncate">Pendiente</b>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-[#FFFDF8] border border-[#1A1A1A]">
+                        <div class="flex items-center gap-1 text-[10px] font-extrabold uppercase text-[#3E5245]">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h8l2 5v13a2 2 0 01-2 2H8a2 2 0 01-2-2V7l2-5z"/></svg>
+                            <span>Control MLP</span>
+                        </div>
+                        <b id="ficha-alerta-leche-txt" class="text-xs sm:text-sm text-[#1A1A1A] block mt-0.5 truncate">6.0 L/día</b>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-[#FFFDF8] border border-[#1A1A1A]">
+                        <div class="flex items-center gap-1 text-[10px] font-extrabold uppercase text-[#3E5245]">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            <span>Sanidad BPMV</span>
+                        </div>
+                        <b id="ficha-retiro-kpi-txt" class="text-xs sm:text-sm text-[#1B5E3A] block mt-0.5 truncate">Apta Cantina</b>
+                    </div>
                 </div>
-                <div>
-                    <span class="text-[10px] font-bold text-[#4A5D4E] block">PRÓXIMO PARTO / SECADO</span>
-                    <b id="ficha-parto-txt" class="text-sm text-[#1B5E3A]">Pendiente servicio</b>
+
+                <!-- Navegación Segmentada de 4 Sub-pestañas -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-1 p-1 rounded-xl bg-[#EFE9D6] border-2 border-[#1A1A1A]">
+                    <button type="button" id="btn-ficha-tab-identidad" onclick="switchFichaSubtab('identidad')" class="btn-corral btn-green text-[11px] py-2 px-2 flex items-center justify-center gap-1.5" style="min-height:40px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="6" y1="10" x2="18" y2="10"/></svg>
+                        <span>1. Identidad</span>
+                    </button>
+                    <button type="button" id="btn-ficha-tab-mlp" onclick="switchFichaSubtab('mlp')" class="btn-corral btn-dark text-[11px] py-2 px-2 flex items-center justify-center gap-1.5" style="min-height:40px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h8l2 5v13a2 2 0 01-2 2H8a2 2 0 01-2-2V7l2-5z"/></svg>
+                        <span>2. Control MLP</span>
+                    </button>
+                    <button type="button" id="btn-ficha-tab-sanidad" onclick="switchFichaSubtab('sanidad')" class="btn-corral btn-dark text-[11px] py-2 px-2 flex items-center justify-center gap-1.5" style="min-height:40px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <span>3. Sanidad</span>
+                    </button>
+                    <button type="button" id="btn-ficha-tab-herde" onclick="switchFichaSubtab('herde')" class="btn-corral btn-dark text-[11px] py-2 px-2 flex items-center justify-center gap-1.5" style="min-height:40px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 010 8.49m-8.48-.01a6 6 0 010-8.49"/></svg>
+                        <span>4. HERDEplus</span>
+                    </button>
                 </div>
-                <div>
-                    <span class="text-[10px] font-bold text-[#4A5D4E] block">PRODUCCIÓN Y ALERTA LORA</span>
-                    <b id="ficha-alerta-leche-txt" class="text-sm text-[#1C2E24]">6.0 L/día • Normal</b>
-                </div>
-            </div>
 
-            <!-- Navegación de 4 Sub-pestañas -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
-                <button type="button" id="btn-ficha-tab-identidad" onclick="switchFichaSubtab('identidad')" class="btn-corral btn-green text-[11px] py-1.5 px-2 flex items-center justify-center gap-1" style="min-height:34px;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="6" y1="10" x2="18" y2="10"/></svg>
-                    <span>1. Identidad ICA</span>
-                </button>
-                <button type="button" id="btn-ficha-tab-mlp" onclick="switchFichaSubtab('mlp')" class="btn-corral btn-dark text-[11px] py-1.5 px-2 flex items-center justify-center gap-1" style="min-height:34px;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h8l2 5v13a2 2 0 01-2 2H8a2 2 0 01-2-2V7l2-5z"/></svg>
-                    <span>2. Control MLP</span>
-                </button>
-                <button type="button" id="btn-ficha-tab-sanidad" onclick="switchFichaSubtab('sanidad')" class="btn-corral btn-dark text-[11px] py-1.5 px-2 flex items-center justify-center gap-1" style="min-height:34px;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    <span>3. Sanidad BPMV</span>
-                </button>
-                <button type="button" id="btn-ficha-tab-herde" onclick="switchFichaSubtab('herde')" class="btn-corral btn-dark text-[11px] py-1.5 px-2 flex items-center justify-center gap-1" style="min-height:34px;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 010 8.49m-8.48-.01a6 6 0 010-8.49"/></svg>
-                    <span>4. HERDEplus</span>
-                </button>
-            </div>
+                <input type="hidden" id="ficha-animal-id" value="" />
 
-            <input type="hidden" id="ficha-animal-id" value="" />
-
-            <!-- SUB-PESTAÑA 1: IDENTIDAD ICA (DIN + ISO 11784 + NFC + GENEALOGÍA) -->
-            <div id="ficha-subtab-identidad" class="space-y-3">
+                <!-- SUB-PESTAÑA 1: IDENTIDAD ICA (DIN + ISO 11784 + NFC + GENEALOGÍA) -->
+                <div id="ficha-subtab-identidad" class="space-y-3">
+                    <!-- Árbol Genealógico Lineal -->
+                    <div id="ficha-genealogia-visual" class="p-3 rounded-xl bg-[#FFFDF8] border border-[#1A1A1A] flex flex-wrap items-center justify-center gap-2 text-xs"></div>
                 <form onsubmit="guardarIdentidadIcaDin(event)" class="p-3.5 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] space-y-2.5">
                     <div class="flex flex-wrap items-center justify-between gap-2">
                         <span class="text-xs font-extrabold text-[#1C2E24] uppercase">Identificación DIN (Res. 000219/2026) e ISO 11784/11785</span>
@@ -2790,13 +2834,16 @@
                     </div>
                 </form>
 
-                <!-- Bloque NFC + Token Único Digital -->
-                <div class="p-3.5 rounded-xl bg-[#FFFDF8] border border-[#C8B998] space-y-2.5">
-                    <div class="flex flex-wrap items-center justify-between gap-2">
-                        <span class="text-xs font-extrabold text-[#1C2E24] uppercase">Chip NFC del Collar y Certificado Digital (NFT Hash)</span>
-                        <span class="badge bg-[#EFE9D6] text-[#1C2E24] border border-[#1A1A1A] text-[10px]">SHA-256 VERIFICADO</span>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 items-end">
+                <!-- Bloque NFC + Token Único Digital (Colapsable en móvil) -->
+                <details id="ficha-nfc-details" class="p-3.5 rounded-xl bg-[#FFFDF8] border border-[#1A1A1A] space-y-2.5">
+                    <summary class="flex flex-wrap items-center justify-between gap-2 cursor-pointer list-none">
+                        <span class="text-xs font-extrabold text-[#1C2E24] uppercase inline-flex items-center gap-1.5">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="10" height="16" rx="2"/><path d="M17 8a5 5 0 010 8"/><path d="M20 5a9 9 0 010 14"/></svg>
+                            <span>Chip NFC del Collar y Certificado SHA-256</span>
+                        </span>
+                        <span class="badge bg-[#EFE9D6] text-[#1C2E24] border border-[#1A1A1A] text-[10px]">Ver / Editar NFC</span>
+                    </summary>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 items-end pt-2 border-t border-[#D5CBB2]">
                         <div>
                             <label class="text-[11px] font-bold block mb-1">UID Chip NFC (NTAG213/215)</label>
                             <input type="text" id="ficha-nfc-uid" placeholder="NFC-COLLAR-01" class="input-finca text-xs font-mono font-extrabold" style="min-height:36px;" />
@@ -2816,15 +2863,22 @@
                             <button type="button" onclick="grabarDatosEnChipNfcActual()" class="btn-corral btn-green text-xs py-1.5 px-3.5" style="min-height:34px;">Grabar en Chip NFC</button>
                         </div>
                     </div>
-                </div>
+                </details>
             </div>
 
             <!-- SUB-PESTAÑA 2: CONTROL LECHERO ALEMÁN MLP (MILCHLEISTUNGSPRÜFUNG) -->
             <div id="ficha-subtab-mlp" style="display:none;" class="space-y-3">
+                <!-- Mini Gráfico SVG de Tendencia MLP -->
+                <div class="p-3 rounded-xl bg-[#FFFDF8] border border-[#1A1A1A] space-y-1.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-extrabold uppercase text-[#1A1A1A]">Tendencia de Pesajes MLP (L/día)</span>
+                        <span id="ficha-mlp-elite-rec" class="text-[11px] font-bold text-[#1B5E3A]">Calculando...</span>
+                    </div>
+                    <div id="ficha-mlp-chart" class="w-full overflow-x-auto"></div>
+                </div>
                 <form onsubmit="guardarControlMlpAnimal(event)" class="p-3.5 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] space-y-2.5">
                     <div class="flex flex-wrap items-center justify-between gap-2">
-                        <span class="text-xs font-extrabold text-[#1C2E24] uppercase">Control Lechero Oficial MLP (HERDEplus)</span>
-                        <span id="ficha-mlp-elite-rec" class="text-[11px] font-bold text-[#1A1A1A]">Recomendación IATF: Calculando...</span>
+                        <span class="text-xs font-extrabold text-[#1C2E24] uppercase">Nuevo Control Lechero Oficial MLP (HERDEplus)</span>
                     </div>
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                         <div>
@@ -2880,6 +2934,11 @@
 
             <!-- SUB-PESTAÑA 3: SANIDAD BPMV (REGISTRO ICA) Y CICLOS RUV -->
             <div id="ficha-subtab-sanidad" style="display:none;" class="space-y-3">
+                <!-- Banner de Retiro Activo BPMV -->
+                <div id="ficha-sanidad-retiro-banner" style="display:none;" class="p-3 rounded-xl bg-[#EFE9D6] border-2 border-[#1A1A1A] flex items-center gap-2.5 text-xs">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    <div id="ficha-sanidad-retiro-banner-txt" class="font-extrabold text-[#1A1A1A]"></div>
+                </div>
                 <form onsubmit="guardarEventoSanitarioAnimal(event)" class="p-3.5 rounded-xl bg-[#FFFDF8] border border-[#C8B998] space-y-2.5">
                     <div class="text-xs font-extrabold text-[#1C2E24] uppercase">Registrar Evento Sanitario BPMV (Registro ICA) y RUV</div>
                     <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
@@ -2933,21 +2992,8 @@
                     </div>
                 </form>
 
-                <div class="overflow-x-auto">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Fecha</th>
-                                <th>Evento / Reg. ICA</th>
-                                <th>Producto / Lote</th>
-                                <th>Retiro Leche</th>
-                                <th>Acta RUV</th>
-                                <th id="th-borrar-sanidad">Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody id="ficha-sanidad-tbody" class="text-xs"></tbody>
-                    </table>
-                </div>
+                <!-- Línea de Tiempo Sanitaria Legible en Móvil y Escritorio -->
+                <div id="ficha-sanidad-timeline" class="space-y-2"></div>
             </div>
 
             <!-- SUB-PESTAÑA 4: SENSORES HERDEplus CONNECTED Y APARTADO EN MANGA -->
@@ -2956,9 +3002,15 @@
                     <div class="text-xs font-extrabold text-[#1C2E24] uppercase">Lectura Biométrica Collar LoRa (MPU6050 + DS18B20)</div>
                     <div id="ficha-herde-sensores-box" class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs"></div>
                 </div>
-                <div class="p-3.5 rounded-xl bg-[#FFFDF8] border border-[#C8B998] space-y-2.5">
-                    <div class="text-xs font-extrabold text-[#1C2E24] uppercase">Orden de Apartado en Manga (HERDEplus Sorting Gate)</div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div class="p-3.5 rounded-xl bg-[#FFFDF8] border border-[#1A1A1A] space-y-2.5">
+                    <div class="text-xs font-extrabold text-[#1C2E24] uppercase">Apartado en Manga de 1 Toque (HERDEplus Sorting Gate)</div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                        <button type="button" onclick="guardarOrdenApartadoManga('NORMAL')" class="btn-corral btn-dark text-[11px] py-2 px-2">Normal</button>
+                        <button type="button" onclick="guardarOrdenApartadoManga('APARTAR: CELO DETECTADO')" class="btn-corral btn-dark text-[11px] py-2 px-2">Apartar: Celo</button>
+                        <button type="button" onclick="guardarOrdenApartadoManga('APARTAR: LECHE EN RETIRO')" class="btn-corral btn-dark text-[11px] py-2 px-2">Apartar: Retiro</button>
+                        <button type="button" onclick="guardarOrdenApartadoManga('APARTAR: SECADO / SANIDAD')" class="btn-corral btn-dark text-[11px] py-2 px-2">Apartar: Secado</button>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
                         <select id="ficha-orden-apartado" class="input-finca text-xs font-bold" style="min-height:38px;">
                             <option value="NORMAL">NORMAL (Sin apartado)</option>
                             <option value="APARTAR: CELO DETECTADO">APARTAR: CELO DETECTADO</option>
@@ -2966,11 +3018,11 @@
                             <option value="APARTAR: SECADO / SANIDAD">APARTAR: SECADO / SANIDAD</option>
                         </select>
                         <div class="flex gap-2">
-                            <button type="button" onclick="guardarOrdenApartadoManga('GUARDAR')" class="btn-corral btn-green flex-1 text-xs py-1.5">Aplicar Orden</button>
-                            <button type="button" onclick="guardarOrdenApartadoManga('NORMAL')" class="btn-corral btn-dark text-xs py-1.5 px-3">Limpiar</button>
+                            <button type="button" onclick="guardarOrdenApartadoManga()" class="btn-corral btn-green flex-1 text-xs py-1.5">Aplicar Selección</button>
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     </div>
@@ -6973,21 +7025,85 @@
 
             document.getElementById('ficha-animal-id').value = animal.id;
             const nombreLimpio = String(animal.codigo_nombre || '').replace(/Toro Suegro/gi, 'Toro').replace(/del Suegro/gi, '');
-            document.getElementById('ficha-clinica-titulo').textContent = `Hoja de Vida 4.0 • ${nombreLimpio}`;
-            document.getElementById('ficha-clinica-subtitulo').textContent = `${animal.sexo || 'Hembra'} • ${animal.categoria_bovino || 'Vaca'} • Raza: ${animal.raza || 'F1 Gyrolando'} • Edad: ${animal.edad_anios ?? 0} años`;
+            const partosNum = Number(animal.partos ?? 0);
+            document.getElementById('ficha-clinica-titulo').textContent = nombreLimpio;
+            document.getElementById('ficha-clinica-subtitulo').textContent = `${animal.sexo || 'Hembra'} • ${animal.categoria_bovino || 'Vaca'} • ${animal.raza || 'F1 Gyrolando'} • ${animal.edad_anios ?? 0} años • ${partosNum} partos`;
+
+            // Placa DIN Oficial resaltando últimos 4 dígitos + dígito verificación
+            const dinStr = animal.cii_visual_din || `CO-00000000${String(1000 + Number(animal.id)).slice(-4)}-0`;
+            const elPlate = document.getElementById('ficha-passport-din-plate');
+            if (elPlate) {
+                const m = dinStr.match(/^(.*?)(\d{4}-\d)$/);
+                elPlate.innerHTML = m ? `${m[1]}<b>${m[2]}</b>` : dinStr;
+            }
+            const cfgPredio = appState?.config_predio_ica || {};
+            const aptaGsmi = !!(animal.cii_visual_din && animal.rfid_iso_15digitos && cfgPredio.ruv_ciclo_actual);
+            const elGsmi = document.getElementById('ficha-passport-gsmi');
+            if (elGsmi) elGsmi.style.display = aptaGsmi ? 'inline-flex' : 'none';
+
+            const elApartadoBadge = document.getElementById('ficha-passport-apartado');
+            if (elApartadoBadge) {
+                if (animal.orden_apartado_manga && animal.orden_apartado_manga !== 'NORMAL') {
+                    elApartadoBadge.textContent = animal.orden_apartado_manga;
+                    elApartadoBadge.style.display = 'inline-flex';
+                } else {
+                    elApartadoBadge.style.display = 'none';
+                }
+            }
 
             const elRepro = document.getElementById('ficha-estado-repro-txt');
             const elParto = document.getElementById('ficha-parto-txt');
             const elAlertaLeche = document.getElementById('ficha-alerta-leche-txt');
-            if (elRepro) elRepro.textContent = animal.estado_reproductivo || 'Parida';
-            if (elParto) elParto.textContent = animal.fecha_proximo_parto || 'Pendiente servicio';
+            const elRetiroKpi = document.getElementById('ficha-retiro-kpi-txt');
+            const progTxt = Number(animal.es_elite_iatf) === 1 ? 'Inseminación' : 'Monta Toro';
+            if (elRepro) elRepro.textContent = `${animal.estado_reproductivo || 'Parida'} (${progTxt})`;
+            if (elParto) elParto.textContent = animal.fecha_proximo_parto || (animal.fecha_secado ? `Sec: ${animal.fecha_secado}` : 'Pendiente');
             if (elAlertaLeche) {
                 const collarTel = (appState?.telemetria_collares || []).find(t => t.collar_id === animal.collar_id);
                 if (collarTel && collarTel.alerta_estado && collarTel.alerta_estado !== 'NORMAL') {
-                    elAlertaLeche.textContent = `${collarTel.alerta_estado} (${animal.litros_promedio_dia || 0} L/d)`;
+                    elAlertaLeche.textContent = `${animal.litros_promedio_dia || 0} L/d • ${collarTel.alerta_estado}`;
                 } else {
                     elAlertaLeche.textContent = `${animal.litros_promedio_dia || 0} L/día • Normal`;
                 }
+            }
+
+            const hoyIso = new Date().toISOString().slice(0, 10);
+            const retiroEv = (appState?.eventos_sanitarios_animal || []).find(ev =>
+                Number(ev.id_animal) === Number(animal.id) &&
+                Number(ev.dias_retiro_leche || 0) > 0 &&
+                ev.fecha_fin_retiro_leche && ev.fecha_fin_retiro_leche >= hoyIso
+            );
+            if (elRetiroKpi) {
+                if (retiroEv) {
+                    elRetiroKpi.textContent = `Retiro hasta ${retiroEv.fecha_fin_retiro_leche}`;
+                    elRetiroKpi.style.color = '#991B1B';
+                } else if (animal.orden_apartado_manga === 'APARTAR: LECHE EN RETIRO') {
+                    elRetiroKpi.textContent = 'Leche en Retiro';
+                    elRetiroKpi.style.color = '#991B1B';
+                } else {
+                    elRetiroKpi.textContent = 'Apta Cantina';
+                    elRetiroKpi.style.color = '#1B5E3A';
+                }
+            }
+
+            // Árbol Genealógico Lineal
+            const elGen = document.getElementById('ficha-genealogia-visual');
+            if (elGen) {
+                elGen.innerHTML = `
+                    <div class="px-2.5 py-1 rounded-lg bg-[#EFE9D6] border border-[#1A1A1A]">
+                        <span class="text-[10px] font-bold uppercase text-[#3E5245] block">Madre</span>
+                        <span class="font-extrabold text-[#1A1A1A]">${animal.madre_codigo || 'Sin registro'}</span>
+                    </div>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                    <div class="px-2.5 py-1 rounded-lg bg-[#1A1A1A] text-[#F7F3E8]">
+                        <span class="text-[10px] font-bold uppercase opacity-80 block">Animal Actual</span>
+                        <span class="font-extrabold">${nombreLimpio}</span>
+                    </div>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                    <div class="px-2.5 py-1 rounded-lg bg-[#EFE9D6] border border-[#1A1A1A]">
+                        <span class="text-[10px] font-bold uppercase text-[#3E5245] block">Cría Asignada</span>
+                        <span class="font-extrabold text-[#1A1A1A]">${animal.cria_codigo || 'Pendiente'}</span>
+                    </div>`;
             }
 
             // Sub-pestaña 1: Identidad ICA DIN + ISO 11784 + NFC + Genealogía
@@ -6996,7 +7112,7 @@
             const elTipoDin = document.getElementById('ficha-tipo-din');
             const elFechaDin = document.getElementById('ficha-fecha-din');
             const elVigBadge = document.getElementById('ficha-din-vigencia-badge');
-            if (elCii) elCii.value = animal.cii_visual_din || `CO-00000000${String(1000 + Number(animal.id)).slice(-4)}-0`;
+            if (elCii) elCii.value = dinStr;
             if (elRfid) elRfid.value = animal.rfid_iso_15digitos || `17002000000${String(1000 + Number(animal.id)).slice(-4)}`;
             if (elTipoDin) elTipoDin.value = animal.tipo_din_ica || 'Combinado_Paleta_RFID';
             if (elFechaDin) elFechaDin.value = animal.fecha_aplicacion_din || '2025-01-15';
@@ -7016,7 +7132,6 @@
             document.getElementById('ficha-notas-animal').value = animal.notas || '';
 
             // Sub-pestaña 2: MLP
-            const hoyIso = new Date().toISOString().slice(0, 10);
             const elMlpFecha = document.getElementById('mlp-fecha');
             if (elMlpFecha) elMlpFecha.value = hoyIso;
             renderTablaMlpAnimal(animal);
@@ -7036,6 +7151,20 @@
 
             switchFichaSubtab('identidad');
             modal.style.display = 'flex';
+        }
+
+        function imprimirHojaVidaAnimal() {
+            const id = Number(document.getElementById('ficha-animal-id')?.value);
+            const a = (appState?.inventario_animales || []).find(x => Number(x.id) === id);
+            if (!a) return;
+            const cfg = appState?.config_predio_ica || {};
+            const eventos = (appState?.eventos_sanitarios_animal || []).filter(ev => Number(ev.id_animal) === id);
+            const mlps = (appState?.control_lechero_mlp || []).filter(c => Number(c.id_animal) === id);
+            const win = window.open('', '_blank');
+            if (!win) { alert('Permite ventanas emergentes para imprimir la Hoja de Vida 4.0.'); return; }
+            win.document.write(`<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Hoja de Vida 4.0 - ${a.codigo_nombre}</title><style>body{font-family:sans-serif;padding:24px;color:#1A1A1A}h2,h3{margin:0 0 8px}table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px}th,td{border:1px solid #1A1A1A;padding:6px;text-align:left}.box{border:2px solid #1A1A1A;padding:12px;margin-bottom:12px}</style></head><body><div class="box"><h2>Hoja de Vida 4.0: ${a.codigo_nombre}</h2><p><strong>Predio:</strong> ${cfg.nombre_predio || 'Finca AgroMacarena 35ha'} | <strong>RSPP:</strong> ${cfg.rspp_numero || '-'} | <strong>RUV:</strong> ${cfg.ruv_ciclo_actual || '-'}</p><p><strong>CII Visual DIN:</strong> ${a.cii_visual_din || '-'} | <strong>RFID ISO 11784:</strong> ${a.rfid_iso_15digitos || '-'} | <strong>Raza:</strong> ${a.raza || '-'} | <strong>Edad:</strong> ${a.edad_anios ?? 0} años | <strong>Partos:</strong> ${a.partos ?? 0}</p><p><strong>Madre:</strong> ${a.madre_codigo || '-'} | <strong>Cría:</strong> ${a.cria_codigo || '-'} | <strong>Apartado:</strong> ${a.orden_apartado_manga || 'NORMAL'}</p></div><h3>Control Lechero MLP</h3><table><thead><tr><th>Fecha</th><th>DEL</th><th>Mañana</th><th>Tarde</th><th>Total</th><th>Ubre</th></tr></thead><tbody>${mlps.length ? mlps.map(c=>`<tr><td>${c.fecha_control}</td><td>${c.dias_en_leche||'-'}</td><td>${c.litros_manana} L</td><td>${c.litros_tarde} L</td><td><strong>${c.litros_total_dia} L</strong></td><td>${c.estado_salud_ubre||'Sana'}</td></tr>`).join('') : '<tr><td colspan="6">Sin pesajes MLP</td></tr>'}</tbody></table><h3>Historial Sanitario BPMV</h3><table><thead><tr><th>Fecha</th><th>Tipo</th><th>Producto</th><th>Reg. ICA / Lote</th><th>Retiro</th></tr></thead><tbody>${eventos.length ? eventos.map(ev=>`<tr><td>${ev.fecha}</td><td>${ev.tipo_evento}</td><td>${ev.producto_dosis}</td><td>${ev.registro_ica_producto||'-'} ${ev.lote_med||''}</td><td>${ev.dias_retiro_leche||0} d</td></tr>`).join('') : '<tr><td colspan="5">Sin eventos sanitarios</td></tr>'}</tbody></table></body></html>`);
+            win.document.close();
+            win.print();
         }
 
         function cerrarFichaClinicaAnimal() {
@@ -7088,8 +7217,26 @@
             if (recEl) {
                 const prom = controles.length > 0 ? Number(controles[0].litros_total_dia || 0) : Number(animal.litros_promedio_dia || 0);
                 recEl.textContent = prom >= 7.0
-                    ? `Recomendación IATF: Candidata ÉLITE F1 Gyrolando (${prom.toFixed(1)} L/día)`
-                    : `Recomendación: Producción estándar (${prom.toFixed(1)} L/día)`;
+                    ? `Candidata Inseminación Élite (${prom.toFixed(1)} L/día)`
+                    : `Producción estándar (${prom.toFixed(1)} L/día)`;
+            }
+            const chartEl = document.getElementById('ficha-mlp-chart');
+            if (chartEl) {
+                if (controles.length === 0) {
+                    chartEl.innerHTML = '<div class="text-[11px] text-[#3E5245] py-2">Sin pesajes suficientes para graficar tendencia.</div>';
+                } else {
+                    const ultimos = controles.slice(0, 6).reverse();
+                    const maxL = Math.max(10, ...ultimos.map(u => Number(u.litros_total_dia || 0)));
+                    const w = Math.max(240, ultimos.length * 56);
+                    const bars = ultimos.map((u, idx) => {
+                        const val = Number(u.litros_total_dia || 0);
+                        const h = Math.max(8, Math.round((val / maxL) * 52));
+                        const x = 14 + idx * 54;
+                        const y = 64 - h;
+                        return `<rect x="${x}" y="${y}" width="32" height="${h}" rx="4" fill="#1A1A1A"/><text x="${x + 16}" y="${y - 4}" text-anchor="middle" font-size="10" font-weight="800" fill="#1A1A1A">${val.toFixed(1)}L</text><text x="${x + 16}" y="78" text-anchor="middle" font-size="9" font-weight="700" fill="#3E5245">${String(u.fecha_control || '').slice(5)}</text>`;
+                    }).join('');
+                    chartEl.innerHTML = `<svg viewBox="0 0 ${w} 84" class="w-full" style="max-height:86px;">${bars}</svg>`;
+                }
             }
             const tbody = document.getElementById('ficha-mlp-tbody');
             if (!tbody) return;
@@ -7152,26 +7299,34 @@
             if (!tel) {
                 box.innerHTML = `
                     <div class="col-span-2 sm:col-span-4 p-3 rounded-xl bg-[#FFFDF8] border border-[#C8B998] text-xs font-semibold text-[#3E5245]">
-                        Sin collar LoRa activo asignado (${animal.collar_id || 'En cola DIY'}). Puede asignar o activar una orden manual de apartado en manga abajo.
+                        Sin collar LoRa activo asignado (${animal.collar_id || 'En cola DIY'}). Puede usar los botones de 1 toque abajo para apartado manual.
                     </div>`;
                 return;
             }
+            const act = Number(tel.actividad_movimiento || 0);
+            const actPct = Math.min(100, Math.max(8, Math.round((act / 120) * 100)));
+            const temp = Number(tel.temperatura_c || 38.5);
+            const tempPct = Math.min(100, Math.max(10, Math.round(((temp - 36) / 6) * 100)));
             box.innerHTML = `
-                <div class="p-2.5 rounded-xl bg-[#FFFDF8] border border-[#C8B998]">
+                <div class="p-2.5 rounded-xl bg-[#FFFDF8] border border-[#1A1A1A]">
                     <div class="text-[10px] font-bold uppercase text-[#3E5245]">Collar LoRa</div>
                     <div class="text-sm font-extrabold font-mono text-[#1A1A1A]">${tel.collar_id}</div>
+                    <div class="text-[10px] text-[#3E5245] mt-1">Activo en manga</div>
                 </div>
-                <div class="p-2.5 rounded-xl bg-[#FFFDF8] border border-[#C8B998]">
+                <div class="p-2.5 rounded-xl bg-[#FFFDF8] border border-[#1A1A1A]">
                     <div class="text-[10px] font-bold uppercase text-[#3E5245]">Actividad MPU6050</div>
-                    <div class="text-sm font-extrabold text-[#1A1A1A]">${tel.actividad_movimiento || 0} u</div>
+                    <div class="text-sm font-extrabold text-[#1A1A1A]">${act} u</div>
+                    <div class="w-full h-1.5 rounded bg-[#EFE9D6] mt-1.5 overflow-hidden"><div style="width:${actPct}%;height:100%;background:#1A1A1A;"></div></div>
                 </div>
-                <div class="p-2.5 rounded-xl bg-[#FFFDF8] border border-[#C8B998]">
+                <div class="p-2.5 rounded-xl bg-[#FFFDF8] border border-[#1A1A1A]">
                     <div class="text-[10px] font-bold uppercase text-[#3E5245]">Temp. DS18B20</div>
-                    <div class="text-sm font-extrabold text-[#1A1A1A]">${Number(tel.temperatura_c || 38.5).toFixed(1)} °C</div>
+                    <div class="text-sm font-extrabold text-[#1A1A1A]">${temp.toFixed(1)} °C</div>
+                    <div class="w-full h-1.5 rounded bg-[#EFE9D6] mt-1.5 overflow-hidden"><div style="width:${tempPct}%;height:100%;background:#1A1A1A;"></div></div>
                 </div>
-                <div class="p-2.5 rounded-xl bg-[#FFFDF8] border border-[#C8B998]">
+                <div class="p-2.5 rounded-xl bg-[#FFFDF8] border border-[#1A1A1A]">
                     <div class="text-[10px] font-bold uppercase text-[#3E5245]">Estado HERDEplus</div>
-                    <div class="text-xs font-extrabold text-[#1A1A1A]">${tel.alerta_estado || 'NORMAL'}</div>
+                    <div class="text-xs font-extrabold text-[#1A1A1A] mt-0.5">${tel.alerta_estado || 'NORMAL'}</div>
+                    <div class="text-[10px] text-[#3E5245] mt-1">Rango normal: 38.0–39.3 °C</div>
                 </div>`;
         }
 
@@ -7206,37 +7361,48 @@
         }
 
         function renderTablaSanidadAnimal(animalId) {
-            const tbody = document.getElementById('ficha-sanidad-tbody');
-            if (!tbody) return;
+            const timeline = document.getElementById('ficha-sanidad-timeline');
+            const banner = document.getElementById('ficha-sanidad-retiro-banner');
+            const bannerTxt = document.getElementById('ficha-sanidad-retiro-banner-txt');
             const esDueno = !!window.modoDuenoActivo;
             const eventos = (appState?.eventos_sanitarios_animal || []).filter(ev => Number(ev.id_animal) === Number(animalId));
+            const hoyIso = new Date().toISOString().slice(0, 10);
+            const retiroActivo = eventos.find(ev => Number(ev.dias_retiro_leche || 0) > 0 && ev.fecha_fin_retiro_leche && ev.fecha_fin_retiro_leche >= hoyIso);
+            if (banner && bannerTxt) {
+                if (retiroActivo) {
+                    bannerTxt.textContent = `LECHE EN RETIRO BPMV por ${retiroActivo.producto_dosis}. Liberación de cantina: ${retiroActivo.fecha_fin_retiro_leche}.`;
+                    banner.style.display = 'flex';
+                } else {
+                    banner.style.display = 'none';
+                }
+            }
+            if (!timeline) return;
             if (eventos.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="${esDueno ? 6 : 5}" class="text-center py-3 text-gray-500">Sin eventos sanitarios registrados para este animal.</td></tr>`;
+                timeline.innerHTML = '<div class="p-3 rounded-xl bg-[#FFFDF8] border border-[#C8B998] text-center text-xs text-[#3E5245]">Sin eventos sanitarios registrados para este animal.</div>';
                 return;
             }
-            tbody.innerHTML = eventos.map(ev => {
-                const retiroBadge = Number(ev.dias_retiro_leche || 0) > 0
-                    ? `<div class="text-[10px] font-extrabold text-[#1A1A1A]">Retiro: ${ev.dias_retiro_leche}d (hasta ${ev.fecha_fin_retiro_leche || '-'})</div>`
-                    : '';
-                const regInfo = [ev.registro_ica_producto, ev.lote_med ? `Lote ${ev.lote_med}` : '', ev.acta_ruv_oficial].filter(Boolean).join(' • ');
+            timeline.innerHTML = eventos.map(ev => {
+                const regInfo = [ev.registro_ica_producto, ev.lote_med ? `Lote ${ev.lote_med}` : '', ev.acta_ruv_oficial ? `RUV ${ev.acta_ruv_oficial}` : ''].filter(Boolean).join(' • ');
+                const retiroTxt = Number(ev.dias_retiro_leche || 0) > 0
+                    ? `<span class="px-2 py-0.5 rounded bg-[#1A1A1A] text-[#F7F3E8] text-[10px] font-extrabold">Retiro ${ev.dias_retiro_leche}d (hasta ${ev.fecha_fin_retiro_leche || '-'})</span>`
+                    : `<span class="px-2 py-0.5 rounded bg-[#EFE9D6] border border-[#1A1A1A] text-[#1A1A1A] text-[10px] font-bold">Sin retiro</span>`;
                 return `
-                <tr>
-                    <td class="whitespace-nowrap font-bold">${ev.fecha}</td>
-                    <td><span class="badge bg-emerald-900 text-emerald-200">${ev.tipo_evento}</span></td>
-                    <td>
-                        <div class="font-extrabold">${ev.producto_dosis}</div>
-                        ${regInfo ? `<div class="text-[10px] font-mono text-[#3E5245]">${regInfo}</div>` : ''}
-                        ${retiroBadge}
-                    </td>
-                    <td class="whitespace-nowrap font-bold text-amber-300">${ev.proxima_fecha || '-'}</td>
-                    <td class="text-xs">${ev.notas || ''}</td>
-                    ${esDueno ? `<td>
-                        <button type="button" onclick="eliminarEventoSanitarioAnimal(${ev.id})" class="px-2 py-0.5 rounded bg-red-950/80 border border-red-400 text-red-300 text-xs font-bold inline-flex items-center gap-1">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-                            <span>Borrar</span>
-                        </button>
-                    </td>` : ''}
-                </tr>`;
+                <div class="p-3 rounded-xl bg-[#FFFDF8] border border-[#1A1A1A] space-y-1.5 text-xs">
+                    <div class="flex flex-wrap items-center justify-between gap-1.5">
+                        <div class="flex flex-wrap items-center gap-1.5">
+                            <span class="font-extrabold text-[#1A1A1A]">${ev.fecha}</span>
+                            <span class="px-2 py-0.5 rounded bg-[#EFE9D6] border border-[#1A1A1A] text-[10px] font-extrabold text-[#1A1A1A]">${ev.tipo_evento}</span>
+                            ${retiroTxt}
+                        </div>
+                        ${esDueno ? `<button type="button" onclick="eliminarEventoSanitarioAnimal(${ev.id})" class="px-2 py-0.5 rounded bg-[#EFE9D6] border border-[#1A1A1A] text-[10px] font-extrabold inline-flex items-center gap-1 cursor-pointer"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg><span>Borrar</span></button>` : ''}
+                    </div>
+                    <div class="font-extrabold text-sm text-[#1A1A1A]">${ev.producto_dosis}</div>
+                    ${regInfo ? `<div class="text-[11px] font-mono text-[#3E5245]">${regInfo}</div>` : ''}
+                    <div class="flex flex-wrap items-center justify-between gap-2 text-[11px] text-[#3E5245]">
+                        <span>Próxima dosis: <b>${ev.proxima_fecha || 'No programada'}</b></span>
+                        ${ev.notas ? `<span>${ev.notas}</span>` : ''}
+                    </div>
+                </div>`;
             }).join('');
         }
 
