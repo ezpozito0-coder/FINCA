@@ -1789,6 +1789,18 @@ const server = http.createServer(async (req, res) => {
             return res.end(getOfficialFincaIconSvg(512));
         }
 
+        if ((pathname === '/icon-192.png' || pathname === '/icon-512.png') && req.method === 'GET') {
+            const pngPath = path.join(__dirname, pathname.slice(1));
+            if (fs.existsSync(pngPath)) {
+                res.writeHead(200, {
+                    'Content-Type': 'image/png',
+                    'Cache-Control': 'public, max-age=86400',
+                    'Access-Control-Allow-Origin': '*'
+                });
+                return res.end(fs.readFileSync(pngPath));
+            }
+        }
+
         if (pathname === '/politica-privacidad' && req.method === 'GET') {
             res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
             return res.end(`<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Políticas Legales, Privacidad y Permisos - FINCA</title><style>body{font-family:system-ui,-apple-system,sans-serif;background:#F7F3E8;color:#1A1A1A;margin:0;padding:24px;line-height:1.6;font-size:14px}main{max-width:740px;margin:0 auto;background:#FFFDF8;border:1px solid #1A1A1A;border-radius:8px;padding:24px}h1{font-size:18px;margin-top:0;border-bottom:1px solid #1A1A1A;padding-bottom:8px}h2{font-size:14px;margin:18px 0 6px;text-transform:uppercase}p,li{margin:0 0 8px}ul{padding-left:20px;margin:0 0 12px}</style></head><body><main><h1>Políticas Legales, Privacidad, Cookies y Permisos — FINCA</h1><p><b>Titular y Autor del Software:</b> TG Legacy S.A.S. | <b>Última actualización:</b> 2026-11-13</p><h2>1. Copyright y Propiedad Intelectual</h2><p>&copy; 2026 FINCA. Todos los derechos reservados. Titular y Autor del Software: TG Legacy S.A.S. Prohibida su reproducción, distribución, ingeniería inversa o modificación sin autorización expresa por escrito.</p><h2>2. Política de Tratamiento de Datos (Ley 1581 de 2012 - Colombia)</h2><p>En cumplimiento de la Ley 1581 de 2012 y el Decreto 1377 de 2013 de la República de Colombia, los datos de producción lechera, contabilidad, inventario bovino, trazabilidad genética, sanidad y telemetría se almacenan localmente en el dispositivo y en el servidor SQLite privado de la finca, sincronizándose únicamente con la nube privada autorizada por el propietario. No se venden ni ceden datos a terceros.</p><h2>3. Política de Cookies y Almacenamiento Local</h2><p>Esta aplicación web y PWA no utiliza cookies publicitarias ni rastreadores de terceros. Emplea exclusivamente almacenamiento técnico esencial en el navegador (localStorage, Cache Storage y Service Worker) para funcionar sin conexión (Offline-First), conservar la cola de sincronización y guardar la aceptación de estos términos.</p><h2>4. Términos de Uso y Licencia de Software (EULA)</h2><p>TG Legacy S.A.S. concede una licencia de uso limitada, no exclusiva e intransferible para la operación interna de la finca. El acceso a módulos administrativos requiere las credenciales del propietario.</p><h2>5. Limitación de Responsabilidad</h2><p>Los cálculos productivos, financieros, alertas LoRa, geocercas GPS y registros sanitarios son herramientas de apoyo operativo y no reemplazan el criterio médico veterinario, contable ni la supervisión física en campo.</p><h2>6. Derechos del Titular y Jurisdicción</h2><p>El titular de la información puede ejercer sus derechos de consulta, actualización, rectificación y supresión ante TG Legacy S.A.S. Este acuerdo se rige por las leyes de la República de Colombia.</p><h2>7. Permisos de Hardware del Dispositivo</h2><ul><li><b>Ubicación GPS:</b> Posicionamiento en visor cartográfico, potreros y geocercas LoRa.</li><li><b>Cámara y Lector NFC:</b> Escaneo de códigos QR de sincronización y lectura/escritura de chapetas o collares NFC.</li><li><b>Almacenamiento Local Persistente:</b> Conservación de base de datos offline y mapas satelitales en caché.</li><li><b>Notificaciones y Audio:</b> Alertas sonoras y visuales ante eventos de telemetría LoRa.</li><li><b>Red Local Wi-Fi e Internet:</b> Sincronización con servidor SQLite local y respaldo autorizado.</li></ul></main></body></html>`);
@@ -1937,8 +1949,10 @@ function generarPaqueteDistNube() {
     manifestObj.start_url = './index.html';
     manifestObj.scope = './';
     manifestObj.icons = [
-        { src: './icon-192.svg', sizes: '192x192', type: 'image/svg+xml', purpose: 'any maskable' },
-        { src: './icon-512.svg', sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable' }
+        { src: './icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
+        { src: './icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
+        { src: './icon-192.svg', sizes: '192x192', type: 'image/svg+xml', purpose: 'any' },
+        { src: './icon-512.svg', sizes: '512x512', type: 'image/svg+xml', purpose: 'any' }
     ];
 
     fs.writeFileSync(path.join(distDir, 'index.html'), html, 'utf8');
@@ -1946,6 +1960,10 @@ function generarPaqueteDistNube() {
     fs.copyFileSync(path.join(__dirname, 'sw.js'), path.join(distDir, 'sw.js'));
     fs.writeFileSync(path.join(distDir, 'icon-192.svg'), getOfficialFincaIconSvg(192), 'utf8');
     fs.writeFileSync(path.join(distDir, 'icon-512.svg'), getOfficialFincaIconSvg(512), 'utf8');
+    for (const pngName of ['icon-192.png', 'icon-512.png']) {
+        const srcPng = path.join(__dirname, pngName);
+        if (fs.existsSync(srcPng)) fs.copyFileSync(srcPng, path.join(distDir, pngName));
+    }
 
     return {
         ok: true,

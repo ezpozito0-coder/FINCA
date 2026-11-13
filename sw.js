@@ -4,6 +4,8 @@ const ASSETS = [
     './',
     './index.html',
     './manifest.json',
+    './icon-192.png',
+    './icon-512.png',
     './icon-192.svg',
     './icon-512.svg',
     'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
