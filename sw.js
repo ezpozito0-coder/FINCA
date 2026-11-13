@@ -1,4 +1,4 @@
-const CACHE_NAME = 'agromacarena-35ha-v2';
+const CACHE_NAME = 'agromacarena-35ha-v3';
 const TILE_CACHE_NAME = 'agromacarena-map-tiles-v1';
 const ASSETS = [
     './',
@@ -46,24 +46,7 @@ self.addEventListener('fetch', event => {
     if (req.method !== 'GET') return;
     const url = new URL(req.url);
 
-    // 1. Navegación principal (blindada contra Error 1033 / PC apagado / 404 / 5xx con timeout de 2s)
-    if (req.mode === 'navigate' || url.pathname.endsWith('/index.html') || url.pathname === '/' || url.pathname.endsWith('/')) {
-        event.respondWith((async () => {
-            const cache = await caches.open(CACHE_NAME);
-            try {
-                const res = await fetchConTimeout(req, 2000);
-                if (res && res.ok) {
-                    cache.put(req, res.clone());
-                    cache.put('./index.html', res.clone());
-                    return res;
-                }
-            } catch {}
-            return (await cache.match(req)) || (await cache.match('./index.html')) || (await cache.match('./'));
-        })());
-        return;
-    }
-
-    // 2. Caché dedicada para cuadros de imagen satelitales / topográficos (Modo Offline en el Monte)
+    // 1. Caché dedicada para cuadros de imagen satelitales / topográficos (Modo Offline en el Monte)
     if (
         req.url.includes('mt1.google.com/vt/') ||
         req.url.includes('tile.opentopomap.org/') ||
@@ -87,8 +70,44 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // 3. Llamadas API: red con fallback a caché
-    if (req.url.includes('/api/')) {
+    // 2. Recursos externos (Tailwind CDN, Google Fonts, Google Apps Script, Leaflet):
+    // NUNCA devolver index.html como fallback para scripts/CSS externos.
+    if (url.origin !== self.location.origin) {
+        if (req.url.includes('unpkg.com/leaflet')) {
+            event.respondWith(
+                fetch(req)
+                    .then(res => {
+                        if (res && (res.ok || res.type === 'opaque')) {
+                            const copy = res.clone();
+                            caches.open(CACHE_NAME).then(cache => cache.put(req, copy));
+                        }
+                        return res;
+                    })
+                    .catch(() => caches.match(req))
+            );
+        }
+        return;
+    }
+
+    // 3. Navegación principal (blindada contra Error 1033 / PC apagado / 404 / 5xx con timeout de 2s)
+    if (req.mode === 'navigate' || url.pathname.endsWith('/index.html') || url.pathname === '/' || url.pathname.endsWith('/')) {
+        event.respondWith((async () => {
+            const cache = await caches.open(CACHE_NAME);
+            try {
+                const res = await fetchConTimeout(req, 2000);
+                if (res && res.ok) {
+                    cache.put(req, res.clone());
+                    cache.put('./index.html', res.clone());
+                    return res;
+                }
+            } catch {}
+            return (await cache.match(req)) || (await cache.match('./index.html')) || (await cache.match('./'));
+        })());
+        return;
+    }
+
+    // 4. Llamadas API locales: red con fallback a caché (sin devolver index.html)
+    if (url.pathname.includes('/api/')) {
         event.respondWith(
             fetch(req)
                 .then(res => {
@@ -103,7 +122,7 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // 4. Archivos estáticos: Network-First con fallback inmediato a Caché Offline (y evita servir páginas 5xx/404)
+    // 5. Archivos estáticos propios (manifest, íconos): Network-First con fallback a caché propia
     event.respondWith(
         fetch(req)
             .then(async res => {
@@ -112,9 +131,8 @@ self.addEventListener('fetch', event => {
                     caches.open(CACHE_NAME).then(cache => cache.put(req, copy));
                     return res;
                 }
-                const cached = await caches.match(req);
-                return cached || caches.match('./index.html');
+                return (await caches.match(req)) || res;
             })
-            .catch(async () => (await caches.match(req)) || (await caches.match('./index.html')))
+            .catch(() => caches.match(req))
     );
 });
