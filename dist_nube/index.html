@@ -1412,15 +1412,6 @@
                         <span>Atrás</span>
                     </button>
 
-                    <!-- Indicador Flotante de Brújula del Celular en Vivo -->
-                    <div id="aq-live-compass-pill" style="display:none; position:absolute; top:50px; right:10px; z-index:475; align-items:center; gap:6px; background:rgba(247,243,232,0.95); color:#1A1A1A; border:1.5px solid #1A1A1A; border-radius:999px; padding:4px 10px; font-family:var(--font-sans); font-size:12px; font-weight:800; box-shadow:0 3px 10px rgba(0,0,0,0.35);">
-                        <svg id="aq-live-compass-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2.2" style="transition:transform 0.12s linear;">
-                            <polygon points="12 2 16 14 12 11 8 14 12 2" fill="#1A1A1A"/>
-                            <circle cx="12" cy="12" r="9"/>
-                        </svg>
-                        <span id="aq-live-compass-deg">N 0°</span>
-                    </div>
-
                     <!-- =========================================================
                          CAJAS HUD SUPERIOR IZQUIERDA (IDÉNTICAS A ALPINEQUEST)
                          ========================================================= -->
@@ -1491,6 +1482,14 @@
                             <span>&rarr; <span id="hud-target-dist">0 m</span> &nbsp;<span id="hud-target-rumbo">0.0°</span> &nbsp;&uarr;<span id="hud-target-desnivel">+0 m</span></span>
                         </div>
 
+                        <!-- Caja 5: Rumbo Actual de Brújula (AlpineQuest Information Box) -->
+                        <div id="hud-compass-box" style="display:none; background:rgba(232,234,237,0.9); color:#111827; padding:4px 10px; border-radius:6px; font-family:var(--font-sans); font-size:13px; font-weight:700; box-shadow:0 2px 6px rgba(0,0,0,0.35); align-items:center; gap:7px;">
+                            <svg id="hud-compass-arrow" width="15" height="15" viewBox="0 0 24 24" fill="#111827" style="transition:transform 0.12s linear;">
+                                <path d="M12 2L17 20L12 16L7 20L12 2Z"/>
+                            </svg>
+                            <span id="hud-compass-deg">0.0° N</span>
+                        </div>
+
                         <!-- Oculto: indicador interno de caché -->
                         <div id="hud-cache-pill" style="display:none;">
                             <span id="hud-cache-pct">100 %</span>
@@ -1500,6 +1499,27 @@
                     <!-- =========================================================
                          PUNTO CENTRAL BLANCO TÁCTIL + POPUP IMAGEN 4 + ETIQUETAS AZUL Y MAGENTA
                          ========================================================= -->
+                    <!-- Mira central AlpineQuest + Aguja / Haz de Brújula -->
+                    <div id="aq-compass-center-overlay" style="display:none; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:444; pointer-events:none;">
+                        <!-- Aguja Roja/Blanca N-S (Visualización de la brújula ON) -->
+                        <svg id="aq-compass-needle-svg" width="156" height="156" viewBox="0 0 160 160" style="transition:transform 0.12s linear; filter:drop-shadow(0 2px 5px rgba(0,0,0,0.55));">
+                            <polygon points="80,8 94,80 66,80" fill="#dc2626" stroke="#7f1d1d" stroke-width="1"/>
+                            <polygon points="80,152 94,80 66,80" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1"/>
+                            <text x="80" y="64" text-anchor="middle" font-size="13" font-weight="800" fill="#ffffff" font-family="sans-serif">N</text>
+                            <text x="80" y="106" text-anchor="middle" font-size="13" font-weight="800" fill="#111827" font-family="sans-serif">S</text>
+                            <circle cx="80" cy="80" r="4.5" fill="#e5e7eb" stroke="#374151" stroke-width="1.5"/>
+                        </svg>
+                        <!-- Haz Direccional Azul (Visualización de la brújula OFF) -->
+                        <svg id="aq-compass-cone-svg" width="130" height="130" viewBox="0 0 130 130" style="display:none; transition:transform 0.12s linear;">
+                            <defs>
+                                <linearGradient id="aqConeGrad" x1="0" y1="1" x2="0" y2="0">
+                                    <stop offset="0%" stop-color="#2563eb" stop-opacity="0.65"/>
+                                    <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.08"/>
+                                </linearGradient>
+                            </defs>
+                            <polygon points="65,65 30,8 100,8" fill="url(#aqConeGrad)"/>
+                        </svg>
+                    </div>
                     <div id="aq-center-crosshair" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:445; pointer-events:none;">
 
                         <!-- Ventana emergente al tocar el punto central (Imagen 4 y Estado con Objetivo Activo) -->
@@ -2080,41 +2100,92 @@
                         </div>
                     </div>
 
-                    <!-- MENÚ 5 (Ícono Brújula): BRÚJULA -->
+                    <!-- MENÚ 5 (Ícono Brújula): BRÚJULA ESTILO ALPINEQUEST -->
                     <div id="aq-menu-5" style="display:none; position:absolute; bottom:54px; left:6px; width:330px; max-width:calc(100vw - 20px); z-index:465; background:#d4d6d8; color:#111827; border-radius:4px; box-shadow:0 6px 20px rgba(0,0,0,0.5); font-family:var(--font-sans); padding:10px 14px;">
                         <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #b8bcc0; padding-bottom:6px; margin-bottom:6px;">
                             <span style="font-size:12px; font-weight:700; color:#6b7280; letter-spacing:0.03em;">BRÚJULA</span>
-                            <span style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:999px; background:#9ca3af; color:#fff; font-size:11px; font-weight:700;">?</span>
+                            <button type="button" onclick="abrirModalCalibrarBrujula()" title="Calibración de Brújula" style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:999px; background:#9ca3af; color:#fff; font-size:12px; font-weight:800; border:none; cursor:pointer;">?</button>
                         </div>
-                        <div style="display:flex; flex-direction:column; gap:4px; font-size:16px; font-weight:500;">
-                            <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 4px;">
-                                <div style="display:flex; align-items:center; gap:14px;">
-                                    <span style="width:22px; display:flex; justify-content:center;">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2"><circle cx="12" cy="12" r="9"/><polygon points="15.5 8.5 13.5 13.5 8.5 15.5 10.5 10.5 15.5 8.5" fill="#111827"/></svg>
-                                    </span>
-                                    <span>Línea de Rumbo</span>
-                                </div>
-                                <input type="checkbox" id="chk-aq-compass" onchange="toggleLineaAzulRumbo(this.checked)" checked style="width:20px; height:20px; accent-color:#0d9488; cursor:pointer;" />
+
+                        <!-- Fila Principal: Brújula con Pill Switch Teal -->
+                        <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 4px;">
+                            <div style="display:flex; align-items:center; gap:14px; font-size:17px; font-weight:500;">
+                                <span style="width:22px; display:flex; justify-content:center;">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2"><circle cx="12" cy="12" r="9"/><polygon points="15.5 8.5 13.5 13.5 8.5 15.5 10.5 10.5 15.5 8.5" fill="#111827"/></svg>
+                                </span>
+                                <span>Brújula</span>
                             </div>
-                            <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 4px; border-top:1px solid #c3c6c9;">
-                                <div style="display:flex; align-items:center; gap:14px;">
-                                    <span style="width:22px; display:flex; justify-content:center;">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="2"/><polygon points="12 7 14.5 13 12 11.5 9.5 13 12 7" fill="#111827"/></svg>
-                                    </span>
-                                    <div>
-                                        <div>Brújula del Celular</div>
-                                        <div id="aq-compass-heading-txt" style="font-size:11px; color:#4b5563;">Desactivada</div>
-                                    </div>
-                                </div>
-                                <input type="checkbox" id="chk-aq-device-compass" onchange="toggleBrujulaCelular(this.checked)" style="width:20px; height:20px; accent-color:#0d9488; cursor:pointer;" />
-                            </div>
+                            <label style="position:relative; display:inline-block; width:46px; height:24px; cursor:pointer;">
+                                <input type="checkbox" id="chk-aq-device-compass" onchange="toggleBrujulaCelular(this.checked)" style="opacity:0; width:0; height:0;" />
+                                <span id="aq-compass-switch-track" style="position:absolute; inset:0; background:#9ca3af; border-radius:999px; transition:background 0.2s;">
+                                    <span id="aq-compass-switch-knob" style="position:absolute; left:2px; top:2px; width:20px; height:20px; background:#ffffff; border-radius:999px; box-shadow:0 1px 3px rgba(0,0,0,0.35); transition:transform 0.2s;"></span>
+                                </span>
+                            </label>
                         </div>
-                        <div onclick="ocultarMenusAlpineQuest(); togglePanelCollaresSimulador();" style="border-top:1px solid #b8bcc0; margin-top:6px; padding-top:8px; font-size:12px; font-weight:700; color:#374151; display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+
+                        <!-- Botón Colapsable OPCIONES -->
+                        <div id="aq-compass-options-header" onclick="toggleOpcionesBrujulaAq()" style="border-top:1px solid #b8bcc0; margin-top:4px; padding-top:8px; font-size:12px; font-weight:700; color:#4b5563; display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
                             <div style="display:flex; align-items:center; gap:10px;">
-                                <span>&#8963;&#8964;</span>
-                                <span>OPCIONES (COLLARES LORA)</span>
+                                <span id="aq-compass-opt-chev">&#8963;&#8964;</span>
+                                <span>OPCIONES</span>
                             </div>
-                            <span>&rsaquo;</span>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="#6b7280"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 00.12-.64l-1.92-3.32a.5.5 0 00-.61-.22l-2.39.96a7.03 7.03 0 00-1.63-.94l-.36-2.54a.5.5 0 00-.49-.42h-3.84a.5.5 0 00-.49.42l-.36 2.54c-.58.23-1.12.54-1.63.94l-2.39-.96a.5.5 0 00-.61.22L2.71 8.84a.5.5 0 00.12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L2.83 14.52a.5.5 0 00-.12.64l1.92 3.32c.14.24.42.34.68.22l2.39-.96c.5.4 1.05.72 1.63.94l.36 2.54c.04.24.25.42.49.42h3.84c.24 0 .45-.18.49-.42l.36-2.54c.58-.23 1.12-.54 1.63-.94l2.39.96c.26.1.54 0 .68-.22l1.92-3.32a.5.5 0 00-.12-.64l-2.03-1.58zM12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z"/></svg>
+                        </div>
+
+                        <!-- Panel Expandible de Opciones AlpineQuest -->
+                        <div id="aq-compass-options-panel" style="display:none; margin-top:8px; padding-top:4px; space-y:4px;">
+                            <div id="aq-compass-options-body" style="display:flex; flex-direction:column; gap:10px; font-size:15px; font-weight:500; opacity:0.45; pointer-events:none;">
+                                <label style="display:flex; align-items:center; gap:12px; cursor:pointer;">
+                                    <input type="checkbox" id="chk-aq-rotate-map" onchange="actualizarOpcionesBrujulaUi()" checked style="width:18px; height:18px; accent-color:#374151; cursor:pointer;" />
+                                    <span>Gire el mapa (usando brújula)</span>
+                                </label>
+                                <label style="display:flex; align-items:center; gap:12px; cursor:pointer;">
+                                    <input type="checkbox" id="chk-aq-compass-visual" onchange="actualizarOpcionesBrujulaUi()" checked style="width:18px; height:18px; accent-color:#374151; cursor:pointer;" />
+                                    <span>Visualización de la brújula</span>
+                                </label>
+                                <div style="border-top:1px solid #b8bcc0; padding-top:6px; font-size:12px; font-weight:700; color:#6b7280; letter-spacing:0.03em;">INFORMATION BOX</div>
+                                <label style="display:flex; align-items:center; gap:12px; cursor:pointer;">
+                                    <input type="checkbox" id="chk-aq-compass-hud" onchange="actualizarOpcionesBrujulaUi()" checked style="width:18px; height:18px; accent-color:#374151; cursor:pointer;" />
+                                    <span>Rumbo actual</span>
+                                </label>
+                            </div>
+                            <div style="border-top:1px solid #b8bcc0; margin-top:10px; padding-top:8px; display:flex; flex-direction:column; gap:8px;">
+                                <label style="display:flex; align-items:center; justify-content:space-between; font-size:13px; font-weight:600; cursor:pointer;">
+                                    <span>Línea de rumbo al centro</span>
+                                    <input type="checkbox" id="chk-aq-compass" onchange="toggleLineaAzulRumbo(this.checked)" checked style="width:18px; height:18px; accent-color:#0d9488; cursor:pointer;" />
+                                </label>
+                                <div onclick="ocultarMenusAlpineQuest(); togglePanelCollaresSimulador();" style="font-size:12px; font-weight:700; color:#374151; display:flex; align-items:center; justify-content:space-between; cursor:pointer; padding-top:4px; border-top:1px solid #c3c6c9;">
+                                    <span>COLLARES LORA</span>
+                                    <span>&rsaquo;</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal de Calibración de Brújula -->
+                    <div id="modal-calibrar-brujula" onclick="if(event.target===this) cerrarModalCalibrarBrujula()" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.55); align-items:center; justify-content:center; padding:16px;">
+                        <div style="background:#ffffff; color:#111827; border-radius:8px; width:100%; max-width:320px; padding:18px; box-shadow:0 16px 40px rgba(0,0,0,0.45); font-family:var(--font-sans);">
+                            <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                                <span style="display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:999px; background:#3b82f6; color:#ffffff; font-size:14px; font-weight:900; font-style:italic;">i</span>
+                                <span style="font-size:18px; font-weight:700; color:#3b82f6;">Brújula</span>
+                            </div>
+                            <p style="font-size:14px; color:#1f2937; line-height:1.4; margin-bottom:14px;">
+                                Gire su dispositivo en el aire para calibrar el sensor magnético.
+                            </p>
+                            <div style="display:flex; justify-content:center; margin-bottom:14px;">
+                                <svg width="110" height="110" viewBox="0 0 120 120" fill="none">
+                                    <rect x="40" y="22" width="40" height="76" rx="6" fill="#60a5fa" stroke="#111827" stroke-width="2.5" transform="rotate(-22 60 60)"/>
+                                    <circle cx="60" cy="60" r="12" fill="#dbeafe" stroke="#111827" stroke-width="1.8"/>
+                                    <polygon points="60,51 64,60 60,69 56,60" fill="#111827"/>
+                                    <path d="M26 32 C16 42, 16 62, 28 70" stroke="#111827" stroke-width="2.5" stroke-linecap="round"/>
+                                    <polygon points="28,27 22,36 32,36" fill="#111827"/>
+                                    <path d="M94 42 C104 52, 104 72, 92 80" stroke="#111827" stroke-width="2.5" stroke-linecap="round"/>
+                                    <polygon points="92,85 98,76 88,76" fill="#111827"/>
+                                </svg>
+                            </div>
+                            <div style="display:flex; justify-content:flex-end;">
+                                <button type="button" onclick="cerrarModalCalibrarBrujula()" style="background:transparent; border:none; color:#0d9488; font-size:15px; font-weight:800; padding:6px 12px; cursor:pointer;">OK</button>
+                            </div>
                         </div>
                     </div>
 
@@ -5083,11 +5154,86 @@
         }
 
         window.brujulaCelularActiva = false;
-        window.ultimoRumboBrujulaDeg = null;
-        function _formatoCardinal(deg) {
+        window.ultimoRumboBrujulaDeg = 0;
+
+        function abrirModalCalibrarBrujula() {
+            const m = document.getElementById('modal-calibrar-brujula');
+            if (m) m.style.display = 'flex';
+        }
+        function cerrarModalCalibrarBrujula() {
+            const m = document.getElementById('modal-calibrar-brujula');
+            if (m) m.style.display = 'none';
+        }
+        function toggleOpcionesBrujulaAq() {
+            const panel = document.getElementById('aq-compass-options-panel');
+            if (!panel) return;
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+        function _formatoCardinalAq(deg) {
             const dirs = ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'];
             const idx = Math.round(((deg % 360) / 45)) % 8;
-            return `${dirs[idx]} ${Math.round(deg)}°`;
+            return `${deg.toFixed(1)}° ${dirs[idx]}`;
+        }
+        function actualizarOpcionesBrujulaUi() {
+            const activa = !!window.brujulaCelularActiva;
+            const rotarMapa = document.getElementById('chk-aq-rotate-map')?.checked !== false;
+            const verAguja = document.getElementById('chk-aq-compass-visual')?.checked !== false;
+            const verHud = document.getElementById('chk-aq-compass-hud')?.checked !== false;
+
+            const track = document.getElementById('aq-compass-switch-track');
+            const knob = document.getElementById('aq-compass-switch-knob');
+            const body = document.getElementById('aq-compass-options-body');
+            const btn5 = document.getElementById('aq-btn-5');
+            const btn5Svg = document.getElementById('aq-btn-5-svg');
+
+            if (track) track.style.background = activa ? '#0d9488' : '#9ca3af';
+            if (knob) knob.style.transform = activa ? 'translateX(22px)' : 'translateX(0)';
+            if (body) {
+                body.style.opacity = activa ? '1' : '0.45';
+                body.style.pointerEvents = activa ? 'auto' : 'none';
+            }
+            if (btn5) {
+                btn5.style.background = activa ? '#86efac' : 'transparent';
+                btn5.style.color = activa ? '#14532d' : '#FFFFFF';
+                btn5.style.borderRadius = activa ? '8px' : '4px';
+            }
+
+            const hudBox = document.getElementById('hud-compass-box');
+            if (hudBox) hudBox.style.display = (activa && verHud) ? 'flex' : 'none';
+
+            const centerOverlay = document.getElementById('aq-compass-center-overlay');
+            const needleSvg = document.getElementById('aq-compass-needle-svg');
+            const coneSvg = document.getElementById('aq-compass-cone-svg');
+            if (centerOverlay) centerOverlay.style.display = activa ? 'block' : 'none';
+            if (needleSvg) needleSvg.style.display = verAguja ? 'block' : 'none';
+            if (coneSvg) coneSvg.style.display = verAguja ? 'none' : 'block';
+
+            const mapEl = document.getElementById('mapa-google-finca');
+            const heading = Number(window.ultimoRumboBrujulaDeg || 0);
+            if (mapEl) {
+                if (activa && rotarMapa) {
+                    mapEl.style.transformOrigin = 'center center';
+                    mapEl.style.transform = `rotate(${(-heading).toFixed(1)}deg) scale(1.42)`;
+                } else {
+                    mapEl.style.transform = '';
+                }
+            }
+
+            const hudDeg = document.getElementById('hud-compass-deg');
+            const hudArrow = document.getElementById('hud-compass-arrow');
+            if (hudDeg) hudDeg.textContent = _formatoCardinalAq(heading);
+            if (hudArrow) hudArrow.style.transform = `rotate(${heading.toFixed(1)}deg)`;
+            if (needleSvg) {
+                const needleRot = rotarMapa ? -heading : heading;
+                needleSvg.style.transform = `rotate(${needleRot.toFixed(1)}deg)`;
+            }
+            if (coneSvg) {
+                const coneRot = rotarMapa ? 0 : heading;
+                coneSvg.style.transform = `rotate(${coneRot.toFixed(1)}deg)`;
+            }
+            if (btn5Svg) {
+                btn5Svg.style.transform = activa ? `rotate(${(-heading).toFixed(1)}deg)` : '';
+            }
         }
         function _onDeviceCompassEvent(e) {
             if (!window.brujulaCelularActiva) return;
@@ -5098,30 +5244,16 @@
                 heading = (360 - e.alpha) % 360;
             }
             if (heading === null) return;
-            heading = (heading + 360) % 360;
-            window.ultimoRumboBrujulaDeg = heading;
-            const label = _formatoCardinal(heading);
-            const txtEl = document.getElementById('aq-compass-heading-txt');
-            const pillDeg = document.getElementById('aq-live-compass-deg');
-            const pillArrow = document.getElementById('aq-live-compass-arrow');
-            const btnSvg = document.getElementById('aq-btn-5-svg');
-            if (txtEl) txtEl.textContent = `En vivo: ${label}`;
-            if (pillDeg) pillDeg.textContent = label;
-            if (pillArrow) pillArrow.style.transform = `rotate(${heading.toFixed(1)}deg)`;
-            if (btnSvg) btnSvg.style.transform = `rotate(${(-heading).toFixed(1)}deg)`;
+            window.ultimoRumboBrujulaDeg = (heading + 360) % 360;
+            actualizarOpcionesBrujulaUi();
         }
         async function toggleBrujulaCelular(activar) {
             const chk = document.getElementById('chk-aq-device-compass');
-            const txtEl = document.getElementById('aq-compass-heading-txt');
-            const pill = document.getElementById('aq-live-compass-pill');
-            const btnSvg = document.getElementById('aq-btn-5-svg');
             if (!activar) {
                 window.brujulaCelularActiva = false;
                 window.removeEventListener('deviceorientationabsolute', _onDeviceCompassEvent, true);
                 window.removeEventListener('deviceorientation', _onDeviceCompassEvent, true);
-                if (pill) pill.style.display = 'none';
-                if (txtEl) txtEl.textContent = 'Desactivada';
-                if (btnSvg) btnSvg.style.transform = '';
+                actualizarOpcionesBrujulaUi();
                 return;
             }
             try {
@@ -5129,26 +5261,25 @@
                     const perm = await DeviceOrientationEvent.requestPermission();
                     if (perm !== 'granted') {
                         if (chk) chk.checked = false;
-                        if (txtEl) txtEl.textContent = 'Permiso denegado';
                         mostrarToastFinca('Permiso de brújula denegado');
+                        actualizarOpcionesBrujulaUi();
                         return;
                     }
                 }
                 if (typeof window.DeviceOrientationEvent === 'undefined') {
                     if (chk) chk.checked = false;
-                    if (txtEl) txtEl.textContent = 'Sin sensor en este dispositivo';
                     mostrarToastFinca('Este dispositivo no tiene sensor de brújula');
+                    actualizarOpcionesBrujulaUi();
                     return;
                 }
                 window.brujulaCelularActiva = true;
                 window.addEventListener('deviceorientationabsolute', _onDeviceCompassEvent, true);
                 window.addEventListener('deviceorientation', _onDeviceCompassEvent, true);
-                if (pill) pill.style.display = 'flex';
-                if (txtEl) txtEl.textContent = 'Esperando sensor...';
-                mostrarToastFinca('Brújula del celular activada');
+                actualizarOpcionesBrujulaUi();
+                mostrarToastFinca('Brújula activada');
             } catch (err) {
                 if (chk) chk.checked = false;
-                if (txtEl) txtEl.textContent = 'No disponible';
+                actualizarOpcionesBrujulaUi();
                 mostrarToastFinca('No se pudo activar la brújula');
             }
         }
@@ -8998,6 +9129,7 @@
                 return true;
             }
             const modals = [
+                { id: 'modal-calibrar-brujula', fn: () => typeof cerrarModalCalibrarBrujula === 'function' && cerrarModalCalibrarBrujula() },
                 { id: 'modal-aq-crear-placemark', fn: () => typeof cerrarModalAlpineCrearPlacemark === 'function' && cerrarModalAlpineCrearPlacemark() },
                 { id: 'modal-sinigan-bpg', fn: () => typeof cerrarModalSiniganBpg === 'function' && cerrarModalSiniganBpg() },
                 { id: 'modal-nfc-escaner', fn: () => typeof cerrarModalNfcEscaner === 'function' && cerrarModalNfcEscaner() },
