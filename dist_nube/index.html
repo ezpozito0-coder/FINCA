@@ -3250,9 +3250,10 @@
 
         function aplicarPermisosRolUI() {
             const esDueno = !!window.modoDuenoActivo;
-            const badgeRol = document.getElementById('badge-rol-activo');
-            const btnEnc = document.getElementById('btn-rol-encargado');
-            const btnDue = document.getElementById('btn-rol-dueno');
+            const headerRolText = document.getElementById('header-rol-text');
+            const badgeRol = document.getElementById('menu-rol-badge') || document.getElementById('badge-rol-activo');
+            const btnEnc = document.getElementById('btn-modo-encargado') || document.getElementById('btn-rol-encargado');
+            const btnDue = document.getElementById('btn-modo-dueno') || document.getElementById('btn-rol-dueno');
             const accesosDueno = document.getElementById('menu-accesos-dueno');
             const btnRecibo = document.getElementById('btn-recibo-quincena');
             const thBorrarProd = document.getElementById('th-borrar-produccion');
@@ -3261,16 +3262,21 @@
             const metaOptValor = document.getElementById('kpi-meta-optimizada-valor');
             const thBorrarSan = document.getElementById('th-borrar-sanidad');
 
+            if (headerRolText) {
+                headerRolText.textContent = esDueno ? 'Modo Dueño' : 'Modo Encargado';
+            }
             if (badgeRol) {
-                badgeRol.textContent = esDueno ? 'Dueño' : 'Encargado';
+                badgeRol.textContent = esDueno ? 'DUEÑO' : 'ENCARGADO';
                 badgeRol.style.background = esDueno ? '#1B5E3A' : '#EFE9D6';
                 badgeRol.style.color = esDueno ? '#FFFFFF' : '#1A1A1A';
             }
             if (btnEnc) {
-                btnEnc.className = esDueno ? 'btn-corral btn-dark flex-1 text-xs py-1.5' : 'btn-corral btn-green flex-1 text-xs py-1.5';
+                btnEnc.classList.toggle('btn-green', !esDueno);
+                btnEnc.classList.toggle('btn-dark', esDueno);
             }
             if (btnDue) {
-                btnDue.className = esDueno ? 'btn-corral btn-green flex-1 text-xs py-1.5' : 'btn-corral btn-dark flex-1 text-xs py-1.5';
+                btnDue.classList.toggle('btn-green', esDueno);
+                btnDue.classList.toggle('btn-dark', !esDueno);
             }
             if (accesosDueno) accesosDueno.style.display = esDueno ? 'block' : 'none';
             if (btnRecibo) btnRecibo.style.display = esDueno ? 'inline-flex' : 'none';
