@@ -1000,58 +1000,6 @@
              ================================================================= -->
         <section id="tab-animales" class="tab-panel space-y-5">
 
-            <!-- Barra Superior de Control ICA / SINIGAN V6 + HERDEplus KPIs -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                <div class="p-3 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] space-y-1">
-                    <div class="flex items-center gap-1.5 text-[11px] font-extrabold uppercase text-[#1A1A1A]">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/>
-                        </svg>
-                        <span>Predio ICA / SINIGAN V6</span>
-                    </div>
-                    <div id="kpi-ica-rspp" class="text-xs font-extrabold text-[#1A1A1A]">RSPP-50370-001</div>
-                    <div id="kpi-ica-ruv" class="text-[11px] text-[#3E5245] font-semibold">RUV-2026-CICLO-II</div>
-                    <div id="kpi-ica-ley2585" class="text-[11px] font-bold text-[#1A1A1A]">Ley 2585: 6.0 ha Protegidas</div>
-                </div>
-
-                <div class="p-3 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] space-y-1">
-                    <div class="flex items-center gap-1.5 text-[11px] font-extrabold uppercase text-[#1A1A1A]">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="6" y1="10" x2="18" y2="10"/><line x1="6" y1="14" x2="13" y2="14"/>
-                        </svg>
-                        <span>Identificación DIN (000219/2026)</span>
-                    </div>
-                    <div id="kpi-din-aptas" class="text-lg font-extrabold text-[#1A1A1A]">19/19 Aptas GSMI</div>
-                    <div class="text-[11px] text-[#3E5245]">Estándar CO + ISO 11784 (17002...)</div>
-                </div>
-
-                <div class="p-3 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] space-y-1">
-                    <div class="flex items-center gap-1.5 text-[11px] font-extrabold uppercase text-[#1A1A1A]">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-                        </svg>
-                        <span>Alerta BPMV Leche en Retiro</span>
-                    </div>
-                    <div id="kpi-bpmv-retiro" class="text-lg font-extrabold text-[#1A1A1A]">0 en Retiro</div>
-                    <div class="text-[11px] text-[#3E5245]">Desviar leche a biodigestor / BSF</div>
-                </div>
-
-                <div class="p-3 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] space-y-1.5">
-                    <div class="flex items-center justify-between gap-1">
-                        <div class="flex items-center gap-1.5 text-[11px] font-extrabold uppercase text-[#1A1A1A]">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/>
-                            </svg>
-                            <span>Apartado en Manga Hoy</span>
-                        </div>
-                        <span id="kpi-apartado-hoy" class="text-xs font-extrabold text-[#1A1A1A]">0</span>
-                    </div>
-                    <button id="btn-apartado-manga-hoy" type="button" onclick="toggleFiltroApartadoManga()" class="btn-corral btn-dark w-full text-[11px] py-1.5 px-2.5 flex items-center justify-center gap-1.5" style="min-height:32px;">
-                        <span>Apartado en Manga Hoy (HERDEplus Sorting)</span>
-                    </button>
-                </div>
-            </div>
-
             <!-- Tabla del Hato Lechero -->
             <div class="card-finca">
                 <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
@@ -1232,6 +1180,58 @@
                         </thead>
                         <tbody id="tabla-vacas-body" class="text-xs"></tbody>
                     </table>
+                </div>
+            </div>
+
+            <!-- Tarjetas de Control ICA / SINIGAN V6 + HERDEplus KPIs -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div class="p-3 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] space-y-1">
+                    <div class="flex items-center gap-1.5 text-[11px] font-extrabold uppercase text-[#1A1A1A]">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/>
+                        </svg>
+                        <span>Predio ICA / SINIGAN V6</span>
+                    </div>
+                    <div id="kpi-ica-rspp" class="text-xs font-extrabold text-[#1A1A1A]">RSPP-50370-001</div>
+                    <div id="kpi-ica-ruv" class="text-[11px] text-[#3E5245] font-semibold">RUV-2026-CICLO-II</div>
+                    <div id="kpi-ica-ley2585" class="text-[11px] font-bold text-[#1A1A1A]">Ley 2585: 6.0 ha Protegidas</div>
+                </div>
+
+                <div class="p-3 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] space-y-1">
+                    <div class="flex items-center gap-1.5 text-[11px] font-extrabold uppercase text-[#1A1A1A]">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="6" y1="10" x2="18" y2="10"/><line x1="6" y1="14" x2="13" y2="14"/>
+                        </svg>
+                        <span>Identificación DIN (000219/2026)</span>
+                    </div>
+                    <div id="kpi-din-aptas" class="text-lg font-extrabold text-[#1A1A1A]">19/19 Aptas GSMI</div>
+                    <div class="text-[11px] text-[#3E5245]">Estándar CO + ISO 11784 (17002...)</div>
+                </div>
+
+                <div class="p-3 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] space-y-1">
+                    <div class="flex items-center gap-1.5 text-[11px] font-extrabold uppercase text-[#1A1A1A]">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                        </svg>
+                        <span>Alerta BPMV Leche en Retiro</span>
+                    </div>
+                    <div id="kpi-bpmv-retiro" class="text-lg font-extrabold text-[#1A1A1A]">0 en Retiro</div>
+                    <div class="text-[11px] text-[#3E5245]">Desviar leche a biodigestor / BSF</div>
+                </div>
+
+                <div class="p-3 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] space-y-1.5">
+                    <div class="flex items-center justify-between gap-1">
+                        <div class="flex items-center gap-1.5 text-[11px] font-extrabold uppercase text-[#1A1A1A]">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/>
+                            </svg>
+                            <span>Apartado en Manga Hoy</span>
+                        </div>
+                        <span id="kpi-apartado-hoy" class="text-xs font-extrabold text-[#1A1A1A]">0</span>
+                    </div>
+                    <button id="btn-apartado-manga-hoy" type="button" onclick="toggleFiltroApartadoManga()" class="btn-corral btn-dark w-full text-[11px] py-1.5 px-2.5 flex items-center justify-center gap-1.5" style="min-height:32px;">
+                        <span>Apartado en Manga Hoy (HERDEplus Sorting)</span>
+                    </button>
                 </div>
             </div>
         </section>
