@@ -1412,6 +1412,15 @@
                         <span>Atrás</span>
                     </button>
 
+                    <!-- Indicador Flotante de Brújula del Celular en Vivo -->
+                    <div id="aq-live-compass-pill" style="display:none; position:absolute; top:50px; right:10px; z-index:475; align-items:center; gap:6px; background:rgba(247,243,232,0.95); color:#1A1A1A; border:1.5px solid #1A1A1A; border-radius:999px; padding:4px 10px; font-family:var(--font-sans); font-size:12px; font-weight:800; box-shadow:0 3px 10px rgba(0,0,0,0.35);">
+                        <svg id="aq-live-compass-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2.2" style="transition:transform 0.12s linear;">
+                            <polygon points="12 2 16 14 12 11 8 14 12 2" fill="#1A1A1A"/>
+                            <circle cx="12" cy="12" r="9"/>
+                        </svg>
+                        <span id="aq-live-compass-deg">N 0°</span>
+                    </div>
+
                     <!-- =========================================================
                          CAJAS HUD SUPERIOR IZQUIERDA (IDÉNTICAS A ALPINEQUEST)
                          ========================================================= -->
@@ -2083,9 +2092,21 @@
                                     <span style="width:22px; display:flex; justify-content:center;">
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2"><circle cx="12" cy="12" r="9"/><polygon points="15.5 8.5 13.5 13.5 8.5 15.5 10.5 10.5 15.5 8.5" fill="#111827"/></svg>
                                     </span>
-                                    <span>Brújula</span>
+                                    <span>Línea de Rumbo</span>
                                 </div>
                                 <input type="checkbox" id="chk-aq-compass" onchange="toggleLineaAzulRumbo(this.checked)" checked style="width:20px; height:20px; accent-color:#0d9488; cursor:pointer;" />
+                            </div>
+                            <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 4px; border-top:1px solid #c3c6c9;">
+                                <div style="display:flex; align-items:center; gap:14px;">
+                                    <span style="width:22px; display:flex; justify-content:center;">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="2"/><polygon points="12 7 14.5 13 12 11.5 9.5 13 12 7" fill="#111827"/></svg>
+                                    </span>
+                                    <div>
+                                        <div>Brújula del Celular</div>
+                                        <div id="aq-compass-heading-txt" style="font-size:11px; color:#4b5563;">Desactivada</div>
+                                    </div>
+                                </div>
+                                <input type="checkbox" id="chk-aq-device-compass" onchange="toggleBrujulaCelular(this.checked)" style="width:20px; height:20px; accent-color:#0d9488; cursor:pointer;" />
                             </div>
                         </div>
                         <div onclick="ocultarMenusAlpineQuest(); togglePanelCollaresSimulador();" style="border-top:1px solid #b8bcc0; margin-top:6px; padding-top:8px; font-size:12px; font-weight:700; color:#374151; display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
@@ -2290,7 +2311,7 @@
                         <!-- 5. Brújula -->
                         <button id="aq-btn-5" type="button" onclick="toggleMenuAlpineQuest(5)" title="Brújula"
                             style="width:52px; height:46px; display:flex; align-items:center; justify-content:center; background:transparent; color:#FFFFFF; border:none; cursor:pointer; border-radius:4px;">
-                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+                            <svg id="aq-btn-5-svg" width="26" height="26" viewBox="0 0 26 26" fill="none" style="transition:transform 0.12s linear;">
                                 <circle cx="13" cy="13" r="9.5" stroke="currentColor" stroke-width="2.2"/>
                                 <polygon points="13,6 15.5,13 13,20 10.5,13" fill="currentColor"/>
                             </svg>
@@ -5058,6 +5079,77 @@
                 if (window.fincaLeafletMap.hasLayer(window.fincaBlueRulerLayer)) {
                     window.fincaLeafletMap.removeLayer(window.fincaBlueRulerLayer);
                 }
+            }
+        }
+
+        window.brujulaCelularActiva = false;
+        window.ultimoRumboBrujulaDeg = null;
+        function _formatoCardinal(deg) {
+            const dirs = ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'];
+            const idx = Math.round(((deg % 360) / 45)) % 8;
+            return `${dirs[idx]} ${Math.round(deg)}°`;
+        }
+        function _onDeviceCompassEvent(e) {
+            if (!window.brujulaCelularActiva) return;
+            let heading = null;
+            if (typeof e.webkitCompassHeading === 'number' && !isNaN(e.webkitCompassHeading)) {
+                heading = e.webkitCompassHeading;
+            } else if (typeof e.alpha === 'number' && !isNaN(e.alpha)) {
+                heading = (360 - e.alpha) % 360;
+            }
+            if (heading === null) return;
+            heading = (heading + 360) % 360;
+            window.ultimoRumboBrujulaDeg = heading;
+            const label = _formatoCardinal(heading);
+            const txtEl = document.getElementById('aq-compass-heading-txt');
+            const pillDeg = document.getElementById('aq-live-compass-deg');
+            const pillArrow = document.getElementById('aq-live-compass-arrow');
+            const btnSvg = document.getElementById('aq-btn-5-svg');
+            if (txtEl) txtEl.textContent = `En vivo: ${label}`;
+            if (pillDeg) pillDeg.textContent = label;
+            if (pillArrow) pillArrow.style.transform = `rotate(${heading.toFixed(1)}deg)`;
+            if (btnSvg) btnSvg.style.transform = `rotate(${(-heading).toFixed(1)}deg)`;
+        }
+        async function toggleBrujulaCelular(activar) {
+            const chk = document.getElementById('chk-aq-device-compass');
+            const txtEl = document.getElementById('aq-compass-heading-txt');
+            const pill = document.getElementById('aq-live-compass-pill');
+            const btnSvg = document.getElementById('aq-btn-5-svg');
+            if (!activar) {
+                window.brujulaCelularActiva = false;
+                window.removeEventListener('deviceorientationabsolute', _onDeviceCompassEvent, true);
+                window.removeEventListener('deviceorientation', _onDeviceCompassEvent, true);
+                if (pill) pill.style.display = 'none';
+                if (txtEl) txtEl.textContent = 'Desactivada';
+                if (btnSvg) btnSvg.style.transform = '';
+                return;
+            }
+            try {
+                if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                    const perm = await DeviceOrientationEvent.requestPermission();
+                    if (perm !== 'granted') {
+                        if (chk) chk.checked = false;
+                        if (txtEl) txtEl.textContent = 'Permiso denegado';
+                        mostrarToastFinca('Permiso de brújula denegado');
+                        return;
+                    }
+                }
+                if (typeof window.DeviceOrientationEvent === 'undefined') {
+                    if (chk) chk.checked = false;
+                    if (txtEl) txtEl.textContent = 'Sin sensor en este dispositivo';
+                    mostrarToastFinca('Este dispositivo no tiene sensor de brújula');
+                    return;
+                }
+                window.brujulaCelularActiva = true;
+                window.addEventListener('deviceorientationabsolute', _onDeviceCompassEvent, true);
+                window.addEventListener('deviceorientation', _onDeviceCompassEvent, true);
+                if (pill) pill.style.display = 'flex';
+                if (txtEl) txtEl.textContent = 'Esperando sensor...';
+                mostrarToastFinca('Brújula del celular activada');
+            } catch (err) {
+                if (chk) chk.checked = false;
+                if (txtEl) txtEl.textContent = 'No disponible';
+                mostrarToastFinca('No se pudo activar la brújula');
             }
         }
 
