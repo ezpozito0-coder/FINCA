@@ -1418,13 +1418,13 @@
                     <div id="aq-hud-top-left" style="position:absolute; top:10px; left:10px; z-index:450; pointer-events:none; display:flex; flex-direction:column; align-items:flex-start; gap:5px; max-width:calc(100% - 110px);">
 
                         <!-- Caja 1: Coordenadas en Grados/Minutos Decimales + Altitud (Siempre visible) -->
-                        <div style="background:rgba(232,234,237,0.9); color:#111827; padding:4px 9px; border-radius:6px; font-family:var(--font-sans); font-size:14px; font-weight:700; letter-spacing:-0.01em; box-shadow:0 2px 6px rgba(0,0,0,0.35); white-space:nowrap;">
+                        <div id="hud-coords-box" style="background:rgba(232,234,237,0.9); color:#111827; padding:4px 9px; border-radius:6px; font-family:var(--font-sans); font-size:14px; font-weight:700; letter-spacing:-0.01em; box-shadow:0 2px 6px rgba(0,0,0,0.35); white-space:nowrap;">
                             <span id="hud-latlon">02°09.280' N 73°42.769' W</span>
                             <span style="margin-left:6px; font-size:13px; font-weight:600; color:#1f2937;">&uarr;<span id="hud-altitud">258 m</span></span>
                         </div>
 
                         <!-- Caja 2: Escala numérica 1:XX,XXX + Nivel Zoom + Barra gráfica (Siempre visible) -->
-                        <div style="background:rgba(232,234,237,0.9); color:#111827; padding:4px 10px 5px 10px; border-radius:6px; font-family:var(--font-sans); box-shadow:0 2px 6px rgba(0,0,0,0.35); display:flex; align-items:center; gap:8px;">
+                        <div id="hud-scale-box" style="background:rgba(232,234,237,0.9); color:#111827; padding:4px 10px 5px 10px; border-radius:6px; font-family:var(--font-sans); box-shadow:0 2px 6px rgba(0,0,0,0.35); display:flex; align-items:center; gap:8px;">
                             <span style="display:inline-flex; align-items:center; justify-content:center;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2.2" stroke-linejoin="round">
                                     <path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3V6z"/>
@@ -1915,14 +1915,14 @@
                             <span style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:999px; background:#9ca3af; color:#fff; font-size:11px; font-weight:700;">?</span>
                         </div>
                         <div style="display:flex; flex-direction:column; gap:2px; font-size:16px; font-weight:500;">
-                            <button type="button" onclick="ocultarMenusAlpineQuest()" style="display:flex; align-items:center; justify-content:space-between; padding:8px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
+                            <button type="button" onclick="toggleToolbarVisibilidadAq(false)" style="display:flex; align-items:center; justify-content:space-between; padding:8px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
                                 <span style="display:flex; align-items:center; gap:14px;">
                                     <span style="width:22px; display:flex; justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg></span>
                                     <span>Ocultar menu</span>
                                 </span>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="#6b7280"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
                             </button>
-                            <button type="button" onclick="toggleHudAlpineQuestVisibility()" style="display:flex; align-items:center; justify-content:space-between; padding:8px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
+                            <button type="button" onclick="toggleBloqueoPantallaMapa(true)" style="display:flex; align-items:center; justify-content:space-between; padding:8px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
                                 <span style="display:flex; align-items:center; gap:14px;">
                                     <span style="width:22px; display:flex; justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="#111827"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4" fill="none" stroke="#111827" stroke-width="2"/></svg></span>
                                     <span>Bloqueo de pantalla</span>
@@ -1973,10 +1973,10 @@
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="#6b7280"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 00.12-.64l-1.92-3.32a.5.5 0 00-.61-.22l-2.39.96a7.03 7.03 0 00-1.63-.94l-.36-2.54a.5.5 0 00-.49-.42h-3.84a.5.5 0 00-.49.42l-.36 2.54c-.58.23-1.12.54-1.63.94l-2.39-.96a.5.5 0 00-.61.22L2.71 8.84a.5.5 0 00.12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L2.83 14.52a.5.5 0 00-.12.64l1.92 3.32c.14.24.42.34.68.22l2.39-.96c.5.4 1.05.72 1.63.94l.36 2.54c.04.24.25.42.49.42h3.84c.24 0 .45-.18.49-.42l.36-2.54c.58-.23 1.12-.54 1.63-.94l2.39.96c.26.1.54 0 .68-.22l1.92-3.32a.5.5 0 00-.12-.64l-2.03-1.58zM12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z"/></svg>
                         </div>
                         <div id="aq-opt-panel-1" style="display:none; flex-direction:column; gap:9px; margin-top:8px; font-size:14.5px; font-weight:500;">
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" style="width:17px; height:17px; accent-color:#374151;" /><span>Mostrar cuadrícula: Lat/Long (Deg Min)</span></label>
-                            <label style="display:flex; align-items:center; gap:12px; opacity:0.55; cursor:pointer;"><input type="checkbox" style="width:17px; height:17px; accent-color:#374151;" /><span>Mostrar cuadrícula: Ninguna</span></label>
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" style="width:17px; height:17px; accent-color:#374151;" /><span>Mostrar escala circular</span></label>
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked style="width:17px; height:17px; accent-color:#374151;" /><span>Modo nocturno</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-grid-latlon" onchange="toggleCuadriculaMapaAq(this.checked); const n=document.getElementById('chk-aq-grid-none'); if(n&&this.checked)n.checked=false;" style="width:17px; height:17px; accent-color:#374151;" /><span>Mostrar cuadrícula: Lat/Long (Deg Min)</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; opacity:0.65; cursor:pointer;"><input type="checkbox" id="chk-aq-grid-none" checked onchange="if(this.checked){ const c=document.getElementById('chk-aq-grid-latlon'); if(c)c.checked=false; toggleCuadriculaMapaAq(false); }" style="width:17px; height:17px; accent-color:#374151;" /><span>Mostrar cuadrícula: Ninguna</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-circle-scale" onchange="toggleEscalaCircularAq(this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Mostrar escala circular</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-night-mode" onchange="toggleModoNocturnoAq(this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Modo nocturno</span></label>
                             <div style="border-top:1px solid #b8bcc0; padding-top:6px; font-size:11.5px; font-weight:700; color:#6b7280; letter-spacing:0.03em;">INFORMATION BOX</div>
                             <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleHudBoxAq('hud-coords-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Pantalla central de coordenadas</span></label>
                         </div>
@@ -1989,7 +1989,7 @@
                             <span style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:999px; background:#9ca3af; color:#fff; font-size:11px; font-weight:700;">?</span>
                         </div>
                         <div style="display:flex; flex-direction:column; gap:2px; font-size:16px; font-weight:500;">
-                            <button type="button" onclick="toggleCapasFincaRapido()" style="display:flex; align-items:center; gap:14px; padding:8px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
+                            <button type="button" onclick="ocultarMenusAlpineQuest(); togglePanelCapasIndividuales();" style="display:flex; align-items:center; gap:14px; padding:8px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
                                 <span style="width:22px; display:flex; justify-content:center;">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
                                 </span>
@@ -2030,11 +2030,11 @@
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="#6b7280"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 00.12-.64l-1.92-3.32a.5.5 0 00-.61-.22l-2.39.96a7.03 7.03 0 00-1.63-.94l-.36-2.54a.5.5 0 00-.49-.42h-3.84a.5.5 0 00-.49.42l-.36 2.54c-.58.23-1.12.54-1.63.94l-2.39-.96a.5.5 0 00-.61.22L2.71 8.84a.5.5 0 00.12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L2.83 14.52a.5.5 0 00-.12.64l1.92 3.32c.14.24.42.34.68.22l2.39-.96c.5.4 1.05.72 1.63.94l.36 2.54c.04.24.25.42.49.42h3.84c.24 0 .45-.18.49-.42l.36-2.54c.58-.23 1.12-.54 1.63-.94l2.39.96c.26.1.54 0 .68-.22l1.92-3.32a.5.5 0 00-.12-.64l-2.03-1.58zM12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z"/></svg>
                         </div>
                         <div id="aq-opt-panel-2" style="display:none; flex-direction:column; gap:9px; margin-top:8px; font-size:14.5px; font-weight:500;">
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" style="width:17px; height:17px; accent-color:#374151;" /><span>Use only local storage</span></label>
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" style="width:17px; height:17px; accent-color:#374151;" /><span>Cobertura de almacenamiento</span></label>
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked style="width:17px; height:17px; accent-color:#374151;" /><span>Descargar datos de elevación auto.</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" onchange="window.aqSoloLocalStorage=this.checked; if(typeof mostrarToastFinca==='function') mostrarToastFinca(this.checked?'Solo caché local activo':'Mapas en línea activos');" style="width:17px; height:17px; accent-color:#374151;" /><span>Use only local storage</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" onchange="if(typeof mostrarToastFinca==='function') mostrarToastFinca(this.checked?'Cobertura de caché visible':'Cobertura oculta');" style="width:17px; height:17px; accent-color:#374151;" /><span>Cobertura de almacenamiento</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="if(typeof mostrarToastFinca==='function') mostrarToastFinca(this.checked?'Elevación automática activa':'Elevación manual');" style="width:17px; height:17px; accent-color:#374151;" /><span>Descargar datos de elevación auto.</span></label>
                             <div style="border-top:1px solid #b8bcc0; padding-top:6px; font-size:11.5px; font-weight:700; color:#6b7280; letter-spacing:0.03em;">INFORMATION BOX</div>
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" style="width:17px; height:17px; accent-color:#374151;" /><span>Nombre del mapa</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" onchange="toggleHudBoxAq('hud-coords-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Nombre del mapa</span></label>
                             <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleHudBoxAq('hud-scale-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Escala del mapa</span></label>
                             <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleHudBoxAq('hud-scale-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Barra de la escala</span></label>
                         </div>
@@ -2090,7 +2090,7 @@
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="#6b7280"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 00.12-.64l-1.92-3.32a.5.5 0 00-.61-.22l-2.39.96a7.03 7.03 0 00-1.63-.94l-.36-2.54a.5.5 0 00-.49-.42h-3.84a.5.5 0 00-.49.42l-.36 2.54c-.58.23-1.12.54-1.63.94l-2.39-.96a.5.5 0 00-.61.22L2.71 8.84a.5.5 0 00.12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L2.83 14.52a.5.5 0 00-.12.64l1.92 3.32c.14.24.42.34.68.22l2.39-.96c.5.4 1.05.72 1.63.94l.36 2.54c.04.24.25.42.49.42h3.84c.24 0 .45-.18.49-.42l.36-2.54c.58-.23 1.12-.54 1.63-.94l2.39.96c.26.1.54 0 .68-.22l1.92-3.32a.5.5 0 00-.12-.64l-2.03-1.58zM12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z"/></svg>
                         </div>
                         <div id="aq-opt-panel-3" style="display:none; flex-direction:column; gap:9px; margin-top:8px; font-size:14.5px; font-weight:500;">
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="if(typeof toggleCapasFincaRapido==='function') toggleCapasFincaRapido();" style="width:17px; height:17px; accent-color:#374151;" /><span>Etiquetas de placemarks</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleEtiquetasPlacemarksAq(this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Etiquetas de placemarks</span></label>
                             <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleLineaAzulRumbo(this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Mostrar línea al objetivo</span></label>
                             <div style="border-top:1px solid #b8bcc0; padding-top:6px; font-size:11.5px; font-weight:700; color:#6b7280; letter-spacing:0.03em;">INFORMATION BOX</div>
                             <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleHudBoxAq('hud-target-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Información de foco</span></label>
@@ -2137,11 +2137,11 @@
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="#6b7280"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 00.12-.64l-1.92-3.32a.5.5 0 00-.61-.22l-2.39.96a7.03 7.03 0 00-1.63-.94l-.36-2.54a.5.5 0 00-.49-.42h-3.84a.5.5 0 00-.49.42l-.36 2.54c-.58.23-1.12.54-1.63.94l-2.39-.96a.5.5 0 00-.61.22L2.71 8.84a.5.5 0 00.12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L2.83 14.52a.5.5 0 00-.12.64l1.92 3.32c.14.24.42.34.68.22l2.39-.96c.5.4 1.05.72 1.63.94l.36 2.54c.04.24.25.42.49.42h3.84c.24 0 .45-.18.49-.42l.36-2.54c.58-.23 1.12-.54 1.63-.94l2.39.96c.26.1.54 0 .68-.22l1.92-3.32a.5.5 0 00-.12-.64l-2.03-1.58zM12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z"/></svg>
                         </div>
                         <div id="aq-opt-panel-4" style="display:none; flex-direction:column; gap:9px; margin-top:8px; font-size:14.5px; font-weight:500;">
-                            <label style="display:flex; align-items:center; gap:12px; opacity:0.6; cursor:pointer;"><input type="checkbox" style="width:17px; height:17px; accent-color:#374151;" /><span>Gire el mapa (usando GPS)</span></label>
-                            <label style="display:flex; align-items:center; gap:12px; opacity:0.6; cursor:pointer;"><input type="checkbox" checked onchange="toggleLineaAzulRumbo(this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Línea desde la posición</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" onchange="window.aqRotarMapaPorGps=this.checked; if(!this.checked && typeof aplicarRotacionMapaBrujula==='function') aplicarRotacionMapaBrujula(0);" style="width:17px; height:17px; accent-color:#374151;" /><span>Gire el mapa (usando GPS)</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleLineaAzulRumbo(this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Línea desde la posición</span></label>
                             <div style="border-top:1px solid #b8bcc0; padding-top:6px; font-size:11.5px; font-weight:700; color:#6b7280; letter-spacing:0.03em;">INFORMATION BOX</div>
-                            <label style="display:flex; align-items:center; gap:12px; opacity:0.6; cursor:pointer;"><input type="checkbox" checked style="width:17px; height:17px; accent-color:#374151;" /><span>Estado de posicionamiento</span></label>
-                            <label style="display:flex; align-items:center; gap:12px; opacity:0.6; cursor:pointer;"><input type="checkbox" checked style="width:17px; height:17px; accent-color:#374151;" /><span>Grabadora de pista</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleHudBoxAq('hud-gps-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Estado de posicionamiento</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleHudBoxAq('hud-ruler-row', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Grabadora de pista</span></label>
                         </div>
                     </div>
 
@@ -2525,6 +2525,33 @@
                             Ver Recorrido (Track 24h)
                         </button>
                     </div>
+
+                    <!-- Panel Flotante: Capas Individuales del Mapa -->
+                    <div id="panel-capas-alpine" style="display:none; position:absolute; bottom:66px; left:10px; right:10px; max-width:300px; z-index:472; background:#d4d6d8; color:#111827; border-radius:6px; padding:12px; box-shadow:0 6px 20px rgba(0,0,0,0.55); font-family:var(--font-sans);">
+                        <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #b8bcc0; padding-bottom:6px; margin-bottom:8px;">
+                            <span style="font-size:12px; font-weight:800; color:#374151; letter-spacing:0.03em;">MAPAS Y CAPAS ACTIVAS</span>
+                            <button type="button" onclick="document.getElementById('panel-capas-alpine').style.display='none'" style="background:transparent; border:none; font-size:16px; font-weight:700; cursor:pointer;">✕</button>
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:8px; font-size:14.5px; font-weight:600;">
+                            <label style="display:flex; align-items:center; gap:10px; cursor:pointer;"><input type="checkbox" checked onchange="toggleCapaIndividualFinca('potreros', this.checked)" style="width:17px; height:17px; accent-color:#0d9488;" /><span>Potreros y Cercas</span></label>
+                            <label style="display:flex; align-items:center; gap:10px; cursor:pointer;"><input type="checkbox" checked onchange="toggleCapaIndividualFinca('hidrica', this.checked)" style="width:17px; height:17px; accent-color:#0d9488;" /><span>Fuentes Hídricas y Caminos</span></label>
+                            <label style="display:flex; align-items:center; gap:10px; cursor:pointer;"><input type="checkbox" checked onchange="toggleCapaIndividualFinca('placemarks', this.checked)" style="width:17px; height:17px; accent-color:#0d9488;" /><span>Placemarks y Waypoints</span></label>
+                            <label style="display:flex; align-items:center; gap:10px; cursor:pointer;"><input type="checkbox" checked onchange="toggleCapaIndividualFinca('collares', this.checked)" style="width:17px; height:17px; accent-color:#0d9488;" /><span>Collares LoRa Activos</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Botón flotante para restaurar menú cuando está oculto -->
+                    <button id="aq-restore-toolbar-btn" type="button" onclick="toggleToolbarVisibilidadAq(true)" title="Mostrar menú"
+                        style="display:none; position:absolute; bottom:8px; left:8px; z-index:470; background:rgba(55,60,64,0.86); color:#fff; border:none; border-radius:6px; padding:8px 12px; font-size:13px; font-weight:700; box-shadow:0 3px 10px rgba(0,0,0,0.45); cursor:pointer;">
+                        Mostrar Menú
+                    </button>
+
+                    <!-- Indicador / Desbloqueo de pantalla -->
+                    <button id="aq-screen-lock-pill" type="button" onclick="toggleBloqueoPantallaMapa(false)"
+                        style="display:none; position:absolute; top:12px; left:50%; transform:translateX(-50%); z-index:490; background:#111827; color:#fff; border:1.5px solid #22c55e; border-radius:999px; padding:6px 14px; font-size:12px; font-weight:700; box-shadow:0 4px 12px rgba(0,0,0,0.45); cursor:pointer; align-items:center; gap:6px;">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="#22c55e"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4" fill="none" stroke="#22c55e" stroke-width="2.2"/></svg>
+                        <span>Pantalla bloqueada · Tocar para desbloquear</span>
+                    </button>
 
                     <!-- =========================================================
                          BARRA INFERIOR IZQUIERDA DE 5 ÍCONOS (IDÉNTICA A ALPINEQUEST)
@@ -4888,6 +4915,9 @@
             if ((centrarMapa || eraPrimeraLectura) && window.fincaLeafletMap && posicionTiempoRealActiva) {
                 window.fincaLeafletMap.setView([lat, lng], 16);
             }
+            if (window.aqRotarMapaPorGps && Number.isFinite(pos?.coords?.heading) && typeof aplicarRotacionMapaBrujula === 'function') {
+                aplicarRotacionMapaBrujula(pos.coords.heading);
+            }
             actualizarHudAlpineQuest();
         }
 
@@ -5321,6 +5351,84 @@
         function toggleHudBoxAq(id, visible) {
             const el = document.getElementById(id);
             if (el) el.style.display = visible ? '' : 'none';
+        }
+        function toggleToolbarVisibilidadAq(mostrar) {
+            const tb = document.getElementById('aq-bottom-toolbar');
+            const rb = document.getElementById('aq-restore-toolbar-btn');
+            ocultarMenusAlpineQuest();
+            if (tb) tb.style.display = mostrar ? 'flex' : 'none';
+            if (rb) rb.style.display = mostrar ? 'none' : 'block';
+        }
+        function toggleBloqueoPantallaMapa(bloquear) {
+            ocultarMenusAlpineQuest();
+            const pill = document.getElementById('aq-screen-lock-pill');
+            if (pill) pill.style.display = bloquear ? 'flex' : 'none';
+            if (window.fincaLeafletMap) {
+                if (bloquear) {
+                    window.fincaLeafletMap.dragging.disable();
+                    window.fincaLeafletMap.touchZoom.disable();
+                    window.fincaLeafletMap.doubleClickZoom.disable();
+                    window.fincaLeafletMap.scrollWheelZoom.disable();
+                } else {
+                    window.fincaLeafletMap.dragging.enable();
+                    window.fincaLeafletMap.touchZoom.enable();
+                    window.fincaLeafletMap.doubleClickZoom.enable();
+                    window.fincaLeafletMap.scrollWheelZoom.enable();
+                }
+            }
+            if (typeof mostrarToastFinca === 'function') mostrarToastFinca(bloquear ? 'Mapa bloqueado' : 'Mapa desbloqueado');
+        }
+        function toggleCuadriculaMapaAq(activar) {
+            if (!window.fincaLeafletMap) return;
+            if (!window.fincaGridLayer) window.fincaGridLayer = L.layerGroup().addTo(window.fincaLeafletMap);
+            window.fincaGridLayer.clearLayers();
+            if (!activar) return;
+            const c = window.fincaLeafletMap.getCenter();
+            const step = 0.005;
+            const baseLat = Math.floor(c.lat / step) * step;
+            const baseLng = Math.floor(c.lng / step) * step;
+            for (let i = -8; i <= 8; i++) {
+                L.polyline([[baseLat + i * step, c.lng - 0.1], [baseLat + i * step, c.lng + 0.1]], { color: '#38bdf8', weight: 1, opacity: 0.55, dashArray: '4 4', interactive: false }).addTo(window.fincaGridLayer);
+                L.polyline([[c.lat - 0.1, baseLng + i * step], [c.lat + 0.1, baseLng + i * step]], { color: '#38bdf8', weight: 1, opacity: 0.55, dashArray: '4 4', interactive: false }).addTo(window.fincaGridLayer);
+            }
+        }
+        function toggleEscalaCircularAq(activar) {
+            if (!window.fincaLeafletMap) return;
+            if (!window.fincaCircleScaleLayer) window.fincaCircleScaleLayer = L.layerGroup().addTo(window.fincaLeafletMap);
+            window.fincaCircleScaleLayer.clearLayers();
+            if (!activar) return;
+            const c = window.fincaLeafletMap.getCenter();
+            [100, 250, 500, 1000].forEach(r => {
+                L.circle([c.lat, c.lng], { radius: r, color: '#facc15', weight: 1.5, fill: false, dashArray: '5 5', interactive: false }).addTo(window.fincaCircleScaleLayer);
+            });
+        }
+        function toggleModoNocturnoAq(activar) {
+            const mapEl = document.getElementById('mapa-google-finca');
+            if (mapEl) mapEl.style.filter = activar ? 'brightness(0.72) contrast(1.12) saturate(0.8)' : '';
+        }
+        function togglePanelCapasIndividuales() {
+            cerrarPanelesFlotantesAlpine('panel-capas-alpine');
+            const p = document.getElementById('panel-capas-alpine');
+            if (p) p.style.display = p.style.display === 'block' ? 'none' : 'block';
+        }
+        function toggleCapaIndividualFinca(capa, visible) {
+            if (!window.fincaLeafletMap) return;
+            const map = window.fincaLeafletMap;
+            const groups = {
+                potreros: [window.fincaLayerGroupPotreros],
+                hidrica: [window.fincaLayerGroupHidrica, window.fincaLayerGroupCamino, window.fincaLayerGroupNucleo],
+                placemarks: [window.fincaLayerGroupPlacemarks],
+                collares: [window.fincaLayerGroupCollares]
+            };
+            (groups[capa] || []).forEach(g => {
+                if (!g) return;
+                if (visible) { if (!map.hasLayer(g)) map.addLayer(g); }
+                else { if (map.hasLayer(g)) map.removeLayer(g); }
+            });
+        }
+        function toggleEtiquetasPlacemarksAq(visible) {
+            window.aqOcultarEtiquetasPlacemarks = !visible;
+            if (typeof initOrUpdateGoogleMapFinca === 'function') initOrUpdateGoogleMapFinca();
         }
 
         function toggleHudAlpineQuestVisibility() {
@@ -6154,16 +6262,18 @@
                 }
                 body.innerHTML = `<div style="font-size:12px; font-weight:700; color:#4b5563; margin-bottom:8px;">WAYPOINTS (${placemarks.length} elementos)</div>` +
                     placemarks.map(p => {
-                        const info = fmtDist(p.lat, p.lng);
+                        const pLat = p.latitud ?? p.lat;
+                        const pLng = p.longitud ?? p.lng;
+                        const info = fmtDist(pLat, pLng);
                         return `
                         <div style="background:linear-gradient(180deg,#ffffff 60%,#cbd5e1 100%); border-radius:4px; box-shadow:0 2px 5px rgba(0,0,0,0.2); padding:10px 12px; margin-bottom:10px;">
                             <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
-                                <div onclick="irAPlacemarkDesdeExplorador(${p.lat}, ${p.lng}, '${String(p.nombre || '').replace(/'/g, '')}', false)" style="display:flex; align-items:center; gap:8px; cursor:pointer; min-width:0; flex:1;">
+                                <div onclick="irAPlacemarkDesdeExplorador(${pLat}, ${pLng}, '${String(p.nombre || '').replace(/'/g, '')}', false)" style="display:flex; align-items:center; gap:8px; cursor:pointer; min-width:0; flex:1;">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2"><circle cx="12" cy="8" r="4"/><line x1="12" y1="12" x2="12" y2="21"/></svg>
                                     <span style="font-size:16px; font-style:italic; font-weight:600; color:#111827; truncate;">${p.nombre || 'Marca'}</span>
                                 </div>
                                 <div style="display:flex; align-items:center; gap:6px;">
-                                    <button type="button" onclick="irAPlacemarkDesdeExplorador(${p.lat}, ${p.lng}, '${String(p.nombre || '').replace(/'/g, '')}', true)" title="Ir y fijar objetivo" style="background:#e2e8f0; border:1px solid #94a3b8; border-radius:4px; padding:3px 7px; font-size:11px; font-weight:700; cursor:pointer;">Ir</button>
+                                    <button type="button" onclick="irAPlacemarkDesdeExplorador(${pLat}, ${pLng}, '${String(p.nombre || '').replace(/'/g, '')}', true)" title="Ir y fijar objetivo" style="background:#e2e8f0; border:1px solid #94a3b8; border-radius:4px; padding:3px 7px; font-size:11px; font-weight:700; cursor:pointer;">Ir</button>
                                     <button type="button" onclick="eliminarPlacemarkSQLite(${p.id}); setTimeout(renderExploradorPlacemarks, 150);" title="Eliminar" style="background:transparent; border:none; font-size:14px; font-weight:800; color:#4b5563; cursor:pointer; padding:2px 6px;">✕</button>
                                 </div>
                             </div>
@@ -6303,12 +6413,12 @@
                     const panelDib = document.getElementById('panel-dibujo-potreros');
                     if (panelDib) panelDib.style.display = 'block';
                 }
-                const inputNom = document.getElementById('input-nombre-potrero-dibujo');
+                const inputNom = document.getElementById('dibujo-nombre-potrero');
                 if (inputNom) inputNom.value = `${tipo} #${(appState?.geojson_potreros || []).length + 1}`;
                 return;
             }
             if (tipo === 'Buscar') {
-                abrirModalCoordenadasFinca();
+                abrirModalBuscarUbicacion();
                 return;
             }
             if (tipo === 'Proximidad') {
@@ -6325,6 +6435,9 @@
             cerrarPanelesFlotantesAlpine('panel-crear-placemark');
             const panel = document.getElementById('panel-crear-placemark');
             if (!panel) return;
+            window.placemarkTipoActual = tipo || 'Waypoint';
+            const tituloLbl = document.getElementById('titulo-panel-placemark-rapido');
+            if (tituloLbl) tituloLbl.textContent = `Nuevo ${window.placemarkTipoActual} en Punto Central`;
             const mira = window.fincaLeafletMap ? window.fincaLeafletMap.getCenter() : getFincaCenterCoords();
             const coordsLbl = document.getElementById('placemark-coords-label');
             if (coordsLbl) {
@@ -7142,11 +7255,14 @@
                     const lng = Number(pm.longitud);
                     if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
                     const color = pm.color || '#22c55e';
+                    const pmHtml = window.aqOcultarEtiquetasPlacemarks
+                        ? `<div style="width:14px;height:14px;border-radius:999px;background:${color};border:2px solid #FFF;box-shadow:0 2px 6px rgba(0,0,0,0.65);transform:translate(-50%,-50%);cursor:pointer;"></div>`
+                        : `<div style="background:${color};color:#FFF;border:2px solid #FFF;border-radius:8px;padding:2px 8px;font-weight:800;font-size:11px;white-space:nowrap;box-shadow:0 3px 8px rgba(0,0,0,0.65);transform:translate(-50%,-50%);cursor:pointer;display:flex;align-items:center;gap:4px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5"/></svg> ${pm.nombre}</div>`;
                     const pmIcon = L.divIcon({
                         className: '',
-                        html: `<div style="background:${color};color:#FFF;border:2px solid #FFF;border-radius:8px;padding:2px 8px;font-weight:800;font-size:11px;white-space:nowrap;box-shadow:0 3px 8px rgba(0,0,0,0.65);transform:translate(-50%,-50%);cursor:pointer;display:flex;align-items:center;gap:4px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5"/></svg> ${pm.nombre}</div>`,
-                        iconSize: [140, 24],
-                        iconAnchor: [70, 12]
+                        html: pmHtml,
+                        iconSize: window.aqOcultarEtiquetasPlacemarks ? [14, 14] : [140, 24],
+                        iconAnchor: window.aqOcultarEtiquetasPlacemarks ? [7, 7] : [70, 12]
                     });
                     L.marker([lat, lng], { icon: pmIcon })
                         .bindPopup(`
