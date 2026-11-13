@@ -6889,13 +6889,13 @@
             { cat: 'TRANSPORT', color: '#0EA5E9', items: ['Transportation', 'Aerodrome', 'Airport', 'Airplane', 'Atv', 'Bicycle', 'Bicycle rental', 'Boat', 'Bus', 'Bus station', 'Bus stop', 'Cable car', 'Car', 'Car rental', 'Car share', 'Emergency phone', 'Ferry', 'Fuel', 'Fuel lpg', 'Helicopter', 'Helicopter pad', 'Lighthouse', 'Marina', 'Motorcycle', 'Offroad', 'Parking', 'Parking bicycle', 'Parking car paid', 'Parking disabled', 'Port', 'Rickshaw', 'Slipway', 'Scooter', 'Snowmobile', 'Sled', 'Subway', 'Taxi', 'Train', 'Train station', 'Tram', 'Tram stop', 'Walk', 'Zebra'] },
             { cat: 'ACCOMMODATION', color: '#1D72B8', items: ['Accomodation', 'Alpinehut', 'Bed and breakfast', 'Camping', 'Caravan park', 'Hostel', 'Hotel', 'Motel', 'Shelter'] },
             { cat: 'FOOD', color: '#7C4D12', items: ['Food', 'Bar', 'Bbq', 'Biergarten', 'Cafe', 'Drinking water', 'Fast food', 'Food court', 'Ice cream', 'Pizza', 'Pub', 'Restaurant'] },
-            { cat: 'NATURAL', color: '#16A34A', items: ['Natural', 'Potrero', 'Árbol', 'Bosque', 'Loma', 'Nacedero'] },
-            { cat: 'WATER', color: '#0284C7', items: ['Water', 'Bebedero', 'Quebrada', 'Laguna', 'Pozo', 'Alcantarilla'] },
-            { cat: 'MAN MADE', color: '#64748B', items: ['Man made', 'Corral', 'Establo', 'Cerca', 'Broche', 'Antena LoRa'] },
-            { cat: 'AMENITY', color: '#0F766E', items: ['Amenity', 'Herramienta', 'Báscula', 'Bomba Agua'] },
-            { cat: 'SPORT', color: '#EA580C', items: ['Sport', 'Recorrido', 'Meta', 'Control'] },
-            { cat: 'HEALTH', color: '#DC2626', items: ['Health', 'Botiquín', 'Veterinaria', 'Vacunación'] },
-            { cat: 'WORSHIP', color: '#6B7280', items: ['Worship', 'Cruz', 'Capilla'] },
+            { cat: 'NATURAL', color: '#658C00', items: ['Natural', 'Air', 'Animal', 'Cave', 'Cliff', 'Danger area', 'Fish', 'Glacier', 'Indication', 'Mountain pass', 'Mushroom', 'Peak', 'Poi', 'Sinkhole', 'Source', 'Stone', 'Tree', 'Volcano', 'Wood'] },
+            { cat: 'WATER', color: '#0066CC', items: ['Water', 'Dam', 'Spring', 'Hot spring', 'Tower water', 'Waterfall', 'Weir'] },
+            { cat: 'MAN MADE', color: '#5B6570', items: ['Man made', 'Bunker', 'Checkpoint', 'Chimney', 'Crane', 'Military', 'Mine', 'Mine abandoned', 'Monitoring station', 'Petroleum well', 'Reservoir', 'Reservoir covered', 'Ruins', 'Storage tank', 'Surveillance', 'Survey point', 'Tower', 'Tower communication', 'Tower lookout', 'Water well'] },
+            { cat: 'AMENITY', color: '#995808', items: ['Amenity', 'Atm', 'Bank', 'Bench', 'College', 'Court', 'Currency exchange', 'Embassy', 'Fire hydrant', 'Fire station', 'Grave', 'Nursery', 'Library', 'Park', 'Playground', 'Police', 'Postbox', 'Postoffice', 'Prison', 'Recycling', 'School', 'Telephone', 'Toilets', 'Toilets disabled', 'Toilets men', 'Toilets women', 'Town hall', 'University', 'Waste bin', 'Waste disposal'] },
+            { cat: 'SPORT', color: '#2E9E1B', items: ['Sport', 'Archery', 'Baseball', 'Canoe', 'Cricket', 'Cycling', 'Diving', 'Fishing', 'Golf', 'Golf miniature', 'Gym', 'Gymnasium', 'Hiking', 'Horse racing', 'Iceskating', 'Jetski', 'Leisure centre', 'Motorracing', 'Paragliding', 'Roller', 'Running', 'Sailing', 'Scuba diving', 'Shooting', 'Skateboarding', 'Skiing crosscountry', 'Skiing downhill', 'Skimo', 'Snooker', 'Snowshoeing', 'Soccer', 'Stadium', 'Swimming indoor', 'Swimming', 'Tennis', 'Walking', 'Windsurfing'] },
+            { cat: 'HEALTH', color: '#D80088', items: ['Health', 'Dentist', 'Doctors', 'Hospital', 'Hospital emergency', 'Ambulance', 'Optician', 'Pharmacy', 'Veterinary'] },
+            { cat: 'WORSHIP', color: '#111827', items: ['Worship', 'Bahai', 'Cruz', 'Capilla'] },
             { cat: 'SHOPPING', color: '#DB2777', items: ['Shopping', 'Entrega Leche', 'Acopio', 'Insumos'] },
             { cat: 'POWER', color: '#CA8A04', items: ['Power', 'Panel Solar', 'Batería', 'Poste Eléctrico'] },
             { cat: 'GEOCACHING', color: '#15803D', items: ['Geocaching', 'Caché', 'Pista', 'Coordenada'] },
@@ -6925,7 +6925,7 @@
             if (item === 'Music') {
                 return `<svg width="18" height="18" viewBox="0 0 24 24" fill="#111827" style="flex-shrink:0;"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>`;
             }
-            if (['Tourism', 'Transportation', 'Accomodation', 'Food', 'Historical'].includes(item)) {
+            if (['Tourism', 'Transportation', 'Accomodation', 'Food', 'Historical', 'Natural', 'Man made', 'Amenity', 'Sport', 'Health', 'Danger area', 'Glacier', 'Sinkhole', 'Stone', 'Volcano', 'Reservoir', 'Reservoir covered', 'Storage tank', 'Tower', 'Water well', 'Monitoring station'].includes(item)) {
                 return `<svg width="18" height="18" viewBox="0 0 24 24" style="flex-shrink:0;"><circle cx="12" cy="12" r="8" fill="${catColor}"/></svg>`;
             }
             return `<svg width="18" height="18" viewBox="0 0 24 24" style="flex-shrink:0;"><circle cx="12" cy="12" r="7.5" fill="none" stroke="${catColor}" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="${catColor}"/></svg>`;
