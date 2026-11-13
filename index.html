@@ -2000,6 +2000,12 @@
                                 </span>
                                 <span>Mapas que se muestran</span>
                             </button>
+                            <button type="button" onclick="ocultarMenusAlpineQuest(); abrirModalAlmacenarAreaOffline();" style="display:flex; align-items:center; gap:14px; padding:8px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
+                                <span style="width:22px; display:flex; justify-content:center;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                </span>
+                                <span>Almacenar área offline</span>
+                            </button>
                         </div>
 
                         <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #b8bcc0; padding-bottom:4px; margin:10px 0 8px 0;">
@@ -2644,6 +2650,54 @@
                             </div>
                             <div style="display:flex; justify-content:flex-end;">
                                 <button type="button" onclick="document.getElementById('modal-waypoint-color').style.display='none'" style="background:transparent; border:none; color:#00897B; font-size:14px; font-weight:600; padding:6px 8px; cursor:pointer;">CANCELAR</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal: Almacenar área offline en base de datos local (IndexedDB) -->
+                    <div id="modal-almacenar-area-offline" style="display:none; position:absolute; inset:0; z-index:488; background:rgba(0,0,0,0.52); align-items:center; justify-content:center; padding:14px;">
+                        <div style="width:100%; max-width:356px; background:#ffffff; color:#111827; border-radius:4px; box-shadow:0 10px 30px rgba(0,0,0,0.45); padding:18px 18px 14px 18px;">
+                            <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                <span style="font-size:18px; font-weight:600;">Almacenar área offline</span>
+                            </div>
+
+                            <div id="offline-db-stats" style="background:#f3f4f6; border-radius:4px; padding:8px 10px; font-size:12.5px; color:#374151; margin-bottom:12px;">
+                                Guardado en la app: <strong>calculando...</strong>
+                            </div>
+
+                            <div style="margin-bottom:10px;">
+                                <label style="display:block; font-size:12px; color:#00897B; font-weight:600; margin-bottom:4px;">Área a guardar</label>
+                                <select id="offline-area-modo" style="width:100%; padding:8px; border:1px solid #d1d5db; border-radius:4px; font-size:13.5px; background:#fff;">
+                                    <option value="finca">Toda la Finca + alrededores (recomendado)</option>
+                                    <option value="vista">Área visible actual en pantalla</option>
+                                </select>
+                            </div>
+
+                            <div style="margin-bottom:12px;">
+                                <label style="display:block; font-size:12px; color:#00897B; font-weight:600; margin-bottom:4px;">Niveles de zoom</label>
+                                <select id="offline-area-zooms" style="width:100%; padding:8px; border:1px solid #d1d5db; border-radius:4px; font-size:13.5px; background:#fff;">
+                                    <option value="13-19">Zoom 13 a 19 (completo: lejos y detalle)</option>
+                                    <option value="14-18">Zoom 14 a 18 (ligero y rápido)</option>
+                                </select>
+                            </div>
+
+                            <div id="offline-dl-progress-wrap" style="display:none; margin-bottom:12px;">
+                                <div style="display:flex; justify-content:space-between; font-size:12px; color:#374151; margin-bottom:4px;">
+                                    <span id="offline-dl-status">Preparando cuadros...</span>
+                                    <span id="offline-dl-pct">0%</span>
+                                </div>
+                                <div style="width:100%; height:8px; background:#e5e7eb; border-radius:999px; overflow:hidden;">
+                                    <div id="offline-dl-bar" style="width:0%; height:100%; background:#00897B; transition:width 0.15s;"></div>
+                                </div>
+                            </div>
+
+                            <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; flex-wrap:wrap;">
+                                <button type="button" onclick="limpiarMapasOfflineDb()" style="background:transparent; border:none; color:#dc2626; font-size:12.5px; font-weight:600; padding:6px 4px; cursor:pointer;">LIMPIAR</button>
+                                <div style="display:flex; gap:8px;">
+                                    <button type="button" onclick="cancelarDescargaAreaOffline(); document.getElementById('modal-almacenar-area-offline').style.display='none'" style="background:transparent; border:none; color:#4b5563; font-size:13.5px; font-weight:600; padding:6px 8px; cursor:pointer;">CERRAR</button>
+                                    <button type="button" id="btn-iniciar-dl-offline" onclick="iniciarDescargaAreaOffline()" style="background:#00897B; color:#fff; border:none; border-radius:4px; font-size:13px; font-weight:600; padding:8px 12px; cursor:pointer;">DESCARGAR</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -7962,45 +8016,327 @@
             return Math.floor(((1 - Math.log(Math.tan(rad) + 1 / Math.cos(rad)) / Math.PI) / 2) * Math.pow(2, zoom));
         }
 
+        // --- BASE DE DATOS LOCAL OFFLINE DE MAPAS EN EL CELULAR (INDEXEDDB TIPO ALPINEQUEST) ---
+        const FINCA_MAP_DB_NAME = 'FINCA_OFFLINE_MAPS_DB';
+        const FINCA_MAP_DB_STORE = 'tiles';
+        let fincaMapDbPromise = null;
+        let offlineDownloadAbort = false;
+
+        function getMapTileUrlForLayer(layerKey, x, y, z) {
+            if (layerKey === 'topo') {
+                const sub = ['a', 'b', 'c'][Math.abs(x + y) % 3];
+                return `https://${sub}.tile.opentopomap.org/${z}/${x}/${y}.png`;
+            }
+            if (layerKey === 'esri') {
+                return `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${y}/${x}`;
+            }
+            return `https://mt1.google.com/vt/lyrs=y&x=${x}&y=${y}&z=${z}`;
+        }
+
+        function requestPersistentMapStorage() {
+            try {
+                if (navigator.storage && typeof navigator.storage.persist === 'function') {
+                    navigator.storage.persist().catch(() => {});
+                }
+            } catch {}
+        }
+
+        function openMapTilesDb() {
+            if (fincaMapDbPromise) return fincaMapDbPromise;
+            if (!('indexedDB' in window)) return Promise.resolve(null);
+            requestPersistentMapStorage();
+            fincaMapDbPromise = new Promise((resolve) => {
+                try {
+                    const req = indexedDB.open(FINCA_MAP_DB_NAME, 1);
+                    req.onupgradeneeded = (e) => {
+                        const db = e.target.result;
+                        if (!db.objectStoreNames.contains(FINCA_MAP_DB_STORE)) {
+                            db.createObjectStore(FINCA_MAP_DB_STORE, { keyPath: 'id' });
+                        }
+                    };
+                    req.onsuccess = (e) => resolve(e.target.result);
+                    req.onerror = () => resolve(null);
+                } catch {
+                    resolve(null);
+                }
+            });
+            return fincaMapDbPromise;
+        }
+
+        async function getTileFromDb(id) {
+            const db = await openMapTilesDb();
+            if (!db) return null;
+            return new Promise((resolve) => {
+                try {
+                    const tx = db.transaction(FINCA_MAP_DB_STORE, 'readonly');
+                    const req = tx.objectStore(FINCA_MAP_DB_STORE).get(id);
+                    req.onsuccess = () => resolve(req.result || null);
+                    req.onerror = () => resolve(null);
+                } catch {
+                    resolve(null);
+                }
+            });
+        }
+
+        async function putTileInDb(id, layer, z, x, y, blob) {
+            if (!blob || !blob.size) return false;
+            const db = await openMapTilesDb();
+            if (!db) return false;
+            return new Promise((resolve) => {
+                try {
+                    const tx = db.transaction(FINCA_MAP_DB_STORE, 'readwrite');
+                    tx.objectStore(FINCA_MAP_DB_STORE).put({
+                        id,
+                        layer,
+                        z,
+                        x,
+                        y,
+                        blob,
+                        size: blob.size,
+                        ts: Date.now()
+                    });
+                    tx.oncomplete = () => resolve(true);
+                    tx.onerror = () => resolve(false);
+                } catch {
+                    resolve(false);
+                }
+            });
+        }
+
+        async function fetchAndStoreTileInDb(layerKey, x, y, z) {
+            const id = `${layerKey}_${z}_${x}_${y}`;
+            const existing = await getTileFromDb(id);
+            if (existing && existing.blob) return { fromDb: true, size: existing.size || existing.blob.size || 0 };
+
+            const url = getMapTileUrlForLayer(layerKey, x, y, z);
+            try {
+                const res = await fetch(url, { mode: 'cors' });
+                if (!res || !res.ok) return null;
+                const blob = await res.blob();
+                if (blob && blob.size > 0) {
+                    await putTileInDb(id, layerKey, z, x, y, blob);
+                    return { fromDb: false, size: blob.size };
+                }
+            } catch {}
+            return null;
+        }
+
+        async function getOfflineMapStats() {
+            const db = await openMapTilesDb();
+            if (!db) return { count: 0, bytes: 0 };
+            return new Promise((resolve) => {
+                try {
+                    const tx = db.transaction(FINCA_MAP_DB_STORE, 'readonly');
+                    const store = tx.objectStore(FINCA_MAP_DB_STORE);
+                    let count = 0;
+                    let bytes = 0;
+                    const cursorReq = store.openCursor();
+                    cursorReq.onsuccess = (e) => {
+                        const cursor = e.target.result;
+                        if (cursor) {
+                            count++;
+                            bytes += Number(cursor.value.size || (cursor.value.blob ? cursor.value.blob.size : 0) || 0);
+                            cursor.continue();
+                        } else {
+                            resolve({ count, bytes });
+                        }
+                    };
+                    cursorReq.onerror = () => resolve({ count, bytes });
+                } catch {
+                    resolve({ count: 0, bytes: 0 });
+                }
+            });
+        }
+
+        async function actualizarTextoStatsOffline() {
+            const el = document.getElementById('offline-db-stats');
+            if (!el) return;
+            const st = await getOfflineMapStats();
+            const mb = (st.bytes / (1024 * 1024)).toFixed(2);
+            el.innerHTML = `Guardado en la app: <strong>${st.count} cuadros (${mb} MB)</strong>`;
+        }
+
+        async function abrirModalAlmacenarAreaOffline() {
+            const modal = document.getElementById('modal-almacenar-area-offline');
+            if (!modal) return;
+            modal.style.display = 'flex';
+            await actualizarTextoStatsOffline();
+        }
+
+        function cancelarDescargaAreaOffline() {
+            offlineDownloadAbort = true;
+        }
+
+        async function limpiarMapasOfflineDb() {
+            const db = await openMapTilesDb();
+            if (!db) return;
+            await new Promise((resolve) => {
+                try {
+                    const tx = db.transaction(FINCA_MAP_DB_STORE, 'readwrite');
+                    tx.objectStore(FINCA_MAP_DB_STORE).clear();
+                    tx.oncomplete = () => resolve();
+                    tx.onerror = () => resolve();
+                } catch {
+                    resolve();
+                }
+            });
+            await actualizarTextoStatsOffline();
+            if (typeof mostrarToastFinca === 'function') mostrarToastFinca('Caché offline de mapas limpiada');
+        }
+
+        async function iniciarDescargaAreaOffline() {
+            if (!window.fincaLeafletMap) return;
+            offlineDownloadAbort = false;
+            const layerKey = window.fincaCurrentBaseKey || 'google';
+            const modo = document.getElementById('offline-area-modo')?.value || 'finca';
+            const zoomRange = (document.getElementById('offline-area-zooms')?.value || '13-19').split('-').map(Number);
+            const zMin = zoomRange[0] || 13;
+            const zMax = Math.min(layerKey === 'topo' ? 17 : 19, zoomRange[1] || 19);
+
+            let bounds = window.fincaLeafletMap.getBounds();
+            if (modo === 'finca') {
+                const c = getFincaCenterCoords();
+                bounds = L.latLngBounds([c.lat - 0.0085, c.lng - 0.0085], [c.lat + 0.0085, c.lng + 0.0085]);
+            }
+
+            const queue = [];
+            for (let z = zMin; z <= zMax; z++) {
+                const minX = lon2tileX(bounds.getWest(), z);
+                const maxX = lon2tileX(bounds.getEast(), z);
+                const minY = lat2tileY(bounds.getNorth(), z);
+                const maxY = lat2tileY(bounds.getSouth(), z);
+                for (let x = minX; x <= maxX; x++) {
+                    for (let y = minY; y <= maxY; y++) {
+                        if (queue.length < 1800) queue.push({ x, y, z });
+                    }
+                }
+            }
+
+            const wrap = document.getElementById('offline-dl-progress-wrap');
+            const stEl = document.getElementById('offline-dl-status');
+            const pctEl = document.getElementById('offline-dl-pct');
+            const barEl = document.getElementById('offline-dl-bar');
+            const btn = document.getElementById('btn-iniciar-dl-offline');
+            if (wrap) wrap.style.display = 'block';
+            if (btn) btn.disabled = true;
+
+            const total = queue.length || 1;
+            let done = 0;
+            const batchSize = 6;
+            for (let i = 0; i < queue.length; i += batchSize) {
+                if (offlineDownloadAbort) break;
+                const batch = queue.slice(i, i + batchSize);
+                await Promise.all(batch.map(t => fetchAndStoreTileInDb(layerKey, t.x, t.y, t.z)));
+                done += batch.length;
+                const pct = Math.min(100, Math.round((done / total) * 100));
+                if (stEl) stEl.textContent = `${done} / ${total} cuadros`;
+                if (pctEl) pctEl.textContent = `${pct}%`;
+                if (barEl) barEl.style.width = `${pct}%`;
+            }
+
+            if (btn) btn.disabled = false;
+            await actualizarTextoStatsOffline();
+            if (typeof mostrarToastFinca === 'function') {
+                mostrarToastFinca(offlineDownloadAbort ? 'Descarga pausada' : 'Mapa offline guardado en la app');
+            }
+        }
+
+        function createOfflineTileLayer(layerKey, urlTemplate, options) {
+            const OfflineLayer = L.TileLayer.extend({
+                createTile: function (coords, done) {
+                    const tile = document.createElement('img');
+                    tile.alt = '';
+                    tile.setAttribute('role', 'presentation');
+                    const z = coords.z;
+                    const x = coords.x;
+                    const y = coords.y;
+                    const id = `${layerKey}_${z}_${x}_${y}`;
+                    const url = this.getTileUrl(coords);
+
+                    const finishWithBlob = (blob) => {
+                        const objUrl = URL.createObjectURL(blob);
+                        tile.onload = () => {
+                            try { URL.revokeObjectURL(objUrl); } catch {}
+                            done(null, tile);
+                        };
+                        tile.onerror = () => {
+                            try { URL.revokeObjectURL(objUrl); } catch {}
+                            done(null, tile);
+                        };
+                        tile.src = objUrl;
+                    };
+
+                    getTileFromDb(id).then((rec) => {
+                        if (rec && rec.blob) {
+                            finishWithBlob(rec.blob);
+                            return;
+                        }
+                        if (window.aqSoloLocalStorage) {
+                            done(null, tile);
+                            return;
+                        }
+                        fetch(url, { mode: 'cors' })
+                            .then((res) => (res && res.ok ? res.blob() : null))
+                            .then((blob) => {
+                                if (blob && blob.size > 0) {
+                                    putTileInDb(id, layerKey, z, x, y, blob);
+                                    finishWithBlob(blob);
+                                } else {
+                                    tile.onload = () => done(null, tile);
+                                    tile.onerror = () => done(null, tile);
+                                    tile.src = url;
+                                }
+                            })
+                            .catch(() => {
+                                tile.onload = () => done(null, tile);
+                                tile.onerror = () => done(null, tile);
+                                tile.src = url;
+                            });
+                    }).catch(() => {
+                        tile.onload = () => done(null, tile);
+                        tile.onerror = () => done(null, tile);
+                        tile.src = url;
+                    });
+
+                    return tile;
+                }
+            });
+            return new OfflineLayer(urlTemplate, options);
+        }
+
         function autoCacheVisibleTilesOnMove() {
-            if (!window.fincaLeafletMap || !('caches' in window)) return;
+            if (!window.fincaLeafletMap || window.aqSoloLocalStorage) return;
             if (autoCacheTimer) clearTimeout(autoCacheTimer);
 
             autoCacheTimer = setTimeout(async () => {
                 try {
+                    const layerKey = window.fincaCurrentBaseKey || 'google';
                     const bounds = window.fincaLeafletMap.getBounds();
-                    const z = Math.min(19, Math.max(14, Math.round(window.fincaLeafletMap.getZoom() || 16)));
-                    const minX = lon2tileX(bounds.getWest(), z);
-                    const maxX = lon2tileX(bounds.getEast(), z);
-                    const minY = lat2tileY(bounds.getNorth(), z);
-                    const maxY = lat2tileY(bounds.getSouth(), z);
+                    const zNow = Math.min(layerKey === 'topo' ? 17 : 19, Math.max(12, Math.round(window.fincaLeafletMap.getZoom() || 16)));
+                    const zoomsToCache = zNow > 13 ? [zNow, zNow - 1] : [zNow];
 
-                    const urls = [];
-                    for (let x = minX; x <= maxX; x++) {
-                        for (let y = minY; y <= maxY; y++) {
-                            if (urls.length < 36) {
-                                urls.push(`https://mt1.google.com/vt/lyrs=y&x=${x}&y=${y}&z=${z}`);
+                    const tasks = [];
+                    for (const z of zoomsToCache) {
+                        const minX = lon2tileX(bounds.getWest(), z);
+                        const maxX = lon2tileX(bounds.getEast(), z);
+                        const minY = lat2tileY(bounds.getNorth(), z);
+                        const maxY = lat2tileY(bounds.getSouth(), z);
+                        for (let x = minX; x <= maxX; x++) {
+                            for (let y = minY; y <= maxY; y++) {
+                                if (tasks.length < 48) tasks.push({ x, y, z });
                             }
                         }
                     }
 
                     const pctEl = document.getElementById('hud-cache-pct');
-                    const cache = await caches.open('agromacarena-map-tiles-v1');
                     let done = 0;
-                    const total = urls.length || 1;
+                    const total = tasks.length || 1;
 
-                    await Promise.all(urls.map(async (u) => {
-                        try {
-                            const req = new Request(u, { mode: 'no-cors' });
-                            const existing = await cache.match(req);
-                            if (!existing) {
-                                const res = await fetch(req);
-                                if (res) await cache.put(req, res);
-                            }
-                        } catch {}
+                    await Promise.all(tasks.map(async (t) => {
+                        await fetchAndStoreTileInDb(layerKey, t.x, t.y, t.z);
                         done++;
                         if (pctEl) {
-                            pctEl.textContent = `Abrir "FINCA_MACARENA": ${Math.min(100, Math.round((done / total) * 100))} %`;
+                            pctEl.textContent = `Offline DB: ${Math.min(100, Math.round((done / total) * 100))} %`;
                         }
                     }));
                 } catch {}
@@ -8023,13 +8359,13 @@
                     attributionControl: false
                 });
 
-                const capaGoogleSat = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+                const capaGoogleSat = createOfflineTileLayer('google', 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
                     maxZoom: 20
                 });
-                const capaTopoAlpine = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+                const capaTopoAlpine = createOfflineTileLayer('topo', 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
                     maxZoom: 17
                 });
-                const capaEsriImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                const capaEsriImagery = createOfflineTileLayer('esri', 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/${y}/${x}', {
                     maxZoom: 19
                 });
 
@@ -8039,6 +8375,7 @@
                     esri: capaEsriImagery
                 };
 
+                window.fincaCurrentBaseKey = window.fincaCurrentBaseKey || 'google';
                 capaGoogleSat.addTo(window.fincaLeafletMap);
 
                 // Capas superpuestas GeoJSON de la Finca + Línea Azul AlpineQuest + Objetivo Centro Fucsia + Marcador GPS Real
