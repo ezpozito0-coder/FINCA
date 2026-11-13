@@ -1181,12 +1181,15 @@
                     </table>
                 </div>
                 <div id="vacas-paginacion-bar" class="flex flex-wrap items-center justify-between gap-2 pt-3 mt-2 border-t border-[#D5CBB2]">
-                    <span id="vacas-paginacion-info" class="text-xs font-bold text-[#3E5245]">Mostrando 10 de 27</span>
+                    <span id="vacas-paginacion-info" class="text-xs font-bold text-[#3E5245]">Mostrando 1–10 de 27</span>
                     <div class="flex items-center gap-2">
-                        <button id="btn-reset-vacas" type="button" onclick="resetearVista10Vacas()" style="display:none;" class="btn-corral btn-dark text-xs py-1.5 px-3">Ver solo 10</button>
-                        <button id="btn-ver-mas-vacas" type="button" onclick="verSiguientes10Vacas()" class="btn-corral btn-green text-xs py-1.5 px-4 flex items-center gap-1.5">
-                            <span>Ver siguientes 10</span>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                        <button id="btn-prev-vacas" type="button" onclick="cambiarPaginaVacas(-1)" style="display:none;" class="btn-corral btn-dark text-xs py-1.5 px-3 inline-flex items-center gap-1">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                            <span>Anteriores 10</span>
+                        </button>
+                        <button id="btn-next-vacas" type="button" onclick="cambiarPaginaVacas(1)" class="btn-corral btn-green text-xs py-1.5 px-4 inline-flex items-center gap-1.5">
+                            <span>Siguientes 10</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                         </button>
                     </div>
                 </div>
@@ -3985,18 +3988,14 @@
         }
 
         window.soloApartadoMangaHoy = false;
-        window.limiteVacasVisibles = 10;
-        function verSiguientes10Vacas() {
-            window.limiteVacasVisibles = Number(window.limiteVacasVisibles || 10) + 10;
-            renderTab3VacasYAnillos();
-        }
-        function resetearVista10Vacas() {
-            window.limiteVacasVisibles = 10;
+        window.paginaVacasActual = 1;
+        function cambiarPaginaVacas(delta) {
+            window.paginaVacasActual = Math.max(1, Number(window.paginaVacasActual || 1) + Number(delta || 0));
             renderTab3VacasYAnillos();
         }
         function toggleFiltroApartadoManga() {
             window.soloApartadoMangaHoy = !window.soloApartadoMangaHoy;
-            window.limiteVacasVisibles = 10;
+            window.paginaVacasActual = 1;
             const btn = document.getElementById('btn-apartado-manga-hoy');
             if (btn) {
                 btn.classList.toggle('btn-green', window.soloApartadoMangaHoy);
@@ -4058,24 +4057,31 @@
                 return true;
             });
 
-            if (typeof window.limiteVacasVisibles !== 'number' || window.limiteVacasVisibles < 10) {
-                window.limiteVacasVisibles = 10;
+            const porPagina = 10;
+            const totalPaginas = Math.max(1, Math.ceil(filtrados.length / porPagina));
+            if (typeof window.paginaVacasActual !== 'number' || window.paginaVacasActual < 1) {
+                window.paginaVacasActual = 1;
             }
-            const visibles = filtrados.slice(0, window.limiteVacasVisibles);
+            if (window.paginaVacasActual > totalPaginas) {
+                window.paginaVacasActual = totalPaginas;
+            }
+            const inicioIdx = (window.paginaVacasActual - 1) * porPagina;
+            const visibles = filtrados.slice(inicioIdx, inicioIdx + porPagina);
             const pagInfo = document.getElementById('vacas-paginacion-info');
-            const btnVerMas = document.getElementById('btn-ver-mas-vacas');
-            const btnReset = document.getElementById('btn-reset-vacas');
+            const btnPrev = document.getElementById('btn-prev-vacas');
+            const btnNext = document.getElementById('btn-next-vacas');
             if (pagInfo) {
-                pagInfo.textContent = `Mostrando ${visibles.length} de ${filtrados.length} animales`;
+                if (filtrados.length === 0) {
+                    pagInfo.textContent = '0 animales';
+                } else {
+                    pagInfo.textContent = `Mostrando ${inicioIdx + 1}–${inicioIdx + visibles.length} de ${filtrados.length} (Pág. ${window.paginaVacasActual}/${totalPaginas})`;
+                }
             }
-            if (btnVerMas) {
-                const restantes = filtrados.length - visibles.length;
-                btnVerMas.style.display = restantes > 0 ? 'inline-flex' : 'none';
-                const spanTxt = btnVerMas.querySelector('span');
-                if (spanTxt) spanTxt.textContent = `Ver siguientes ${Math.min(10, restantes)}`;
+            if (btnPrev) {
+                btnPrev.style.display = window.paginaVacasActual > 1 ? 'inline-flex' : 'none';
             }
-            if (btnReset) {
-                btnReset.style.display = (window.limiteVacasVisibles > 10 && filtrados.length > 10) ? 'inline-flex' : 'none';
+            if (btnNext) {
+                btnNext.style.display = window.paginaVacasActual < totalPaginas ? 'inline-flex' : 'none';
             }
 
             const tbody = document.getElementById('tabla-vacas-body');
