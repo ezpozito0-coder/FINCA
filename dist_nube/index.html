@@ -1181,6 +1181,16 @@
                         <tbody id="tabla-vacas-body" class="text-xs"></tbody>
                     </table>
                 </div>
+                <div id="vacas-paginacion-bar" class="flex flex-wrap items-center justify-between gap-2 pt-3 mt-2 border-t border-[#D5CBB2]">
+                    <span id="vacas-paginacion-info" class="text-xs font-bold text-[#3E5245]">Mostrando 10 de 27</span>
+                    <div class="flex items-center gap-2">
+                        <button id="btn-reset-vacas" type="button" onclick="resetearVista10Vacas()" style="display:none;" class="btn-corral btn-dark text-xs py-1.5 px-3">Ver solo 10</button>
+                        <button id="btn-ver-mas-vacas" type="button" onclick="verSiguientes10Vacas()" class="btn-corral btn-green text-xs py-1.5 px-4 flex items-center gap-1.5">
+                            <span>Ver siguientes 10</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <!-- Tarjetas de Control ICA / SINIGAN V6 + HERDEplus KPIs -->
@@ -3976,8 +3986,18 @@
         }
 
         window.soloApartadoMangaHoy = false;
+        window.limiteVacasVisibles = 10;
+        function verSiguientes10Vacas() {
+            window.limiteVacasVisibles = Number(window.limiteVacasVisibles || 10) + 10;
+            renderTab3VacasYAnillos();
+        }
+        function resetearVista10Vacas() {
+            window.limiteVacasVisibles = 10;
+            renderTab3VacasYAnillos();
+        }
         function toggleFiltroApartadoManga() {
             window.soloApartadoMangaHoy = !window.soloApartadoMangaHoy;
+            window.limiteVacasVisibles = 10;
             const btn = document.getElementById('btn-apartado-manga-hoy');
             if (btn) {
                 btn.classList.toggle('btn-green', window.soloApartadoMangaHoy);
@@ -4039,8 +4059,28 @@
                 return true;
             });
 
+            if (typeof window.limiteVacasVisibles !== 'number' || window.limiteVacasVisibles < 10) {
+                window.limiteVacasVisibles = 10;
+            }
+            const visibles = filtrados.slice(0, window.limiteVacasVisibles);
+            const pagInfo = document.getElementById('vacas-paginacion-info');
+            const btnVerMas = document.getElementById('btn-ver-mas-vacas');
+            const btnReset = document.getElementById('btn-reset-vacas');
+            if (pagInfo) {
+                pagInfo.textContent = `Mostrando ${visibles.length} de ${filtrados.length} animales`;
+            }
+            if (btnVerMas) {
+                const restantes = filtrados.length - visibles.length;
+                btnVerMas.style.display = restantes > 0 ? 'inline-flex' : 'none';
+                const spanTxt = btnVerMas.querySelector('span');
+                if (spanTxt) spanTxt.textContent = `Ver siguientes ${Math.min(10, restantes)}`;
+            }
+            if (btnReset) {
+                btnReset.style.display = (window.limiteVacasVisibles > 10 && filtrados.length > 10) ? 'inline-flex' : 'none';
+            }
+
             const tbody = document.getElementById('tabla-vacas-body');
-            tbody.innerHTML = filtrados.map(v => {
+            tbody.innerHTML = visibles.map(v => {
                 const isToro = v.estado_reproductivo === 'Reproductor_Activo' || v.categoria_bovino === 'Toro';
                 const nombreLimpio = String(v.codigo_nombre || '').replace(/Toro Suegro/gi, 'Toro').replace(/del Suegro/gi, '');
                 const edadAnios = Number(v.edad_anios !== undefined && v.edad_anios !== null ? v.edad_anios : (v.id === 1 ? 7 : 4));
