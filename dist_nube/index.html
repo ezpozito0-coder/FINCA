@@ -2015,7 +2015,7 @@
                                 </span>
                                 <span>Explore los placemarks</span>
                             </button>
-                            <button type="button" onclick="toggleCapasFincaRapido(); ocultarMenusAlpineQuest();" style="display:flex; align-items:center; gap:14px; padding:9px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
+                            <button type="button" onclick="ocultarMenusAlpineQuest(); abrirPlacemarksMostrados();" style="display:flex; align-items:center; gap:14px; padding:9px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
                                 <span style="width:22px; display:flex; justify-content:center;">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2.2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1.3" fill="#111827"/><circle cx="4" cy="12" r="1.3" fill="#111827"/><circle cx="4" cy="18" r="1.3" fill="#111827"/></svg>
                                 </span>
@@ -2234,6 +2234,28 @@
                         <!-- Botón Flotante + -->
                         <button type="button" onclick="cerrarExploradorPlacemarks(); abrirModalAlpineCrearPlacemark();" title="Crear placemark"
                             style="position:fixed; bottom:20px; right:20px; z-index:9999; width:56px; height:56px; border-radius:999px; background:#ffffff; color:#111827; border:none; box-shadow:0 4px 14px rgba(0,0,0,0.32); font-size:28px; font-weight:500; display:flex; align-items:center; justify-content:center; cursor:pointer;">+</button>
+                    </div>
+
+                    <!-- Panel Inferior Split-Screen "Placemarks mostrados" (AlpineQuest) -->
+                    <div id="panel-placemarks-mostrados" style="display:none; position:absolute; bottom:0; left:0; right:0; height:46%; min-height:240px; max-height:56%; z-index:485; background:#d1d5db; border-top:1px solid #9ca3af; box-shadow:0 -4px 18px rgba(0,0,0,0.35); flex-direction:column; color:#111827; font-family:var(--font-sans);">
+                        <!-- Barra Superior -->
+                        <div style="display:flex; align-items:center; justify-content:space-between; background:#c5c9ce; border-bottom:1px solid #9ca3af; padding:8px 12px; flex-shrink:0;">
+                            <div style="display:flex; align-items:center; gap:10px; min-width:0;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2.2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1.3" fill="#111827"/><circle cx="4" cy="12" r="1.3" fill="#111827"/><circle cx="4" cy="18" r="1.3" fill="#111827"/></svg>
+                                <span style="font-size:15px; font-style:italic; font-weight:600; color:#111827; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Placemarks mostrados</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <button type="button" onclick="cerrarPlacemarksMostrados(); abrirExploradorPlacemarks();" title="Explorar placemarks" style="background:transparent; border:none; padding:4px; cursor:pointer; display:flex; align-items:center;">
+                                    <svg width="19" height="19" viewBox="0 0 24 24" fill="#4b5563"><path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
+                                </button>
+                                <button type="button" onclick="limpiarPlacemarksMostrados()" title="Ocultar todos / Limpiar objetivo" style="background:transparent; border:none; padding:4px; cursor:pointer; display:flex; align-items:center;">
+                                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="18" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="12" y2="18"/><line x1="16" y1="14" x2="21" y2="19"/><line x1="21" y1="14" x2="16" y2="19"/></svg>
+                                </button>
+                                <button type="button" onclick="cerrarPlacemarksMostrados()" title="Cerrar" style="background:transparent; border:none; color:#374151; font-size:18px; font-weight:700; padding:2px 6px; cursor:pointer;">✕</button>
+                            </div>
+                        </div>
+                        <!-- Contenido Scrollable -->
+                        <div id="aq-shown-body" style="flex:1; overflow-y:auto; padding:0 0 12px 0;"></div>
                     </div>
 
                     <!-- =========================================================
@@ -5432,6 +5454,149 @@
             toggleDrawerExploradorPlacemarks(false);
             if (typeof mostrarToastFinca === 'function') mostrarToastFinca(`GeoJSON exportado (${features.length} elementos)`);
         }
+        window.aqMostradosOrden = 'dist';
+        window.aqMostradosTargetAbierto = true;
+        window.aqMostradosListaAbierta = true;
+        function abrirPlacemarksMostrados() {
+            const panel = document.getElementById('panel-placemarks-mostrados');
+            if (!panel) return;
+            renderPlacemarksMostrados();
+            panel.style.display = 'flex';
+            if (window.fincaLeafletMap) setTimeout(() => window.fincaLeafletMap.invalidateSize(), 60);
+        }
+        function cerrarPlacemarksMostrados() {
+            const panel = document.getElementById('panel-placemarks-mostrados');
+            if (panel) panel.style.display = 'none';
+            if (window.fincaLeafletMap) setTimeout(() => window.fincaLeafletMap.invalidateSize(), 60);
+        }
+        function toggleOrdenPlacemarksMostrados() {
+            window.aqMostradosOrden = window.aqMostradosOrden === 'dist' ? 'name' : 'dist';
+            renderPlacemarksMostrados();
+        }
+        function toggleSeccionMostrados(sec) {
+            if (sec === 'target') window.aqMostradosTargetAbierto = !window.aqMostradosTargetAbierto;
+            else window.aqMostradosListaAbierta = !window.aqMostradosListaAbierta;
+            renderPlacemarksMostrados();
+        }
+        function limpiarPlacemarksMostrados() {
+            (appState?.placemarks_mapa || []).forEach(p => { p._oculto = true; });
+            window.objetivoCentroCoords = null;
+            if (typeof actualizarHudAlpineQuest === 'function') actualizarHudAlpineQuest();
+            if (typeof initOrUpdateGoogleMapFinca === 'function') initOrUpdateGoogleMapFinca();
+            renderPlacemarksMostrados();
+            if (typeof mostrarToastFinca === 'function') mostrarToastFinca('Marcas ocultadas y objetivo limpiado');
+        }
+        function toggleVisibilidadPlacemarkMostrado(idx) {
+            const list = appState?.placemarks_mapa || [];
+            if (!list[idx]) return;
+            list[idx]._oculto = !list[idx]._oculto;
+            if (typeof initOrUpdateGoogleMapFinca === 'function') initOrUpdateGoogleMapFinca();
+            renderPlacemarksMostrados();
+        }
+        function renderPlacemarksMostrados() {
+            const body = document.getElementById('aq-shown-body');
+            if (!body) return;
+            const centro = window.fincaLeafletMap ? window.fincaLeafletMap.getCenter() : getFincaCenterCoords();
+            const fmtInfo = (lat, lng) => {
+                if (lat == null || lng == null || typeof calcularDistanciaMetros !== 'function') return { dNum: 99999999, dTxt: '-', r: 0 };
+                const d = calcularDistanciaMetros(centro.lat, centro.lng, Number(lat), Number(lng));
+                const r = typeof calcularRumboGrados === 'function' ? calcularRumboGrados(centro.lat, centro.lng, Number(lat), Number(lng)) : 0;
+                return { dNum: d, dTxt: d >= 1000 ? `${(d / 1000).toFixed(2)} km` : `${Math.round(d)} m`, r };
+            };
+            const arrowSvg = (deg) => `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(${Math.round(deg)}deg); flex-shrink:0;"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="6 11 12 5 18 11"/></svg>`;
+            const pinSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9333ea" stroke-width="2.2" style="flex-shrink:0;"><circle cx="12" cy="8" r="4"/><line x1="12" y1="12" x2="12" y2="21"/></svg>`;
+            const trackSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9333ea" stroke-width="2.2" stroke-linecap="round" style="flex-shrink:0;"><polyline points="4 17 10 13 14 15 20 7"/><circle cx="4" cy="17" r="1.5" fill="#9333ea"/><circle cx="10" cy="13" r="1.5" fill="#9333ea"/><circle cx="20" cy="7" r="1.5" fill="#9333ea"/></svg>`;
+
+            let html = '';
+            // Sección TARGET
+            const t = window.objetivoCentroCoords;
+            const chevTarget = window.aqMostradosTargetAbierto ? 'M6 15l6-6 6 6' : 'M6 9l6 6 6-6';
+            html += `<button type="button" onclick="toggleSeccionMostrados('target')" style="width:100%; display:flex; align-items:center; gap:10px; padding:10px 14px; background:transparent; border:none; border-bottom:${window.aqMostradosTargetAbierto ? 'none' : '1px solid #b6bcc4'}; text-align:left; cursor:pointer;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4b5563" stroke-width="2.2"><polyline points="${chevTarget}"/></svg>
+                <span style="font-size:13px; font-weight:600; color:#4b5563; letter-spacing:0.03em;">TARGET</span>
+            </button>`;
+            if (window.aqMostradosTargetAbierto) {
+                if (t && t.lat != null && t.lng != null) {
+                    const ti = fmtInfo(t.lat, t.lng);
+                    html += `<div onclick="if(window.fincaLeafletMap) window.fincaLeafletMap.setView([${Number(t.lat)}, ${Number(t.lng)}], 17)" style="display:flex; align-items:center; justify-content:space-between; padding:8px 14px 12px 18px; border-bottom:1px solid #b6bcc4; cursor:pointer;">
+                        <div style="display:flex; align-items:center; gap:14px; min-width:0;">
+                            ${pinSvg}
+                            <span style="font-size:17px; font-weight:500; color:#111827; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${t.nombre || 'Waypoint'}</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:6px; font-size:12px; color:#4b5563; flex-shrink:0;">
+                            <span>${ti.dTxt}</span>${arrowSvg(ti.r)}
+                        </div>
+                    </div>`;
+                } else {
+                    html += `<div style="padding:6px 18px 12px 44px; font-size:13px; color:#6b7280; border-bottom:1px solid #b6bcc4;">Sin objetivo activo</div>`;
+                }
+            }
+
+            // Sección PUNTOS DE INTERÉS
+            const placemarks = (appState?.placemarks_mapa || []).map((pm, idx) => {
+                const lat = pm.latitud ?? pm.lat;
+                const lng = pm.longitud ?? pm.lng;
+                return { kind: 'pm', idx, name: pm.nombre || 'Waypoint', lat, lng, hidden: !!pm._oculto, info: fmtInfo(lat, lng) };
+            });
+            const potreros = (appState?.geojson_potreros || []).map((pot, idx) => {
+                let lat = null, lng = null;
+                try {
+                    const geom = typeof pot.geojson === 'string' ? JSON.parse(pot.geojson) : (pot.geojson || pot.geometry);
+                    const coords = geom?.geometry?.coordinates?.[0] || geom?.coordinates?.[0];
+                    if (Array.isArray(coords) && coords.length > 0) { lng = coords[0][0]; lat = coords[0][1]; }
+                } catch (e) {}
+                return { kind: 'pot', idx, name: pot.nombre || `Potrero ${idx + 1}`, lat, lng, hidden: false, info: fmtInfo(lat, lng) };
+            });
+            let items = [...placemarks, ...potreros];
+            if (window.aqMostradosOrden === 'name') items.sort((a, b) => a.name.localeCompare(b.name));
+            else items.sort((a, b) => a.info.dNum - b.info.dNum);
+
+            const chevList = window.aqMostradosListaAbierta ? 'M6 15l6-6 6 6' : 'M6 9l6 6 6-6';
+            html += `<div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px 6px 14px;">
+                <button type="button" onclick="toggleSeccionMostrados('list')" style="display:flex; align-items:center; gap:10px; background:transparent; border:none; padding:0; text-align:left; cursor:pointer;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4b5563" stroke-width="2.2"><polyline points="${chevList}"/></svg>
+                    <div>
+                        <div style="font-size:13px; font-weight:600; color:#4b5563; letter-spacing:0.03em;">PUNTOS DE INTERÉS</div>
+                        <div style="font-size:11px; color:#6b7280;">${items.length} elementos</div>
+                    </div>
+                </button>
+                <button type="button" onclick="toggleOrdenPlacemarksMostrados()" title="Cambiar orden (${window.aqMostradosOrden === 'dist' ? 'distancia' : 'alfabético'})" style="background:transparent; border:none; padding:4px 6px; cursor:pointer; color:#374151; font-size:12px; font-weight:700; display:flex; align-items:center; gap:4px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2"><line x1="3" y1="6" x2="11" y2="6"/><line x1="3" y1="12" x2="11" y2="12"/><line x1="3" y1="18" x2="16" y2="18"/><text x="13" y="10" font-size="7" fill="#374151" stroke="none" font-family="sans-serif">abc</text></svg>
+                </button>
+            </div>`;
+
+            if (window.aqMostradosListaAbierta) {
+                if (items.length === 0) {
+                    html += `<div style="padding:16px 18px; text-align:center; font-size:13px; color:#6b7280;">No hay placemarks mostrados.</div>`;
+                } else {
+                    html += items.map(it => {
+                        const icon = it.kind === 'pot' ? trackSvg : pinSvg;
+                        const eye = it.hidden
+                            ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
+                            : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3" fill="#111827"/></svg>`;
+                        const clickRow = (it.lat != null && it.lng != null)
+                            ? `if(window.fincaLeafletMap) window.fincaLeafletMap.setView([${Number(it.lat)}, ${Number(it.lng)}], 17)`
+                            : '';
+                        const eyeBtn = it.kind === 'pm'
+                            ? `<button type="button" onclick="event.stopPropagation(); toggleVisibilidadPlacemarkMostrado(${it.idx})" style="background:transparent; border:none; padding:4px 6px; cursor:pointer; display:flex; align-items:center;">${eye}</button>`
+                            : `<span style="padding:4px 6px; display:flex; align-items:center; opacity:0.85;">${eye}</span>`;
+                        return `<div onclick="${clickRow}" style="display:flex; align-items:center; justify-content:space-between; padding:8px 12px 8px 18px; border-bottom:1px solid #c3c8ce; cursor:pointer; opacity:${it.hidden ? '0.55' : '1'};">
+                            <div style="display:flex; align-items:center; gap:14px; min-width:0; flex:1;">
+                                ${icon}
+                                <span style="font-size:16px; font-weight:500; color:#111827; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${it.name}</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:10px; flex-shrink:0;">
+                                <div style="display:flex; align-items:center; gap:5px; font-size:12px; color:#4b5563;">
+                                    <span>${it.info.dTxt}</span>${arrowSvg(it.info.r)}
+                                </div>
+                                ${eyeBtn}
+                            </div>
+                        </div>`;
+                    }).join('');
+                }
+            }
+            body.innerHTML = html;
+        }
         function volverCarpetaExploradorPlacemarks() {
             const bd = document.getElementById('aq-exp-drawer-backdrop');
             if (bd && bd.style.display === 'block') {
@@ -6493,6 +6658,7 @@
             const placemarksList = appState.placemarks_mapa || [];
             if (window.fincaLayerGroupPlacemarks) {
                 placemarksList.forEach(pm => {
+                    if (pm._oculto) return;
                     const lat = Number(pm.latitud);
                     const lng = Number(pm.longitud);
                     if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
