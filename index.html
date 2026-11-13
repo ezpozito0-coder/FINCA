@@ -6883,25 +6883,53 @@
         }
 
         const WP_ICON_CATEGORIES = [
-            { cat: 'IMPORTED', items: ['Pin importado', 'Marca KML', 'Waypoint GPX'] },
-            { cat: 'PLACEMARK', items: ['Bandera', 'Pin', 'Estrella', 'Objetivo', 'Chincheta', 'Círculo'] },
-            { cat: 'TOURISM', items: ['Mirador', 'Campamento', 'Sendero', 'Información'] },
-            { cat: 'TRANSPORT', items: ['Portada / Entrada', 'Camino / Trocha', 'Vehículo', 'Parqueadero'] },
-            { cat: 'ACCOMMODATION', items: ['Casa Finca', 'Cabina', 'Refugio'] },
-            { cat: 'FOOD', items: ['Saladero', 'Comedero', 'Bodega Alimento'] },
-            { cat: 'NATURAL', items: ['Potrero', 'Árbol', 'Bosque', 'Loma', 'Nacedero'] },
-            { cat: 'WATER', items: ['Bebedero', 'Quebrada', 'Laguna', 'Pozo', 'Alcantarilla'] },
-            { cat: 'MAN MADE', items: ['Corral', 'Establo', 'Cerca', 'Broche', 'Antena LoRa'] },
-            { cat: 'AMENITY', items: ['Herramienta', 'Báscula', 'Bomba Agua'] },
-            { cat: 'SPORT', items: ['Recorrido', 'Meta', 'Control'] },
-            { cat: 'HEALTH', items: ['Botiquín', 'Veterinaria', 'Vacunación'] },
-            { cat: 'WORSHIP', items: ['Cruz', 'Capilla'] },
-            { cat: 'SHOPPING', items: ['Entrega Leche', 'Acopio', 'Insumos'] },
-            { cat: 'POWER', items: ['Panel Solar', 'Batería', 'Poste Eléctrico'] },
-            { cat: 'GEOCACHING', items: ['Caché', 'Pista', 'Coordenada'] },
-            { cat: 'OTRO', items: ['Alerta', 'Nota', 'Sensor'] }
+            { cat: 'IMPORTED', color: '#4b5563', items: ['Pin importado', 'Marca KML', 'Waypoint GPX'] },
+            { cat: 'PLACEMARK', color: '#111827', items: ['Waypoint', 'Blue waypoint', 'Green waypoint', 'Red waypoint', 'Yellow waypoint', 'Orange waypoint', 'Purple waypoint', 'Picture', 'Audio', 'Music'] },
+            { cat: 'TOURISM', color: '#9C27B0', items: ['Tourism', 'Archeological', 'Art', 'Art gallery', 'Attraction', 'Battlefield', 'Beach', 'Boundary stone', 'Casino', 'Castle', 'Cinema', 'Clock', 'Fort', 'Fountain', 'Guidepost', 'Historical', 'Historical city gate', 'Historical ruins', 'Information', 'Map', 'Maya', 'Memorial', 'Monument', 'Museum', 'Picnic', 'Rune stone', 'Steam train', 'Theatre', 'Theme park', 'Trail head', 'View point', 'Waterwheel', 'Wayside cross', 'Wayside shrine', 'Windmill', 'Wreck', 'Zoo'] },
+            { cat: 'TRANSPORT', color: '#0EA5E9', items: ['Transportation', 'Aerodrome', 'Airport', 'Airplane', 'Atv', 'Bicycle', 'Bicycle rental', 'Boat', 'Bus', 'Bus station', 'Bus stop', 'Cable car', 'Car', 'Car rental', 'Car share', 'Emergency phone', 'Ferry', 'Fuel', 'Fuel lpg', 'Helicopter', 'Helicopter pad', 'Lighthouse', 'Marina', 'Motorcycle', 'Offroad', 'Parking', 'Parking bicycle', 'Parking car paid', 'Parking disabled', 'Port', 'Rickshaw', 'Slipway', 'Scooter', 'Snowmobile', 'Sled', 'Subway', 'Taxi', 'Train', 'Train station', 'Tram', 'Tram stop', 'Walk', 'Zebra'] },
+            { cat: 'ACCOMMODATION', color: '#1D72B8', items: ['Accomodation', 'Alpinehut', 'Bed and breakfast', 'Camping', 'Caravan park', 'Hostel', 'Hotel', 'Motel', 'Shelter'] },
+            { cat: 'FOOD', color: '#7C4D12', items: ['Food', 'Bar', 'Bbq', 'Biergarten', 'Cafe', 'Drinking water', 'Fast food', 'Food court', 'Ice cream', 'Pizza', 'Pub', 'Restaurant'] },
+            { cat: 'NATURAL', color: '#16A34A', items: ['Natural', 'Potrero', 'Árbol', 'Bosque', 'Loma', 'Nacedero'] },
+            { cat: 'WATER', color: '#0284C7', items: ['Water', 'Bebedero', 'Quebrada', 'Laguna', 'Pozo', 'Alcantarilla'] },
+            { cat: 'MAN MADE', color: '#64748B', items: ['Man made', 'Corral', 'Establo', 'Cerca', 'Broche', 'Antena LoRa'] },
+            { cat: 'AMENITY', color: '#0F766E', items: ['Amenity', 'Herramienta', 'Báscula', 'Bomba Agua'] },
+            { cat: 'SPORT', color: '#EA580C', items: ['Sport', 'Recorrido', 'Meta', 'Control'] },
+            { cat: 'HEALTH', color: '#DC2626', items: ['Health', 'Botiquín', 'Veterinaria', 'Vacunación'] },
+            { cat: 'WORSHIP', color: '#6B7280', items: ['Worship', 'Cruz', 'Capilla'] },
+            { cat: 'SHOPPING', color: '#DB2777', items: ['Shopping', 'Entrega Leche', 'Acopio', 'Insumos'] },
+            { cat: 'POWER', color: '#CA8A04', items: ['Power', 'Panel Solar', 'Batería', 'Poste Eléctrico'] },
+            { cat: 'GEOCACHING', color: '#15803D', items: ['Geocaching', 'Caché', 'Pista', 'Coordenada'] },
+            { cat: 'OTRO', color: '#4B5563', items: ['Otro', 'Alerta', 'Nota', 'Sensor'] }
         ];
         window.wpExpandedIconCats = {};
+
+        function getSvgIconoWp(cat, item, catColor) {
+            const flagColors = {
+                'Waypoint': '#111827',
+                'Blue waypoint': '#2563EB',
+                'Green waypoint': '#16A34A',
+                'Red waypoint': '#DC2626',
+                'Yellow waypoint': '#FACC15',
+                'Orange waypoint': '#F97316',
+                'Purple waypoint': '#9333EA'
+            };
+            if (flagColors[item]) {
+                return `<svg width="18" height="18" viewBox="0 0 24 24" fill="${flagColors[item]}" style="flex-shrink:0;"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6h-5.6z"/></svg>`;
+            }
+            if (item === 'Picture') {
+                return `<svg width="18" height="18" viewBox="0 0 24 24" fill="#111827" style="flex-shrink:0;"><path d="M9 4L7.5 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-3.5L15 4H9zm3 13a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></svg>`;
+            }
+            if (item === 'Audio') {
+                return `<svg width="18" height="18" viewBox="0 0 24 24" fill="#111827" style="flex-shrink:0;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>`;
+            }
+            if (item === 'Music') {
+                return `<svg width="18" height="18" viewBox="0 0 24 24" fill="#111827" style="flex-shrink:0;"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>`;
+            }
+            if (['Tourism', 'Transportation', 'Accomodation', 'Food', 'Historical'].includes(item)) {
+                return `<svg width="18" height="18" viewBox="0 0 24 24" style="flex-shrink:0;"><circle cx="12" cy="12" r="8" fill="${catColor}"/></svg>`;
+            }
+            return `<svg width="18" height="18" viewBox="0 0 24 24" style="flex-shrink:0;"><circle cx="12" cy="12" r="7.5" fill="none" stroke="${catColor}" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="${catColor}"/></svg>`;
+        }
 
         function abrirPanelCrearPlacemarkCentro(tipo = 'Waypoint') {
             ocultarPopupCentroAlpine();
@@ -7065,7 +7093,22 @@
         }
 
         function seleccionarIconoWp(cat, nombre) {
-            if (window.wpDraft) window.wpDraft.icono = nombre ? `${cat}: ${nombre}` : '';
+            if (window.wpDraft) {
+                window.wpDraft.icono = nombre ? `${cat}: ${nombre}` : '';
+                const mapColores = {
+                    'Blue waypoint': '#2563EB',
+                    'Green waypoint': '#16A34A',
+                    'Red waypoint': '#DC2626',
+                    'Yellow waypoint': '#eab308',
+                    'Orange waypoint': '#F97316',
+                    'Purple waypoint': '#9333EA'
+                };
+                if (mapColores[nombre]) {
+                    window.wpDraft.color = mapColores[nombre];
+                    const dot = document.getElementById('wp-color-dot');
+                    if (dot) dot.style.background = mapColores[nombre];
+                }
+            }
             const inp = document.getElementById('wp-icono-input');
             if (inp) inp.value = window.wpDraft.icono;
             if (nombre) mostrarCampoIconoWp();
@@ -7093,10 +7136,11 @@
                     </div>
                 `;
                 if (expanded) {
-                    html += `<div style="padding:2px 0 8px 28px; display:flex; flex-direction:column; gap:2px;">`;
+                    html += `<div style="padding:2px 0 6px 4px; display:flex; flex-direction:column;">`;
                     itemsFiltrados.forEach(item => {
                         const itemEsc = item.replace(/'/g, "\\'");
-                        html += `<div onclick="seleccionarIconoWp('${catEsc}', '${itemEsc}')" style="padding:7px 8px; border-radius:3px; font-size:14.5px; color:#1f2937; cursor:pointer; background:#f9fafb;">${item}</div>`;
+                        const svgIcon = getSvgIconoWp(group.cat, item, group.color || '#4b5563');
+                        html += `<div onclick="seleccionarIconoWp('${catEsc}', '${itemEsc}')" style="display:flex; align-items:center; gap:16px; padding:10px 4px; font-size:16px; color:#1f2937; cursor:pointer;">${svgIcon}<span>${item}</span></div>`;
                     });
                     html += `</div>`;
                 }
