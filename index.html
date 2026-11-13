@@ -3103,8 +3103,8 @@
                 </button>
             </div>
 
-            <!-- Simulador / Fallback para PC o Celular sin Sensor NFC Físico -->
-            <div class="p-3.5 rounded-xl bg-[#EFE9D6] border border-[#B8AA8B] space-y-3">
+            <!-- Simulador / Fallback para PC o Celular sin Sensor NFC Físico (Solo Modo Dueño) -->
+            <div id="nfc-simulador-box" style="display:none;" class="p-3.5 rounded-xl bg-[#EFE9D6] border border-[#B8AA8B] space-y-3">
                 <div class="flex items-center gap-2">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
@@ -3259,6 +3259,7 @@
             const cardValorDinero = document.getElementById('kpi-card-valor-dinero');
             const metaOptValor = document.getElementById('kpi-meta-optimizada-valor');
             const thBorrarSan = document.getElementById('th-borrar-sanidad');
+            const nfcSimBox = document.getElementById('nfc-simulador-box');
 
             if (headerRolText) {
                 headerRolText.textContent = esDueno ? 'Modo Dueño' : 'Modo Encargado';
@@ -3283,6 +3284,7 @@
             if (cardValorDinero) cardValorDinero.style.display = esDueno ? '' : 'none';
             if (metaOptValor) metaOptValor.textContent = esDueno ? '$4.275.000' : '2.137.5 L';
             if (thBorrarSan) thBorrarSan.style.display = esDueno ? '' : 'none';
+            if (nfcSimBox) nfcSimBox.style.display = esDueno ? 'block' : 'none';
         }
 
         const DEFAULT_GSHEETS_URL = 'https://script.google.com/macros/s/AKfycbzgXQiTtcpJBLBk_Q4aqaR6xA8bHlsPvW808asZI_VEycQwIm5IQHcXPn8I8Xshyu98Kw/exec';
