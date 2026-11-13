@@ -235,7 +235,7 @@
             letter-spacing: 0.02em;
         }
 
-        /* Barra de navegación móvil inferior tipo APK en Crema (3 pestañas activas: Leche, Vacas, LoRa) */
+        /* Barra de navegación móvil inferior tipo APK en Crema (4 botones: Leche, Hoja, LoRa, Escanear) */
         .bottom-nav-apk {
             position: fixed;
             bottom: 0;
@@ -246,7 +246,7 @@
             backdrop-filter: blur(10px);
             border-top: 2px solid #D5CBB2;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             padding: 5px 6px;
             box-shadow: 0 -4px 14px rgba(28, 46, 36, 0.08);
         }
@@ -652,6 +652,10 @@
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 010 8.49m-8.48-.01a6 6 0 010-8.49m11.31-2.82a10 10 0 010 14.14m-14.14 0a10 10 0 010-14.14"/></svg>
                 <span>LoRa</span>
             </button>
+            <button type="button" onclick="abrirModalNfcEscaner()" class="btn-corral btn-dark text-sm py-2 px-5 flex items-center gap-2" title="Leer o grabar el chip NFC">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="10" height="16" rx="2"/><circle cx="9" cy="16" r="1" fill="currentColor"/><path d="M17 8a5 5 0 010 8"/><path d="M20 5a9 9 0 010 14"/></svg>
+                <span>Escanear</span>
+            </button>
         </div>
     </header>
 
@@ -992,11 +996,8 @@
                         <button type="button" onclick="toggleFormularioAgregarVaca()" class="btn-corral btn-green text-xs md:text-sm py-2 px-4">
                             + Agregar
                         </button>
-                        <button type="button" onclick="abrirModalNfcEscaner()" class="btn-corral btn-dark text-xs md:text-sm py-2 px-4 flex items-center gap-2" title="Leer o grabar el chip NFC del collar de la vaca y verificar su Token Digital NFT">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="4" y="4" width="10" height="16" rx="2"/><circle cx="9" cy="16" r="1" fill="#1A1A1A"/><path d="M17 8a5 5 0 010 8"/><path d="M20 5a9 9 0 010 14"/>
-                            </svg>
-                            <span>Escanear / Grabar Collar NFC</span>
+                        <button type="button" onclick="abrirModalHistorialBajas()" class="btn-corral btn-dark text-xs md:text-sm py-2 px-4">
+                            Historial de Bajas (<span id="count-bajas-btn">0</span>)
                         </button>
                     </div>
 
@@ -1139,19 +1140,6 @@
                             </div>
                         </form>
                     </div>
-                </div>
-
-                <!-- Filtros rápidos del Hato -->
-                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-                    <div class="flex flex-wrap gap-2">
-                        <button onclick="filtrarVacas('TODAS')" class="btn-corral btn-green text-xs py-1.5 px-3">Ver Todas</button>
-                        <button onclick="filtrarVacas('ELITE')" class="btn-corral btn-amber text-xs py-1.5 px-3">Solo Vacas Élite IATF (F1 Gyrolando)</button>
-                        <button onclick="filtrarVacas('TORO')" class="btn-corral btn-dark text-xs py-1.5 px-3">Solo Vacas con Monta Toro</button>
-                        <button onclick="filtrarVacas('COLLAR')" class="btn-corral btn-blue text-xs py-1.5 px-3">Vacas con Collar LoRa Activo</button>
-                    </div>
-                    <button type="button" onclick="abrirModalHistorialBajas()" class="btn-corral btn-dark text-xs py-1.5 px-3">
-                        Historial de Bajas (<span id="count-bajas-btn">0</span>)
-                    </button>
                 </div>
 
                 <!-- Tabla Interactiva de las Vacas + Toro -->
@@ -2889,6 +2877,10 @@
         <button data-tab="tab-iot" onclick="switchTab('tab-iot')" class="nav-item-btn">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 010 8.49m-8.48-.01a6 6 0 010-8.49m11.31-2.82a10 10 0 010 14.14m-14.14 0a10 10 0 010-14.14"/></svg>
             <span>LoRa</span>
+        </button>
+        <button type="button" onclick="abrirModalNfcEscaner()" class="nav-item-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="10" height="16" rx="2"/><circle cx="9" cy="16" r="1" fill="currentColor"/><path d="M17 8a5 5 0 010 8"/><path d="M20 5a9 9 0 010 14"/></svg>
+            <span>Escanear</span>
         </button>
     </nav>
 
