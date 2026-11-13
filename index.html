@@ -2463,34 +2463,40 @@
                     </div>
 
                     <!-- Panel Flotante: Vacas con Collar LoRa y Simulador en Vivo -->
-                    <div id="panel-collares-simulador" style="display:none; position:absolute; bottom:66px; left:10px; right:10px; max-width:350px; max-height:65%; overflow-y:auto; z-index:470; background:#d4d6d8; color:#111827; border-radius:6px; padding:12px; box-shadow:0 6px 20px rgba(0,0,0,0.55);"
-                        class="space-y-2.5">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-extrabold text-[#111827]">Collares LoRa Activos</span>
-                            <button type="button" onclick="togglePanelCollaresSimulador()" class="px-2 py-0.5 rounded bg-gray-300 text-xs font-extrabold">✕</button>
+                    <div id="panel-collares-simulador" style="display:none; position:absolute; bottom:66px; left:10px; right:10px; max-width:350px; max-height:66%; z-index:470; background:#d4d6d8; color:#111827; border:1px solid #9ca3af; border-radius:4px; box-shadow:0 6px 20px rgba(0,0,0,0.5); font-family:var(--font-sans); flex-direction:column; overflow:hidden;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; background:#c5c9ce; border-bottom:1px solid #9ca3af; padding:9px 12px; flex-shrink:0;">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2.2" stroke-linecap="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="19" r="1.5" fill="#374151"/></svg>
+                                <span style="font-size:12px; font-weight:700; color:#4b5563; letter-spacing:0.03em;">COLLARES LORA ACTIVOS</span>
+                            </div>
+                            <button type="button" onclick="togglePanelCollaresSimulador()" style="background:transparent; border:none; color:#374151; font-size:16px; font-weight:700; padding:2px 6px; cursor:pointer;">✕</button>
                         </div>
-                        <div class="grid grid-cols-2 gap-1.5">
-                            <button type="button" onclick="simularTramaLoRa('CELO')" class="btn-corral btn-amber text-[11px] py-1.5 px-2" style="min-height:34px;">
-                                Simular Celo
+                        <div style="padding:10px 12px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;">
+                            <div style="font-size:11px; font-weight:700; color:#6b7280; letter-spacing:0.03em; border-bottom:1px solid #b8bcc0; padding-bottom:4px;">SIMULADOR DE TELEMETRÍA</div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                                <button type="button" onclick="simularTramaLoRa('CELO')" style="min-height:34px; background:#e5e7eb; border:1px solid #9ca3af; border-radius:3px; color:#111827; font-size:12px; font-weight:600; display:flex; align-items:center; justify-content:center; gap:6px; cursor:pointer;">
+                                    <span style="width:8px; height:8px; border-radius:999px; background:#d97706;"></span><span>Simular Celo</span>
+                                </button>
+                                <button type="button" onclick="simularTramaLoRa('FIEBRE')" style="min-height:34px; background:#e5e7eb; border:1px solid #9ca3af; border-radius:3px; color:#111827; font-size:12px; font-weight:600; display:flex; align-items:center; justify-content:center; gap:6px; cursor:pointer;">
+                                    <span style="width:8px; height:8px; border-radius:999px; background:#dc2626;"></span><span>Simular Fiebre</span>
+                                </button>
+                                <button type="button" onclick="simularTramaLoRa('FUERA_CERCA')" style="min-height:34px; background:#e5e7eb; border:1px solid #9ca3af; border-radius:3px; color:#111827; font-size:12px; font-weight:600; display:flex; align-items:center; justify-content:center; gap:6px; cursor:pointer;">
+                                    <span style="width:8px; height:8px; border-radius:999px; background:#9333ea;"></span><span>En Quebrada</span>
+                                </button>
+                                <button type="button" onclick="simularTramaLoRa('NORMAL')" style="min-height:34px; background:#e5e7eb; border:1px solid #9ca3af; border-radius:3px; color:#111827; font-size:12px; font-weight:600; display:flex; align-items:center; justify-content:center; gap:6px; cursor:pointer;">
+                                    <span style="width:8px; height:8px; border-radius:999px; background:#0d9488;"></span><span>Estado Normal</span>
+                                </button>
+                            </div>
+                            <button type="button" onclick="reposicionarCollaresDemoEnCentroActual()" style="min-height:34px; width:100%; background:#0d9488; color:#ffffff; border:none; border-radius:3px; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:6px; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,0.2);">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+                                </svg>
+                                <span>Reposicionar Collares Demo Aquí</span>
                             </button>
-                            <button type="button" onclick="simularTramaLoRa('FIEBRE')" class="btn-corral btn-red text-[11px] py-1.5 px-2" style="min-height:34px;">
-                                Simular Fiebre
-                            </button>
-                            <button type="button" onclick="simularTramaLoRa('FUERA_CERCA')" class="btn-corral bg-purple-700 text-white text-[11px] py-1.5 px-2" style="min-height:34px;">
-                                En Quebrada
-                            </button>
-                            <button type="button" onclick="simularTramaLoRa('NORMAL')" class="btn-corral btn-green text-[11px] py-1.5 px-2" style="min-height:34px;">
-                                Estado Normal
-                            </button>
+                            <div style="font-size:11px; font-weight:700; color:#6b7280; letter-spacing:0.03em; border-bottom:1px solid #b8bcc0; padding-bottom:4px; margin-top:2px;">DISPOSITIVOS EN CAMPO</div>
+                            <div id="collares-cards-container" style="display:flex; flex-direction:column; gap:8px;"></div>
+                            <div class="hidden"><tbody id="tabla-telemetria-body"></tbody></div>
                         </div>
-                        <button type="button" onclick="reposicionarCollaresDemoEnCentroActual()" class="btn-corral btn-dark w-full text-[11px] py-1.5 px-2 flex items-center justify-center gap-1.5" style="min-height:34px;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
-                            </svg>
-                            <span>Reposicionar Collares Demo Aquí</span>
-                        </button>
-                        <div id="collares-cards-container" class="space-y-2"></div>
-                        <div class="hidden"><tbody id="tabla-telemetria-body"></tbody></div>
                     </div>
 
                     <!-- Tarjeta Flotante al Tocar una Vaca en el Mapa -->
@@ -6531,7 +6537,7 @@
             if (inLat) inLat.value = c.lat;
             if (inLng) inLng.value = c.lng;
             if (inTxt) inTxt.value = `${c.lat}, ${c.lng}`;
-            p.style.display = p.style.display === 'none' ? 'block' : 'none';
+            p.style.display = p.style.display === 'none' ? 'flex' : 'none';
         }
 
         function togglePanelCapasAlpine() {
@@ -6542,7 +6548,7 @@
             cerrarPanelesFlotantesAlpine('panel-collares-simulador');
             const p = document.getElementById('panel-collares-simulador');
             if (!p) return;
-            p.style.display = p.style.display === 'none' ? 'block' : 'none';
+            p.style.display = p.style.display === 'none' ? 'flex' : 'none';
         }
 
         function seleccionarCapaBaseAlpine(key) {
@@ -7355,37 +7361,39 @@
             if (cardsContainer) {
                 cardsContainer.innerHTML = ultimosCollaresRenderizados.map(c => {
                     const isNormal = c.alerta_estado === 'NORMAL';
-                    const borderColor = isNormal ? 'border-emerald-700' : c.alerta_estado === 'CELO_DETECTADO' ? 'border-amber-400' : 'border-red-500';
-                    const estadoTexto = c.alerta_estado === 'CELO_DETECTADO'
-                        ? 'EN CELO (Inseminar 12h)'
+                    const isCelo = c.alerta_estado === 'CELO_DETECTADO';
+                    const isQuebrada = c.alerta_estado === 'FUERA_DE_CERCA';
+                    const accentColor = isNormal ? '#0d9488' : isCelo ? '#d97706' : isQuebrada ? '#9333ea' : '#dc2626';
+                    const estadoTexto = isCelo
+                        ? 'EN CELO (12h)'
                         : c.alerta_estado === 'FIEBRE_BAJA_RUMIA'
                         ? 'FIEBRE / BAJA RUMIA'
-                        : c.alerta_estado === 'FUERA_DE_CERCA'
-                        ? 'VACA EN QUEBRADA'
+                        : isQuebrada
+                        ? 'EN QUEBRADA'
                         : 'Normal';
 
                     return `
-                    <div onclick="abrirTarjetaFlotanteVaca('${c.collar_id}')" class="p-3 rounded-xl bg-black/50 border-2 ${borderColor} cursor-pointer hover:opacity-95 transition-all">
-                        <div class="flex flex-wrap items-center justify-between gap-1 mb-1.5">
-                            <span class="font-extrabold text-xs">${c.collar_id} • ${c.codigo_nombre || 'Vaca #' + c.id_animal}</span>
-                            <span class="badge ${isNormal ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'} text-[10px]">${estadoTexto}</span>
+                    <div onclick="abrirTarjetaFlotanteVaca('${c.collar_id}')" style="padding:9px 10px; border-radius:4px; background:linear-gradient(180deg,#ffffff 60%,#e2e8f0 100%); border:1px solid #9ca3af; border-left:4px solid ${accentColor}; box-shadow:0 1px 4px rgba(0,0,0,0.14); cursor:pointer;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; margin-bottom:6px;">
+                            <span style="font-weight:700; font-size:12.5px; color:#111827;">${c.collar_id} · ${c.codigo_nombre || 'Vaca #' + c.id_animal}</span>
+                            <span style="background:${accentColor}; color:#ffffff; font-size:10px; font-weight:700; padding:2px 7px; border-radius:999px;">${estadoTexto}</span>
                         </div>
-                        <div class="grid grid-cols-4 gap-1.5 text-[11px]">
-                            <div class="p-1.5 rounded bg-[#08160f]">
-                                <div class="text-[10px] text-gray-400">Temp</div>
-                                <div class="font-extrabold">${c.temperatura_cuello_c}°C</div>
+                        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:5px; font-size:11px;">
+                            <div style="padding:4px 5px; border-radius:3px; background:#f8fafc; border:1px solid #cbd5e1;">
+                                <div style="font-size:9.5px; color:#64748b;">Temp</div>
+                                <div style="font-weight:700; color:#111827;">${c.temperatura_cuello_c}°C</div>
                             </div>
-                            <div class="p-1.5 rounded bg-[#08160f]">
-                                <div class="text-[10px] text-gray-400">Pasos/h</div>
-                                <div class="font-extrabold">${c.indice_actividad_pasos}</div>
+                            <div style="padding:4px 5px; border-radius:3px; background:#f8fafc; border:1px solid #cbd5e1;">
+                                <div style="font-size:9.5px; color:#64748b;">Pasos/h</div>
+                                <div style="font-weight:700; color:#111827;">${c.indice_actividad_pasos}</div>
                             </div>
-                            <div class="p-1.5 rounded bg-[#08160f]">
-                                <div class="text-[10px] text-gray-400">Rumia</div>
-                                <div class="font-extrabold">${c.minutos_rumia_24h}m</div>
+                            <div style="padding:4px 5px; border-radius:3px; background:#f8fafc; border:1px solid #cbd5e1;">
+                                <div style="font-size:9.5px; color:#64748b;">Rumia</div>
+                                <div style="font-weight:700; color:#111827;">${c.minutos_rumia_24h}m</div>
                             </div>
-                            <div class="p-1.5 rounded bg-[#08160f]">
-                                <div class="text-[10px] text-gray-400">Bat/RSSI</div>
-                                <div class="font-extrabold">${c.bateria_pct}% / ${c.rssi_dbm || -78}</div>
+                            <div style="padding:4px 5px; border-radius:3px; background:#f8fafc; border:1px solid #cbd5e1;">
+                                <div style="font-size:9.5px; color:#64748b;">Bat/RSSI</div>
+                                <div style="font-weight:700; color:#111827;">${c.bateria_pct}% / ${c.rssi_dbm || -78}</div>
                             </div>
                         </div>
                     </div>`;
