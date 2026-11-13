@@ -669,6 +669,17 @@
              ================================================================= -->
         <section id="tab-ordeno" class="tab-panel active space-y-5">
 
+            <!-- Alerta BPMV Leche en Retiro (Desviar cantina al biodigestor / mosca soldado) -->
+            <div id="alerta-retiro-leche-ordeno" style="display:none;" class="p-3.5 rounded-xl bg-[#F7F3E8] border-2 border-[#1A1A1A] flex items-start gap-2.5">
+                <svg class="shrink-0 mt-0.5" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                <div class="text-xs text-[#1A1A1A]">
+                    <div class="font-extrabold uppercase">Alerta BPMV: Leche en Retiro Activo</div>
+                    <div id="alerta-retiro-leche-ordeno-txt" class="text-[11px] font-semibold mt-0.5"></div>
+                </div>
+            </div>
+
             <!-- =============================================================
                  ARRIBA DE TODO: PANEL DE REGISTRO DIARIO DE LECHE
                  ============================================================= -->
@@ -989,6 +1000,58 @@
              ================================================================= -->
         <section id="tab-animales" class="tab-panel space-y-5">
 
+            <!-- Barra Superior de Control ICA / SINIGAN V6 + HERDEplus KPIs -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div class="p-3 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] space-y-1">
+                    <div class="flex items-center gap-1.5 text-[11px] font-extrabold uppercase text-[#1A1A1A]">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/>
+                        </svg>
+                        <span>Predio ICA / SINIGAN V6</span>
+                    </div>
+                    <div id="kpi-ica-rspp" class="text-xs font-extrabold text-[#1A1A1A]">RSPP-50370-001</div>
+                    <div id="kpi-ica-ruv" class="text-[11px] text-[#3E5245] font-semibold">RUV-2026-CICLO-II</div>
+                    <div id="kpi-ica-ley2585" class="text-[11px] font-bold text-[#1A1A1A]">Ley 2585: 6.0 ha Protegidas</div>
+                </div>
+
+                <div class="p-3 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] space-y-1">
+                    <div class="flex items-center gap-1.5 text-[11px] font-extrabold uppercase text-[#1A1A1A]">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="6" y1="10" x2="18" y2="10"/><line x1="6" y1="14" x2="13" y2="14"/>
+                        </svg>
+                        <span>Identificación DIN (000219/2026)</span>
+                    </div>
+                    <div id="kpi-din-aptas" class="text-lg font-extrabold text-[#1A1A1A]">19/19 Aptas GSMI</div>
+                    <div class="text-[11px] text-[#3E5245]">Estándar CO + ISO 11784 (17002...)</div>
+                </div>
+
+                <div class="p-3 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] space-y-1">
+                    <div class="flex items-center gap-1.5 text-[11px] font-extrabold uppercase text-[#1A1A1A]">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                        </svg>
+                        <span>Alerta BPMV Leche en Retiro</span>
+                    </div>
+                    <div id="kpi-bpmv-retiro" class="text-lg font-extrabold text-[#1A1A1A]">0 en Retiro</div>
+                    <div class="text-[11px] text-[#3E5245]">Desviar leche a biodigestor / BSF</div>
+                </div>
+
+                <div class="p-3 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] space-y-1.5">
+                    <div class="flex items-center justify-between gap-1">
+                        <div class="flex items-center gap-1.5 text-[11px] font-extrabold uppercase text-[#1A1A1A]">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/>
+                            </svg>
+                            <span>Apartado en Manga Hoy</span>
+                        </div>
+                        <span id="kpi-apartado-hoy" class="text-xs font-extrabold text-[#1A1A1A]">0</span>
+                    </div>
+                    <button id="btn-apartado-manga-hoy" type="button" onclick="toggleFiltroApartadoManga()" class="btn-corral btn-dark w-full text-[11px] py-1.5 px-2.5 flex items-center justify-center gap-1.5" style="min-height:32px;">
+                        <span>Apartado en Manga Hoy (HERDEplus Sorting)</span>
+                    </button>
+                </div>
+            </div>
+
             <!-- Tabla del Hato Lechero -->
             <div class="card-finca">
                 <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
@@ -998,6 +1061,12 @@
                         </button>
                         <button type="button" onclick="abrirModalHistorialBajas()" class="btn-corral btn-dark text-xs md:text-sm py-2 px-4">
                             Historial de Bajas (<span id="count-bajas-btn">0</span>)
+                        </button>
+                        <button type="button" onclick="abrirModalSiniganBpg()" class="btn-corral btn-dark text-xs md:text-sm py-2 px-4 flex items-center gap-1.5">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+                            </svg>
+                            <span>Centro SINIGAN V6 / BPG</span>
                         </button>
                     </div>
 
@@ -2608,20 +2677,20 @@
     </div>
 
     <!-- =====================================================================
-         MODAL FLOTANTE: FICHA CLÍNICA, GENEALOGÍA, SANIDAD Y CHIP NFC / NFT HASH
+         MODAL FLOTANTE: HOJA DE VIDA 4.0 (4 SUB-PESTAÑAS ICA / MLP / BPMV / HERDEplus)
          ===================================================================== -->
     <div id="modal-ficha-clinica-animal" onclick="if(event.target===this) cerrarFichaClinicaAnimal()"
         style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(15, 25, 19, 0.58); backdrop-filter:blur(2px); align-items:center; justify-content:center; padding:16px;">
-        <div class="p-5 rounded-2xl bg-[#F3EFE2] border-2 border-[#1B5E3A] w-full max-w-2xl space-y-4" style="box-shadow:0 20px 50px rgba(0,0,0,0.45); max-height:92vh; overflow-y:auto;">
+        <div class="p-5 rounded-2xl bg-[#F3EFE2] border-2 border-[#1A1A1A] w-full max-w-2xl space-y-4" style="box-shadow:0 20px 50px rgba(0,0,0,0.45); max-height:92vh; overflow-y:auto;">
             <div class="flex items-center justify-between border-b border-[#D5CBB2] pb-2">
                 <div>
-                    <h3 id="ficha-clinica-titulo" class="text-base font-extrabold text-[#1C2E24]">Ficha Individual del Animal</h3>
+                    <h3 id="ficha-clinica-titulo" class="text-base font-extrabold text-[#1C2E24]">Hoja de Vida 4.0 del Animal</h3>
                     <p id="ficha-clinica-subtitulo" class="text-xs text-[#4A5D52]"></p>
                 </div>
-                <button type="button" onclick="cerrarFichaClinicaAnimal()" class="px-2.5 py-1 rounded-lg bg-[#EFE9D6] text-xs font-extrabold cursor-pointer">✕</button>
+                <button type="button" onclick="cerrarFichaClinicaAnimal()" class="px-2.5 py-1 rounded-lg bg-[#EFE9D6] border border-[#1A1A1A] text-xs font-extrabold cursor-pointer">✕</button>
             </div>
 
-            <!-- Estado Reproductivo y Alerta Biométrica Rápida en la Ficha -->
+            <!-- Resumen Rápido -->
             <div id="ficha-resumen-repro-box" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 p-3 rounded-xl bg-[#FFFDF8] border border-[#C8B998] text-xs">
                 <div>
                     <span class="text-[10px] font-bold text-[#4A5D4E] block">PROGRAMA Y ESTADO REPRODUCTIVO</span>
@@ -2637,124 +2706,360 @@
                 </div>
             </div>
 
-            <!-- Bloque NFC + Token Único Digital (NFT Hash SHA-256 de Trazabilidad) -->
-            <div class="p-3.5 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] space-y-2.5">
-                <div class="flex flex-wrap items-center justify-between gap-2">
-                    <div class="flex items-center gap-2">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="4" y="4" width="10" height="16" rx="2"/><circle cx="9" cy="16" r="1" fill="#1A1A1A"/><path d="M17 8a5 5 0 010 8"/><path d="M20 5a9 9 0 010 14"/>
-                        </svg>
-                        <span class="text-xs font-extrabold text-[#1C2E24] uppercase">Chip NFC del Collar y Certificado Digital Inmutable (NFT Hash)</span>
-                    </div>
-                    <span class="badge bg-[#EFE9D6] text-[#1C2E24] border border-[#1A1A1A] text-[10px]">SHA-256 VERIFICADO</span>
-                </div>
+            <!-- Navegación de 4 Sub-pestañas -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                <button type="button" id="btn-ficha-tab-identidad" onclick="switchFichaSubtab('identidad')" class="btn-corral btn-green text-[11px] py-1.5 px-2 flex items-center justify-center gap-1" style="min-height:34px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="6" y1="10" x2="18" y2="10"/></svg>
+                    <span>1. Identidad ICA</span>
+                </button>
+                <button type="button" id="btn-ficha-tab-mlp" onclick="switchFichaSubtab('mlp')" class="btn-corral btn-dark text-[11px] py-1.5 px-2 flex items-center justify-center gap-1" style="min-height:34px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h8l2 5v13a2 2 0 01-2 2H8a2 2 0 01-2-2V7l2-5z"/></svg>
+                    <span>2. Control MLP</span>
+                </button>
+                <button type="button" id="btn-ficha-tab-sanidad" onclick="switchFichaSubtab('sanidad')" class="btn-corral btn-dark text-[11px] py-1.5 px-2 flex items-center justify-center gap-1" style="min-height:34px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <span>3. Sanidad BPMV</span>
+                </button>
+                <button type="button" id="btn-ficha-tab-herde" onclick="switchFichaSubtab('herde')" class="btn-corral btn-dark text-[11px] py-1.5 px-2 flex items-center justify-center gap-1" style="min-height:34px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 010 8.49m-8.48-.01a6 6 0 010-8.49"/></svg>
+                    <span>4. HERDEplus</span>
+                </button>
+            </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 items-end">
-                    <div>
-                        <label class="text-[11px] font-bold block mb-1">UID Chip NFC (NTAG213/215)</label>
-                        <input type="text" id="ficha-nfc-uid" placeholder="NFC-COLLAR-01" class="input-finca text-xs font-mono font-extrabold" style="min-height:36px;" />
+            <input type="hidden" id="ficha-animal-id" value="" />
+
+            <!-- SUB-PESTAÑA 1: IDENTIDAD ICA (DIN + ISO 11784 + NFC + GENEALOGÍA) -->
+            <div id="ficha-subtab-identidad" class="space-y-3">
+                <form onsubmit="guardarIdentidadIcaDin(event)" class="p-3.5 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] space-y-2.5">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <span class="text-xs font-extrabold text-[#1C2E24] uppercase">Identificación DIN (Res. 000219/2026) e ISO 11784/11785</span>
+                        <span id="ficha-din-vigencia-badge" class="badge bg-[#F7F3E8] text-[#1A1A1A] border border-[#1A1A1A] text-[10px]">Vigencia mín. 8 años (Res. 000338/2012)</span>
                     </div>
-                    <div class="sm:col-span-2">
-                        <label class="text-[11px] font-bold block mb-1">Token Único Digital (NFT Hash de Genealogía y Raza)</label>
-                        <div class="flex items-center gap-1.5">
-                            <input type="text" id="ficha-token-hash" readonly class="input-finca text-[11px] font-mono bg-[#EFE9D6]" style="min-height:36px;" />
-                            <button type="button" onclick="copiarTokenHashAnimal()" class="btn-corral btn-dark text-xs py-1.5 px-2.5" style="min-height:36px;" title="Copiar Certificado Digital SHA-256">Copiar</button>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">CII Visual DIN (CO-00000000XXXX-D)</label>
+                            <input type="text" id="ficha-cii-din" placeholder="CO-000000001001-0" class="input-finca text-xs font-mono font-extrabold" style="min-height:36px;" />
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">RFID ISO 15 Dígitos (17002...)</label>
+                            <input type="text" id="ficha-rfid-iso" maxlength="15" placeholder="170020000001001" class="input-finca text-xs font-mono font-extrabold" style="min-height:36px;" />
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">Tipo DIN ICA</label>
+                            <select id="ficha-tipo-din" class="input-finca text-xs" style="min-height:36px;">
+                                <option value="Combinado_Paleta_RFID">Combinado Paleta + RFID</option>
+                                <option value="Microchip_Caudal_FDXB">Microchip Caudal FDX-B</option>
+                                <option value="Bolo_Ruminal_RFID">Bolo Ruminal RFID</option>
+                                <option value="Pendiente_DIN">Pendiente Visual DIN</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">Fecha Aplicación DIN</label>
+                            <input type="date" id="ficha-fecha-din" class="input-finca text-xs" style="min-height:36px;" />
                         </div>
                     </div>
-                </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">Madre</label>
+                            <input type="text" id="ficha-madre-codigo" placeholder="Ej: Vaca #1" class="input-finca text-xs" style="min-height:36px;" />
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">Cría Asignada</label>
+                            <input type="text" id="ficha-cria-codigo" placeholder="Ej: Cría #1" class="input-finca text-xs" style="min-height:36px;" />
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">Notas / Observaciones</label>
+                            <input type="text" id="ficha-notas-animal" placeholder="Observaciones" class="input-finca text-xs" style="min-height:36px;" />
+                        </div>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="submit" class="btn-corral btn-green text-xs py-1.5 px-4">Guardar Identidad ICA y DIN</button>
+                    </div>
+                </form>
 
-                <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
-                    <span id="ficha-nfc-status-msg" class="text-[11px] font-semibold text-[#3E5245]">Acerca el celular al tubo PVC del collar para leer o grabar la hoja de vida.</span>
-                    <div class="flex flex-wrap items-center gap-2">
-                        <button type="button" onclick="vincularChipNfcManualDesdeFicha()" class="btn-corral btn-dark text-xs py-1.5 px-3 flex items-center gap-1.5" style="min-height:36px;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
-                            </svg>
-                            <span>Actualizar UID / Hash</span>
-                        </button>
-                        <button type="button" onclick="grabarDatosEnChipNfcActual()" class="btn-corral btn-green text-xs py-1.5 px-3.5 flex items-center gap-1.5" style="min-height:36px;">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="4" y="4" width="10" height="16" rx="2"/><path d="M17 8a5 5 0 010 8"/><path d="M20 5a9 9 0 010 14"/>
-                            </svg>
-                            <span>Grabar Datos en Chip NFC</span>
-                        </button>
+                <!-- Bloque NFC + Token Único Digital -->
+                <div class="p-3.5 rounded-xl bg-[#FFFDF8] border border-[#C8B998] space-y-2.5">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <span class="text-xs font-extrabold text-[#1C2E24] uppercase">Chip NFC del Collar y Certificado Digital (NFT Hash)</span>
+                        <span class="badge bg-[#EFE9D6] text-[#1C2E24] border border-[#1A1A1A] text-[10px]">SHA-256 VERIFICADO</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 items-end">
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">UID Chip NFC (NTAG213/215)</label>
+                            <input type="text" id="ficha-nfc-uid" placeholder="NFC-COLLAR-01" class="input-finca text-xs font-mono font-extrabold" style="min-height:36px;" />
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="text-[11px] font-bold block mb-1">Token Único Digital (NFT Hash)</label>
+                            <div class="flex items-center gap-1.5">
+                                <input type="text" id="ficha-token-hash" readonly class="input-finca text-[11px] font-mono bg-[#EFE9D6]" style="min-height:36px;" />
+                                <button type="button" onclick="copiarTokenHashAnimal()" class="btn-corral btn-dark text-xs py-1.5 px-2.5" style="min-height:36px;">Copiar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+                        <span id="ficha-nfc-status-msg" class="text-[11px] font-semibold text-[#3E5245]">Acerca el celular al tubo PVC del collar para leer o grabar.</span>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button type="button" onclick="vincularChipNfcManualDesdeFicha()" class="btn-corral btn-dark text-xs py-1.5 px-3" style="min-height:34px;">Actualizar UID / Hash</button>
+                            <button type="button" onclick="grabarDatosEnChipNfcActual()" class="btn-corral btn-green text-xs py-1.5 px-3.5" style="min-height:34px;">Grabar en Chip NFC</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Bloque 1: Genealogía (Madre, Cría y Observaciones) -->
-            <form onsubmit="guardarGenealogiaAnimal(event)" class="p-3.5 rounded-xl bg-[#FFFDF8] border border-[#C8B998] space-y-3">
-                <div class="text-xs font-extrabold text-[#1C2E24] uppercase">Genealogía y Trazabilidad</div>
-                <input type="hidden" id="ficha-animal-id" value="" />
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div>
-                        <label class="text-xs font-bold block mb-1">Madre</label>
-                        <input type="text" id="ficha-madre-codigo" placeholder="Ej: Vaca #1 - La Madrina" class="input-finca text-xs" />
+            <!-- SUB-PESTAÑA 2: CONTROL LECHERO ALEMÁN MLP (MILCHLEISTUNGSPRÜFUNG) -->
+            <div id="ficha-subtab-mlp" style="display:none;" class="space-y-3">
+                <form onsubmit="guardarControlMlpAnimal(event)" class="p-3.5 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] space-y-2.5">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <span class="text-xs font-extrabold text-[#1C2E24] uppercase">Control Lechero Oficial MLP (HERDEplus)</span>
+                        <span id="ficha-mlp-elite-rec" class="text-[11px] font-bold text-[#1A1A1A]">Recomendación IATF: Calculando...</span>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">Fecha Control</label>
+                            <input type="date" id="mlp-fecha" class="input-finca text-xs" style="min-height:36px;" required />
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">Días en Leche (DEL)</label>
+                            <input type="number" id="mlp-del" min="1" max="500" value="60" class="input-finca text-xs font-bold" style="min-height:36px;" required />
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">N° Frasco / Muestra</label>
+                            <input type="text" id="mlp-frasco" placeholder="MLP-Q2-01" class="input-finca text-xs font-mono" style="min-height:36px;" />
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">Litros Mañana</label>
+                            <input type="number" step="0.1" min="0" max="40" id="mlp-manana" value="4.0" class="input-finca text-xs font-bold" style="min-height:36px;" required />
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">Litros Tarde</label>
+                            <input type="number" step="0.1" min="0" max="40" id="mlp-tarde" value="2.5" class="input-finca text-xs font-bold" style="min-height:36px;" required />
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">Salud Ubre (CMT)</label>
+                            <select id="mlp-ubre" class="input-finca text-xs" style="min-height:36px;">
+                                <option value="Sana">Sana (Negativo)</option>
+                                <option value="Subclinica_Grado_1">Subclínica Grado 1</option>
+                                <option value="Mastitis_Clinica">Mastitis Clínica</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="submit" class="btn-corral btn-green text-xs py-1.5 px-4">Guardar Pesaje MLP y Actualizar Promedio</button>
+                    </div>
+                </form>
+                <div class="overflow-x-auto">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>DEL</th>
+                                <th>Mañana</th>
+                                <th>Tarde</th>
+                                <th>Total Día</th>
+                                <th>Frasco</th>
+                                <th>Ubre</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ficha-mlp-tbody" class="text-xs"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SUB-PESTAÑA 3: SANIDAD BPMV (REGISTRO ICA) Y CICLOS RUV -->
+            <div id="ficha-subtab-sanidad" style="display:none;" class="space-y-3">
+                <form onsubmit="guardarEventoSanitarioAnimal(event)" class="p-3.5 rounded-xl bg-[#FFFDF8] border border-[#C8B998] space-y-2.5">
+                    <div class="text-xs font-extrabold text-[#1C2E24] uppercase">Registrar Evento Sanitario BPMV (Registro ICA) y RUV</div>
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">Tipo</label>
+                            <select id="sanidad-tipo" class="input-finca text-xs" style="min-height:36px;">
+                                <option value="Vacuna Aftosa / Carbón">Vacuna Aftosa / Carbón</option>
+                                <option value="Vacuna Brucelosis">Vacuna Brucelosis</option>
+                                <option value="Purga / Desparasitante">Purga / Desparasitante</option>
+                                <option value="Antibiótico / Mastitis">Antibiótico / Mastitis</option>
+                                <option value="Vitaminas / Mineral">Vitaminas / Mineral</option>
+                                <option value="Tratamiento Clínico">Tratamiento Clínico</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">Producto y Dosis</label>
+                            <input type="text" id="sanidad-producto" placeholder="Ej: Oxitetraciclina 10ml" class="input-finca text-xs" style="min-height:36px;" required />
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">Fecha Aplicación</label>
+                            <input type="date" id="sanidad-fecha" class="input-finca text-xs" style="min-height:36px;" required />
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">Próxima Dosis</label>
+                            <input type="date" id="sanidad-proxima" class="input-finca text-xs" style="min-height:36px;" />
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">Registro ICA Producto</label>
+                            <input type="text" id="sanidad-reg-ica" placeholder="Reg. ICA 3842-DB" class="input-finca text-xs font-mono" style="min-height:36px;" />
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">Lote Medicamento</label>
+                            <input type="text" id="sanidad-lote" placeholder="Lote L-2026" class="input-finca text-xs font-mono" style="min-height:36px;" />
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">Días Retiro Leche</label>
+                            <input type="number" id="sanidad-retiro-dias" min="0" max="60" value="0" class="input-finca text-xs font-bold" style="min-height:36px;" />
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold block mb-1">N° Acta RUV Oficial</label>
+                            <input type="text" id="sanidad-acta-ruv" placeholder="ACTA-RUV-2026" class="input-finca text-xs font-mono" style="min-height:36px;" />
+                        </div>
                     </div>
                     <div>
-                        <label class="text-xs font-bold block mb-1">Cría Asignada</label>
-                        <input type="text" id="ficha-cria-codigo" placeholder="Ej: Ternera #1" class="input-finca text-xs" />
+                        <input type="text" id="sanidad-notas" placeholder="Notas sanitarias adicionales (opcional)" class="input-finca text-xs" style="min-height:36px;" />
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="submit" class="btn-corral btn-green text-xs py-1.5 px-4">+ Agregar al Historial Clínico BPMV</button>
+                    </div>
+                </form>
+
+                <div class="overflow-x-auto">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Evento / Reg. ICA</th>
+                                <th>Producto / Lote</th>
+                                <th>Retiro Leche</th>
+                                <th>Acta RUV</th>
+                                <th id="th-borrar-sanidad">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ficha-sanidad-tbody" class="text-xs"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SUB-PESTAÑA 4: SENSORES HERDEplus CONNECTED Y APARTADO EN MANGA -->
+            <div id="ficha-subtab-herde" style="display:none;" class="space-y-3">
+                <div class="p-3.5 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] space-y-2.5">
+                    <div class="text-xs font-extrabold text-[#1C2E24] uppercase">Lectura Biométrica Collar LoRa (MPU6050 + DS18B20)</div>
+                    <div id="ficha-herde-sensores-box" class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs"></div>
+                </div>
+                <div class="p-3.5 rounded-xl bg-[#FFFDF8] border border-[#C8B998] space-y-2.5">
+                    <div class="text-xs font-extrabold text-[#1C2E24] uppercase">Orden de Apartado en Manga (HERDEplus Sorting Gate)</div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <select id="ficha-orden-apartado" class="input-finca text-xs font-bold" style="min-height:38px;">
+                            <option value="NORMAL">NORMAL (Sin apartado)</option>
+                            <option value="APARTAR: CELO DETECTADO">APARTAR: CELO DETECTADO</option>
+                            <option value="APARTAR: LECHE EN RETIRO">APARTAR: LECHE EN RETIRO</option>
+                            <option value="APARTAR: SECADO / SANIDAD">APARTAR: SECADO / SANIDAD</option>
+                        </select>
+                        <div class="flex gap-2">
+                            <button type="button" onclick="guardarOrdenApartadoManga('GUARDAR')" class="btn-corral btn-green flex-1 text-xs py-1.5">Aplicar Orden</button>
+                            <button type="button" onclick="guardarOrdenApartadoManga('NORMAL')" class="btn-corral btn-dark text-xs py-1.5 px-3">Limpiar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         MODAL FLOTANTE: CENTRO SINIGAN V6 Y AUDITORÍA BPG LECHE (RES. 67449/2020)
+         ===================================================================== -->
+    <div id="modal-sinigan-bpg" onclick="if(event.target===this) cerrarModalSiniganBpg()"
+        style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(15, 25, 19, 0.58); backdrop-filter:blur(2px); align-items:center; justify-content:center; padding:16px;">
+        <div class="p-5 rounded-2xl bg-[#F7F3E8] border-2 border-[#1A1A1A] w-full max-w-2xl space-y-4" style="box-shadow:0 20px 50px rgba(0,0,0,0.45); max-height:92vh; overflow-y:auto;">
+            <div class="flex items-center justify-between border-b border-[#D5CBB2] pb-2.5">
+                <div class="flex items-center gap-2">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+                    </svg>
+                    <div>
+                        <h3 class="text-base font-extrabold text-[#1C2E24]">Centro SINIGAN V6 y Auditoría BPG Leche</h3>
+                        <p class="text-[11px] text-[#3E5245]">Res. 000219/2026 • Res. 67449/2020 BPG • Ley 2585/2026</p>
+                    </div>
+                </div>
+                <button type="button" onclick="cerrarModalSiniganBpg()" class="px-2.5 py-1 rounded-lg bg-[#EFE9D6] border border-[#1A1A1A] text-xs font-extrabold cursor-pointer">✕</button>
+            </div>
+
+            <!-- Configuración Predio ICA -->
+            <form onsubmit="guardarConfigPredioIca(event)" class="p-3.5 rounded-xl bg-[#FFFDF8] border border-[#C8B998] space-y-2.5">
+                <div class="text-xs font-extrabold text-[#1A1A1A] uppercase">Datos Oficiales del Predio (ICA / Ley 2585)</div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <div>
+                        <label class="text-[11px] font-bold block mb-1">N° RSPP ICA</label>
+                        <input type="text" id="ica-cfg-rspp" class="input-finca text-xs font-mono" style="min-height:34px;" />
                     </div>
                     <div>
-                        <label class="text-xs font-bold block mb-1">Notas / Observaciones</label>
-                        <input type="text" id="ficha-notas-animal" placeholder="Observaciones" class="input-finca text-xs" />
+                        <label class="text-[11px] font-bold block mb-1">Ciclo RUV Vigente</label>
+                        <input type="text" id="ica-cfg-ruv" class="input-finca text-xs" style="min-height:34px;" />
+                    </div>
+                    <div>
+                        <label class="text-[11px] font-bold block mb-1">Bosque Protegido (ha)</label>
+                        <input type="number" step="0.1" id="ica-cfg-bosque" class="input-finca text-xs font-bold" style="min-height:34px;" />
                     </div>
                 </div>
                 <div class="flex justify-end">
-                    <button type="submit" class="btn-corral btn-green text-xs py-1.5 px-4">Guardar Trazabilidad y Regenerar NFT Hash</button>
+                    <button type="submit" class="btn-corral btn-dark text-xs py-1.5 px-3">Guardar Datos Predio ICA</button>
                 </div>
             </form>
 
-            <!-- Bloque 2: Registrar Vacuna / Purga / Tratamiento -->
-            <form onsubmit="guardarEventoSanitarioAnimal(event)" class="p-3.5 rounded-xl bg-[#FFFDF8] border border-[#C8B998] space-y-3">
-                <div class="text-xs font-extrabold text-[#1C2E24] uppercase">Registrar Vacuna, Purga o Tratamiento</div>
-                <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5">
+            <!-- Registrar Movimiento Oficial SINIGAN V6 / GSMI Dos Manos -->
+            <form onsubmit="guardarMovimientoSinigan(event)" class="p-3.5 rounded-xl bg-[#FFFDF8] border-2 border-[#1A1A1A] space-y-2.5">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <span class="text-xs font-extrabold text-[#1A1A1A] uppercase">Pre-liquidar Guía GSMI / Evento SINIGAN V6 (HI-Tier)</span>
+                    <span id="sinigan-conciliacion-label" class="text-[11px] font-bold text-[#1B5E3A]">Inventario conciliado DIN</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     <div>
-                        <label class="text-xs font-bold block mb-1">Tipo</label>
-                        <select id="sanidad-tipo" class="input-finca text-xs">
-                            <option value="Vacuna Aftosa / Carbón">Vacuna Aftosa / Carbón</option>
-                            <option value="Vacuna Brucelosis">Vacuna Brucelosis</option>
-                            <option value="Purga / Desparasitante">Purga / Desparasitante</option>
-                            <option value="Vitaminas / Mineral">Vitaminas / Mineral</option>
-                            <option value="Baño Garrapaticida">Baño Garrapaticida</option>
-                            <option value="Tratamiento Clínico">Tratamiento Clínico</option>
+                        <label class="text-[11px] font-bold block mb-1">Tipo Evento</label>
+                        <select id="sinigan-tipo" class="input-finca text-xs" style="min-height:36px;">
+                            <option value="GSMI_DOS_MANOS">GSMI Dos Manos (Movilización)</option>
+                            <option value="NACIMIENTO">Nacimiento Oficial DIN</option>
+                            <option value="TRATAMIENTO">Tratamiento Masivo BPMV</option>
+                            <option value="MUERTE">Muerte / Baja Oficial</option>
+                            <option value="HURTO">Reporte Hurto</option>
                         </select>
                     </div>
                     <div>
-                        <label class="text-xs font-bold block mb-1">Producto y Dosis</label>
-                        <input type="text" id="sanidad-producto" placeholder="Ej: Ivermectina 5 ml" class="input-finca text-xs" required />
+                        <label class="text-[11px] font-bold block mb-1">Fecha</label>
+                        <input type="date" id="sinigan-fecha" class="input-finca text-xs" style="min-height:36px;" required />
                     </div>
                     <div>
-                        <label class="text-xs font-bold block mb-1">Fecha Aplicación</label>
-                        <input type="date" id="sanidad-fecha" class="input-finca text-xs" required />
+                        <label class="text-[11px] font-bold block mb-1">Cédula Transportador</label>
+                        <input type="text" id="sinigan-cedula" placeholder="CC / NIT" class="input-finca text-xs" style="min-height:36px;" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-[11px] font-bold block mb-1">Códigos DIN Incluidos (separados por coma)</label>
+                        <input type="text" id="sinigan-dins" placeholder="CO-000000001001-0, ..." class="input-finca text-xs font-mono" style="min-height:36px;" />
                     </div>
                     <div>
-                        <label class="text-xs font-bold block mb-1">Próxima Dosis</label>
-                        <input type="date" id="sanidad-proxima" class="input-finca text-xs" />
+                        <label class="text-[11px] font-bold block mb-1">Destino o Detalle</label>
+                        <input type="text" id="sinigan-detalle" placeholder="Ej: Feria / Predio destino / Lote" class="input-finca text-xs" style="min-height:36px;" required />
                     </div>
                 </div>
-                <div>
-                    <input type="text" id="sanidad-notas" placeholder="Notas sanitarias adicionales (opcional)" class="input-finca text-xs" style="min-height:36px;" />
-                </div>
-                <div class="flex justify-end">
-                    <button type="submit" class="btn-corral btn-green text-xs py-1.5 px-4">+ Agregar al Historial Clínico</button>
+                <div class="flex flex-wrap justify-between gap-2 pt-1">
+                    <button type="button" onclick="exportarResumenAuditoriaBpg()" class="btn-corral btn-dark text-xs py-1.5 px-3 flex items-center gap-1.5">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                        <span>Exportar / Imprimir Auditoría BPG</span>
+                    </button>
+                    <button type="submit" class="btn-corral btn-green text-xs py-1.5 px-4">Registrar en SINIGAN V6</button>
                 </div>
             </form>
 
-            <!-- Tabla Historial Clínico del Animal -->
             <div class="overflow-x-auto">
                 <table>
                     <thead>
                         <tr>
                             <th>Fecha</th>
                             <th>Evento</th>
-                            <th>Producto / Dosis</th>
-                            <th>Próximo Refuerzo</th>
-                            <th>Notas</th>
-                            <th id="th-borrar-sanidad">Acción</th>
+                            <th>DINs</th>
+                            <th>Destino / Detalle</th>
+                            <th>Estado Guía</th>
                         </tr>
                     </thead>
-                    <tbody id="ficha-sanidad-tbody" class="text-xs"></tbody>
+                    <tbody id="sinigan-movimientos-tbody" class="text-xs"></tbody>
                 </table>
             </div>
         </div>
@@ -3500,6 +3805,28 @@
                 actualizarEstadoTarjetaOrdenoDia();
             }
 
+            // Alerta BPMV Leche en Retiro (Desvío a Biodigestor / Mosca Soldado)
+            const alertaRetiroBox = document.getElementById('alerta-retiro-leche-ordeno');
+            const alertaRetiroTxt = document.getElementById('alerta-retiro-leche-ordeno-txt');
+            if (alertaRetiroBox && alertaRetiroTxt) {
+                const hoyIso = new Date().toISOString().slice(0, 10);
+                const animalesRetiro = (appState.inventario_animales || []).filter(a => {
+                    if (a.orden_apartado_manga === 'APARTAR: LECHE EN RETIRO') return true;
+                    return (appState.eventos_sanitarios_animal || []).some(ev =>
+                        Number(ev.id_animal) === Number(a.id) &&
+                        Number(ev.dias_retiro_leche || 0) > 0 &&
+                        ev.fecha_fin_retiro_leche && ev.fecha_fin_retiro_leche >= hoyIso
+                    );
+                });
+                if (animalesRetiro.length > 0) {
+                    const nombres = animalesRetiro.map(a => `${a.codigo_nombre}${a.cii_visual_din ? ' (' + a.cii_visual_din + ')' : ''}`).join(', ');
+                    alertaRetiroTxt.textContent = `${animalesRetiro.length} vaca(s) en retiro BPMV: ${nombres}. Desviar leche al biodigestor / mosca soldado; no mezclar en cantinas.`;
+                    alertaRetiroBox.style.display = 'flex';
+                } else {
+                    alertaRetiroBox.style.display = 'none';
+                }
+            }
+
             // Renderizar Saldos de los 3 Sobres Financieros dentro de #tab-obras (Solo Dueño)
             const sr = appState.sobres_resumen || {};
             const elS1 = document.getElementById('sobre1-saldo');
@@ -3641,6 +3968,17 @@
             return Math.round((target.getTime() - hoy.getTime()) / (1000 * 60 * 60 * 24));
         }
 
+        window.soloApartadoMangaHoy = false;
+        function toggleFiltroApartadoManga() {
+            window.soloApartadoMangaHoy = !window.soloApartadoMangaHoy;
+            const btn = document.getElementById('btn-apartado-manga-hoy');
+            if (btn) {
+                btn.classList.toggle('btn-green', window.soloApartadoMangaHoy);
+                btn.classList.toggle('btn-dark', !window.soloApartadoMangaHoy);
+            }
+            renderTab3VacasYAnillos();
+        }
+
         function renderTab3VacasYAnillos() {
             const animales = appState.inventario_animales || [];
             const bovinos = animales.filter(a => a.especie === 'Bovinos');
@@ -3657,7 +3995,37 @@
                 countBajasBtn.textContent = String((appState.historial_bajas_animales || []).length);
             }
 
+            // KPIs ICA / SINIGAN V6 + HERDEplus
+            const cfgPredio = appState.config_predio_ica || {};
+            const elRsp = document.getElementById('kpi-ica-rspp');
+            const elRuv = document.getElementById('kpi-ica-ruv');
+            const elLey = document.getElementById('kpi-ica-ley2585');
+            if (elRsp) elRsp.textContent = cfgPredio.rspp_numero || 'RSPP-50370-001';
+            if (elRuv) elRuv.textContent = cfgPredio.ruv_ciclo_actual || 'RUV-2026-CICLO-II';
+            if (elLey) elLey.textContent = `Ley 2585: ${Number(cfgPredio.hectareas_bosque_protegido ?? 6.0).toFixed(1)} ha Protegidas`;
+
+            const hoyIso = new Date().toISOString().slice(0, 10);
+            const conDinOficial = bovinos.filter(b => b.cii_visual_din && b.rfid_iso_15digitos).length;
+            const elDin = document.getElementById('kpi-din-aptas');
+            if (elDin) elDin.textContent = `${conDinOficial}/${bovinos.length} Aptas GSMI`;
+
+            const enRetiroCount = bovinos.filter(b => {
+                if (b.orden_apartado_manga === 'APARTAR: LECHE EN RETIRO') return true;
+                return (appState.eventos_sanitarios_animal || []).some(ev =>
+                    Number(ev.id_animal) === Number(b.id) &&
+                    Number(ev.dias_retiro_leche || 0) > 0 &&
+                    ev.fecha_fin_retiro_leche && ev.fecha_fin_retiro_leche >= hoyIso
+                );
+            }).length;
+            const elRetiro = document.getElementById('kpi-bpmv-retiro');
+            if (elRetiro) elRetiro.textContent = `${enRetiroCount} en Retiro`;
+
+            const paraApartar = bovinos.filter(b => b.orden_apartado_manga && b.orden_apartado_manga !== 'NORMAL').length;
+            const elApartado = document.getElementById('kpi-apartado-hoy');
+            if (elApartado) elApartado.textContent = String(paraApartar);
+
             const filtrados = bovinos.filter(b => {
+                if (window.soloApartadoMangaHoy && (!b.orden_apartado_manga || b.orden_apartado_manga === 'NORMAL')) return false;
                 if (filtroVacasActual === 'ELITE') return Number(b.es_elite_iatf) === 1 && b.estado_reproductivo !== 'Reproductor_Activo';
                 if (filtroVacasActual === 'TORO') return Number(b.es_elite_iatf) === 0 && b.estado_reproductivo !== 'Reproductor_Activo';
                 if (filtroVacasActual === 'COLLAR') return !!b.collar_id;
@@ -3701,16 +4069,23 @@
                     v.cria_codigo ? `Cría: ${v.cria_codigo}` : ''
                 ].filter(Boolean).join(' • ');
 
+                const dinVisual = v.cii_visual_din || `CO-00000000${String(1000 + Number(v.id)).slice(-4)}-0`;
+                const aptaGsmi = !!(v.cii_visual_din && v.rfid_iso_15digitos && cfgPredio.ruv_ciclo_actual);
+                const ordenApartado = v.orden_apartado_manga && v.orden_apartado_manga !== 'NORMAL' ? v.orden_apartado_manga : '';
+
                 return `
                 <tr ${rowYellowStyle}>
                     <td class="font-extrabold text-white whitespace-nowrap">
-                        <button type="button" onclick="abrirFichaClinicaAnimal(${v.id})" class="text-left hover:underline" style="background:transparent;border:none;padding:0;cursor:pointer;color:inherit;font-weight:800;" title="Ver Ficha Clínica, Genealogía y Vacunas">
+                        <button type="button" onclick="abrirFichaClinicaAnimal(${v.id})" class="text-left hover:underline" style="background:transparent;border:none;padding:0;cursor:pointer;color:inherit;font-weight:800;" title="Ver Hoja de Vida 4.0, DIN ICA, MLP y Sanidad">
                             ${nombreLimpio}
                         </button>
                         <div class="flex flex-wrap items-center gap-1 mt-1">
                             <span style="display:inline-block; padding:1px 7px; border-radius:999px; font-size:10px; font-weight:800; ${badgeCatStyle}">${badgeCatTexto}</span>
-                            <button type="button" onclick="abrirFichaClinicaAnimal(${v.id})" style="display:inline-block; padding:1px 7px; border-radius:999px; font-size:10px; font-weight:800; background:#F3EFE6; color:#334155; border:1px solid #CBD5E1; cursor:pointer;">Ficha</button>
+                            <span style="display:inline-block; padding:1px 7px; border-radius:999px; font-size:10px; font-weight:800; font-family:monospace; background:#F7F3E8; color:#1A1A1A; border:1px solid #1A1A1A;">${dinVisual}</span>
+                            ${aptaGsmi ? `<span style="display:inline-flex; align-items:center; gap:3px; padding:1px 6px; border-radius:999px; font-size:10px; font-weight:800; background:#1A1A1A; color:#F7F3E8;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Apta GSMI</span>` : ''}
+                            <button type="button" onclick="abrirFichaClinicaAnimal(${v.id})" style="display:inline-block; padding:1px 7px; border-radius:999px; font-size:10px; font-weight:800; background:#F3EFE6; color:#334155; border:1px solid #CBD5E1; cursor:pointer;">Hoja 4.0</button>
                         </div>
+                        ${ordenApartado ? `<div class="mt-1"><span style="display:inline-block; padding:1px 7px; border-radius:6px; font-size:10px; font-weight:800; background:#1A1A1A; color:#F7F3E8;">${ordenApartado}</span></div>` : ''}
                         ${infoGen ? `<div style="font-size:10px; font-weight:700; color:#475569; margin-top:2px;">${infoGen}</div>` : ''}
                     </td>
                     <td>${v.raza}</td>
@@ -6524,6 +6899,19 @@
             renderAll();
         }
 
+        function switchFichaSubtab(tab) {
+            const tabs = ['identidad', 'mlp', 'sanidad', 'herde'];
+            tabs.forEach(t => {
+                const panel = document.getElementById(`ficha-subtab-${t}`);
+                const btn = document.getElementById(`btn-ficha-tab-${t}`);
+                if (panel) panel.style.display = t === tab ? 'block' : 'none';
+                if (btn) {
+                    btn.classList.toggle('btn-green', t === tab);
+                    btn.classList.toggle('btn-dark', t !== tab);
+                }
+            });
+        }
+
         function abrirFichaClinicaAnimal(id) {
             const modal = document.getElementById('modal-ficha-clinica-animal');
             if (!modal) return;
@@ -6532,7 +6920,7 @@
 
             document.getElementById('ficha-animal-id').value = animal.id;
             const nombreLimpio = String(animal.codigo_nombre || '').replace(/Toro Suegro/gi, 'Toro').replace(/del Suegro/gi, '');
-            document.getElementById('ficha-clinica-titulo').textContent = `Ficha Clínica y Genealogía • ${nombreLimpio}`;
+            document.getElementById('ficha-clinica-titulo').textContent = `Hoja de Vida 4.0 • ${nombreLimpio}`;
             document.getElementById('ficha-clinica-subtitulo').textContent = `${animal.sexo || 'Hembra'} • ${animal.categoria_bovino || 'Vaca'} • Raza: ${animal.raza || 'F1 Gyrolando'} • Edad: ${animal.edad_anios ?? 0} años`;
 
             const elRepro = document.getElementById('ficha-estado-repro-txt');
@@ -6549,23 +6937,219 @@
                 }
             }
 
+            // Sub-pestaña 1: Identidad ICA DIN + ISO 11784 + NFC + Genealogía
+            const elCii = document.getElementById('ficha-cii-din');
+            const elRfid = document.getElementById('ficha-rfid-iso');
+            const elTipoDin = document.getElementById('ficha-tipo-din');
+            const elFechaDin = document.getElementById('ficha-fecha-din');
+            const elVigBadge = document.getElementById('ficha-din-vigencia-badge');
+            if (elCii) elCii.value = animal.cii_visual_din || `CO-00000000${String(1000 + Number(animal.id)).slice(-4)}-0`;
+            if (elRfid) elRfid.value = animal.rfid_iso_15digitos || `17002000000${String(1000 + Number(animal.id)).slice(-4)}`;
+            if (elTipoDin) elTipoDin.value = animal.tipo_din_ica || 'Combinado_Paleta_RFID';
+            if (elFechaDin) elFechaDin.value = animal.fecha_aplicacion_din || '2025-01-15';
+            if (elVigBadge) {
+                const fDin = animal.fecha_aplicacion_din ? new Date(animal.fecha_aplicacion_din) : new Date('2025-01-15');
+                const anioFin = fDin.getFullYear() + 8;
+                elVigBadge.textContent = `Vigencia mín. 8 años hasta ${anioFin} (Res. 000338/2012)`;
+            }
+
             const elNfc = document.getElementById('ficha-nfc-uid');
             const elToken = document.getElementById('ficha-token-hash');
             if (elNfc) elNfc.value = animal.nfc_uid || '';
-            if (elToken) elToken.textContent = animal.token_digital_hash || 'Pendiente de sincronización SQLite';
+            if (elToken) elToken.value = animal.token_digital_hash || 'Pendiente de sincronización SQLite';
 
             document.getElementById('ficha-madre-codigo').value = animal.madre_codigo || '';
             document.getElementById('ficha-cria-codigo').value = animal.cria_codigo || '';
             document.getElementById('ficha-notas-animal').value = animal.notas || '';
-            document.getElementById('sanidad-fecha').value = new Date().toISOString().slice(0, 10);
 
+            // Sub-pestaña 2: MLP
+            const hoyIso = new Date().toISOString().slice(0, 10);
+            const elMlpFecha = document.getElementById('mlp-fecha');
+            if (elMlpFecha) elMlpFecha.value = hoyIso;
+            renderTablaMlpAnimal(animal);
+
+            // Sub-pestaña 3: Sanidad BPMV
+            document.getElementById('sanidad-fecha').value = hoyIso;
+            const elActa = document.getElementById('sanidad-acta-ruv');
+            if (elActa && !elActa.value) {
+                elActa.value = appState?.config_predio_ica?.ruv_ciclo_actual || '';
+            }
             renderTablaSanidadAnimal(animal.id);
+
+            // Sub-pestaña 4: HERDEplus & Apartado en Manga
+            renderHerdePlusSensores(animal);
+            const selApartado = document.getElementById('ficha-orden-apartado');
+            if (selApartado) selApartado.value = animal.orden_apartado_manga || 'NORMAL';
+
+            switchFichaSubtab('identidad');
             modal.style.display = 'flex';
         }
 
         function cerrarFichaClinicaAnimal() {
             const modal = document.getElementById('modal-ficha-clinica-animal');
             if (modal) modal.style.display = 'none';
+        }
+
+        async function guardarIdentidadIcaDin(e) {
+            e.preventDefault();
+            const id = Number(document.getElementById('ficha-animal-id').value);
+            const cii_visual_din = document.getElementById('ficha-cii-din').value.trim();
+            const rfid_iso_15digitos = document.getElementById('ficha-rfid-iso').value.trim();
+            const tipo_din_ica = document.getElementById('ficha-tipo-din').value;
+            const fecha_aplicacion_din = document.getElementById('ficha-fecha-din').value || null;
+            const madre_codigo = document.getElementById('ficha-madre-codigo').value.trim();
+            const cria_codigo = document.getElementById('ficha-cria-codigo').value.trim();
+            const notas = document.getElementById('ficha-notas-animal').value.trim();
+
+            const payload = { id, cii_visual_din, rfid_iso_15digitos, tipo_din_ica, fecha_aplicacion_din, madre_codigo, cria_codigo, notas };
+            try {
+                const res = await fetch(`${getApiBase()}/api/animales/din-apartado`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const json = await res.json();
+                if (json.state) {
+                    appState = json.state;
+                    localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
+                }
+            } catch {
+                enqueueOfflineAction('animal_din_apartado', payload);
+                const animal = (appState?.inventario_animales || []).find(a => Number(a.id) === id);
+                if (animal) {
+                    Object.assign(animal, payload);
+                    localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
+                }
+            }
+            renderAll();
+            alert('Identidad DIN ICA / ISO 11784 y genealogía guardadas.');
+        }
+
+        function renderTablaMlpAnimal(animalOrId) {
+            const animal = typeof animalOrId === 'object'
+                ? animalOrId
+                : (appState?.inventario_animales || []).find(a => Number(a.id) === Number(animalOrId));
+            if (!animal) return;
+            const controles = (appState?.control_lechero_mlp || []).filter(c => Number(c.id_animal) === Number(animal.id));
+            const recEl = document.getElementById('ficha-mlp-elite-rec');
+            if (recEl) {
+                const prom = controles.length > 0 ? Number(controles[0].litros_total_dia || 0) : Number(animal.litros_promedio_dia || 0);
+                recEl.textContent = prom >= 7.0
+                    ? `Recomendación IATF: Candidata ÉLITE F1 Gyrolando (${prom.toFixed(1)} L/día)`
+                    : `Recomendación: Producción estándar (${prom.toFixed(1)} L/día)`;
+            }
+            const tbody = document.getElementById('ficha-mlp-tbody');
+            if (!tbody) return;
+            if (controles.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-gray-500">Sin pesajes MLP registrados aún.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = controles.map(c => `
+                <tr>
+                    <td class="font-bold whitespace-nowrap">${c.fecha_control}</td>
+                    <td>${c.dias_en_leche || '-'} d</td>
+                    <td>${Number(c.litros_manana || 0).toFixed(1)} / ${Number(c.litros_tarde || 0).toFixed(1)} L</td>
+                    <td class="font-extrabold">${Number(c.litros_total_dia || 0).toFixed(1)} L</td>
+                    <td class="font-mono">${c.numero_frasco_muestra || '-'}</td>
+                    <td>${c.estado_salud_ubre || 'Sana'}</td>
+                </tr>
+            `).join('');
+        }
+
+        async function guardarControlMlpAnimal(e) {
+            e.preventDefault();
+            const id_animal = Number(document.getElementById('ficha-animal-id').value);
+            const fecha_control = document.getElementById('mlp-fecha').value || new Date().toISOString().slice(0, 10);
+            const dias_en_leche = Number(document.getElementById('mlp-del').value || 0);
+            const litros_manana = Number(document.getElementById('mlp-manana').value || 0);
+            const litros_tarde = Number(document.getElementById('mlp-tarde').value || 0);
+            const numero_frasco_muestra = document.getElementById('mlp-frasco').value.trim();
+            const estado_salud_ubre = document.getElementById('mlp-ubre').value;
+            const litros_total_dia = Number((litros_manana + litros_tarde).toFixed(2));
+            const payload = { id_animal, fecha_control, dias_en_leche, litros_manana, litros_tarde, litros_total_dia, numero_frasco_muestra, estado_salud_ubre };
+
+            try {
+                const res = await fetch(`${getApiBase()}/api/animales/mlp/guardar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const json = await res.json();
+                if (json.state) {
+                    appState = json.state;
+                    localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
+                }
+            } catch {
+                enqueueOfflineAction('mlp_control_guardar', payload);
+                if (!appState.control_lechero_mlp) appState.control_lechero_mlp = [];
+                appState.control_lechero_mlp.unshift({ id: Date.now(), ...payload });
+                const animal = (appState.inventario_animales || []).find(a => Number(a.id) === id_animal);
+                if (animal) animal.litros_promedio_dia = litros_total_dia;
+                localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
+            }
+            renderTablaMlpAnimal(id_animal);
+            renderTab3VacasYAnillos();
+            alert(`Control MLP guardado (${litros_total_dia.toFixed(1)} L/día).`);
+        }
+
+        function renderHerdePlusSensores(animal) {
+            const box = document.getElementById('ficha-herde-sensores-box');
+            if (!box) return;
+            const tel = (appState?.telemetria_collares || []).find(t => t.collar_id === animal.collar_id);
+            if (!tel) {
+                box.innerHTML = `
+                    <div class="col-span-2 sm:col-span-4 p-3 rounded-xl bg-[#FFFDF8] border border-[#C8B998] text-xs font-semibold text-[#3E5245]">
+                        Sin collar LoRa activo asignado (${animal.collar_id || 'En cola DIY'}). Puede asignar o activar una orden manual de apartado en manga abajo.
+                    </div>`;
+                return;
+            }
+            box.innerHTML = `
+                <div class="p-2.5 rounded-xl bg-[#FFFDF8] border border-[#C8B998]">
+                    <div class="text-[10px] font-bold uppercase text-[#3E5245]">Collar LoRa</div>
+                    <div class="text-sm font-extrabold font-mono text-[#1A1A1A]">${tel.collar_id}</div>
+                </div>
+                <div class="p-2.5 rounded-xl bg-[#FFFDF8] border border-[#C8B998]">
+                    <div class="text-[10px] font-bold uppercase text-[#3E5245]">Actividad MPU6050</div>
+                    <div class="text-sm font-extrabold text-[#1A1A1A]">${tel.actividad_movimiento || 0} u</div>
+                </div>
+                <div class="p-2.5 rounded-xl bg-[#FFFDF8] border border-[#C8B998]">
+                    <div class="text-[10px] font-bold uppercase text-[#3E5245]">Temp. DS18B20</div>
+                    <div class="text-sm font-extrabold text-[#1A1A1A]">${Number(tel.temperatura_c || 38.5).toFixed(1)} °C</div>
+                </div>
+                <div class="p-2.5 rounded-xl bg-[#FFFDF8] border border-[#C8B998]">
+                    <div class="text-[10px] font-bold uppercase text-[#3E5245]">Estado HERDEplus</div>
+                    <div class="text-xs font-extrabold text-[#1A1A1A]">${tel.alerta_estado || 'NORMAL'}</div>
+                </div>`;
+        }
+
+        async function guardarOrdenApartadoManga(modoForzado) {
+            const id = Number(document.getElementById('ficha-animal-id').value);
+            const sel = document.getElementById('ficha-orden-apartado');
+            const orden_apartado_manga = modoForzado || (sel ? sel.value : 'NORMAL');
+            if (sel) sel.value = orden_apartado_manga;
+
+            const payload = { id, orden_apartado_manga };
+            try {
+                const res = await fetch(`${getApiBase()}/api/animales/din-apartado`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const json = await res.json();
+                if (json.state) {
+                    appState = json.state;
+                    localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
+                }
+            } catch {
+                enqueueOfflineAction('animal_din_apartado', payload);
+                const animal = (appState?.inventario_animales || []).find(a => Number(a.id) === id);
+                if (animal) {
+                    animal.orden_apartado_manga = orden_apartado_manga;
+                    localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
+                }
+            }
+            renderAll();
+            alert(`Orden de Apartado en Manga actualizada: ${orden_apartado_manga}`);
         }
 
         function renderTablaSanidadAnimal(animalId) {
@@ -6577,11 +7161,20 @@
                 tbody.innerHTML = `<tr><td colspan="${esDueno ? 6 : 5}" class="text-center py-3 text-gray-500">Sin eventos sanitarios registrados para este animal.</td></tr>`;
                 return;
             }
-            tbody.innerHTML = eventos.map(ev => `
+            tbody.innerHTML = eventos.map(ev => {
+                const retiroBadge = Number(ev.dias_retiro_leche || 0) > 0
+                    ? `<div class="text-[10px] font-extrabold text-[#1A1A1A]">Retiro: ${ev.dias_retiro_leche}d (hasta ${ev.fecha_fin_retiro_leche || '-'})</div>`
+                    : '';
+                const regInfo = [ev.registro_ica_producto, ev.lote_med ? `Lote ${ev.lote_med}` : '', ev.acta_ruv_oficial].filter(Boolean).join(' • ');
+                return `
                 <tr>
                     <td class="whitespace-nowrap font-bold">${ev.fecha}</td>
                     <td><span class="badge bg-emerald-900 text-emerald-200">${ev.tipo_evento}</span></td>
-                    <td class="font-extrabold">${ev.producto_dosis}</td>
+                    <td>
+                        <div class="font-extrabold">${ev.producto_dosis}</div>
+                        ${regInfo ? `<div class="text-[10px] font-mono text-[#3E5245]">${regInfo}</div>` : ''}
+                        ${retiroBadge}
+                    </td>
                     <td class="whitespace-nowrap font-bold text-amber-300">${ev.proxima_fecha || '-'}</td>
                     <td class="text-xs">${ev.notas || ''}</td>
                     ${esDueno ? `<td>
@@ -6590,39 +7183,12 @@
                             <span>Borrar</span>
                         </button>
                     </td>` : ''}
-                </tr>
-            `).join('');
+                </tr>`;
+            }).join('');
         }
 
         async function guardarGenealogiaAnimal(e) {
-            e.preventDefault();
-            const id = Number(document.getElementById('ficha-animal-id').value);
-            const madre_codigo = document.getElementById('ficha-madre-codigo').value.trim();
-            const cria_codigo = document.getElementById('ficha-cria-codigo').value.trim();
-            const notas = document.getElementById('ficha-notas-animal').value.trim();
-
-            try {
-                const res = await fetch(`${getApiBase()}/api/animales/genealogia`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id, madre_codigo, cria_codigo, notas })
-                });
-                const json = await res.json();
-                if (json.state) {
-                    appState = json.state;
-                    localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
-                }
-            } catch {
-                const animal = (appState?.inventario_animales || []).find(a => Number(a.id) === Number(id));
-                if (animal) {
-                    animal.madre_codigo = madre_codigo;
-                    animal.cria_codigo = cria_codigo;
-                    animal.notas = notas;
-                    localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
-                }
-            }
-            renderAll();
-            alert('Genealogía y notas guardadas en la ficha del animal.');
+            return guardarIdentidadIcaDin(e);
         }
 
         async function guardarEventoSanitarioAnimal(e) {
@@ -6632,15 +7198,20 @@
             const tipo_evento = document.getElementById('sanidad-tipo').value;
             const producto_dosis = document.getElementById('sanidad-producto').value.trim();
             const proxima_fecha = document.getElementById('sanidad-proxima').value || null;
+            const registro_ica_producto = document.getElementById('sanidad-reg-ica')?.value.trim() || '';
+            const lote_med = document.getElementById('sanidad-lote')?.value.trim() || '';
+            const dias_retiro_leche = Number(document.getElementById('sanidad-retiro-dias')?.value || 0);
+            const acta_ruv_oficial = document.getElementById('sanidad-acta-ruv')?.value.trim() || '';
             const notas = document.getElementById('sanidad-notas').value.trim();
 
             if (!producto_dosis) return;
+            const payload = { id_animal, fecha, tipo_evento, producto_dosis, proxima_fecha, registro_ica_producto, lote_med, dias_retiro_leche, acta_ruv_oficial, notas };
 
             try {
                 const res = await fetch(`${getApiBase()}/api/animales/sanidad/agregar`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id_animal, fecha, tipo_evento, producto_dosis, proxima_fecha, notas })
+                    body: JSON.stringify(payload)
                 });
                 const json = await res.json();
                 if (json.state) {
@@ -6648,23 +7219,146 @@
                     localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
                 }
             } catch {
-                enqueueOfflineAction('evento_sanitario_agregar', { id_animal, fecha, tipo_evento, producto_dosis, proxima_fecha, notas });
+                enqueueOfflineAction('evento_sanitario_agregar', payload);
+                let fecha_fin_retiro_leche = null;
+                if (dias_retiro_leche > 0) {
+                    const dFin = new Date(fecha);
+                    dFin.setDate(dFin.getDate() + dias_retiro_leche);
+                    fecha_fin_retiro_leche = dFin.toISOString().slice(0, 10);
+                    const animal = (appState.inventario_animales || []).find(a => Number(a.id) === id_animal);
+                    if (animal) animal.orden_apartado_manga = 'APARTAR: LECHE EN RETIRO';
+                }
                 if (!appState.eventos_sanitarios_animal) appState.eventos_sanitarios_animal = [];
-                appState.eventos_sanitarios_animal.unshift({
-                    id: Date.now(),
-                    id_animal,
-                    fecha,
-                    tipo_evento,
-                    producto_dosis,
-                    proxima_fecha,
-                    notas
-                });
+                appState.eventos_sanitarios_animal.unshift({ id: Date.now(), ...payload, fecha_fin_retiro_leche });
                 localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
             }
 
             document.getElementById('sanidad-producto').value = '';
             document.getElementById('sanidad-notas').value = '';
+            if (document.getElementById('sanidad-retiro-dias')) document.getElementById('sanidad-retiro-dias').value = '0';
             renderTablaSanidadAnimal(id_animal);
+            renderAll();
+        }
+
+        // =========================================================================
+        // CENTRO SINIGAN V6 / HI-TIER Y AUDITORÍA BPG LECHE (RES. 67449/2020)
+        // =========================================================================
+        function abrirModalSiniganBpg() {
+            const modal = document.getElementById('modal-sinigan-bpg');
+            if (!modal) return;
+            const cfg = appState?.config_predio_ica || {};
+            const elRsp = document.getElementById('ica-cfg-rspp');
+            const elRuv = document.getElementById('ica-cfg-ruv');
+            const elBosque = document.getElementById('ica-cfg-bosque');
+            if (elRsp) elRsp.value = cfg.rspp_numero || 'RSPP-50370-001';
+            if (elRuv) elRuv.value = cfg.ruv_ciclo_actual || 'RUV-2026-CICLO-II';
+            if (elBosque) elBosque.value = cfg.hectareas_bosque_protegido ?? 6.0;
+
+            const elFecha = document.getElementById('sinigan-fecha');
+            if (elFecha) elFecha.value = new Date().toISOString().slice(0, 10);
+
+            const bovinos = (appState?.inventario_animales || []).filter(a => a.especie === 'Bovinos');
+            const conDin = bovinos.filter(b => b.cii_visual_din && b.rfid_iso_15digitos).length;
+            const elConc = document.getElementById('sinigan-conciliacion-label');
+            if (elConc) elConc.textContent = `Inventario conciliado DIN: ${conDin}/${bovinos.length} bovinos`;
+
+            renderTablaMovimientosSinigan();
+            modal.style.display = 'flex';
+        }
+
+        function cerrarModalSiniganBpg() {
+            const modal = document.getElementById('modal-sinigan-bpg');
+            if (modal) modal.style.display = 'none';
+        }
+
+        async function guardarConfigPredioIca(e) {
+            e.preventDefault();
+            const rspp_numero = document.getElementById('ica-cfg-rspp').value.trim();
+            const ruv_ciclo_actual = document.getElementById('ica-cfg-ruv').value.trim();
+            const hectareas_bosque_protegido = Number(document.getElementById('ica-cfg-bosque').value || 6.0);
+            const payload = { rspp_numero, ruv_ciclo_actual, hectareas_bosque_protegido };
+            try {
+                const res = await fetch(`${getApiBase()}/api/ica/predio/actualizar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const json = await res.json();
+                if (json.state) {
+                    appState = json.state;
+                    localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
+                }
+            } catch {
+                enqueueOfflineAction('ica_predio_actualizar', payload);
+                appState.config_predio_ica = { ...(appState.config_predio_ica || {}), ...payload };
+                localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
+            }
+            renderAll();
+            alert('Configuración oficial del predio ICA / Ley 2585 guardada.');
+        }
+
+        function renderTablaMovimientosSinigan() {
+            const tbody = document.getElementById('sinigan-movimientos-tbody');
+            if (!tbody) return;
+            const movs = appState?.movimientos_sinigan_hit || [];
+            if (movs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center py-3 text-gray-500">Sin movimientos SINIGAN V6 registrados aún.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = movs.map(m => `
+                <tr>
+                    <td class="whitespace-nowrap font-bold">${m.fecha}</td>
+                    <td><span class="badge bg-[#1A1A1A] text-[#F7F3E8] text-[10px]">${m.tipo_evento}</span></td>
+                    <td class="font-mono text-[11px]">${m.animales_din_json || '-'}</td>
+                    <td class="text-xs">${m.destino_o_detalle || ''}${m.cedula_transportador ? ' • CC: ' + m.cedula_transportador : ''}</td>
+                    <td class="text-[11px] font-bold">${m.estado_guia || 'Pendiente_Subir_SINIGAN'}</td>
+                </tr>
+            `).join('');
+        }
+
+        async function guardarMovimientoSinigan(e) {
+            e.preventDefault();
+            const tipo_evento = document.getElementById('sinigan-tipo').value;
+            const fecha = document.getElementById('sinigan-fecha').value || new Date().toISOString().slice(0, 10);
+            const cedula_transportador = document.getElementById('sinigan-cedula').value.trim();
+            const animales_din_json = document.getElementById('sinigan-dins').value.trim();
+            const destino_o_detalle = document.getElementById('sinigan-detalle').value.trim();
+            const estado_guia = tipo_evento === 'GSMI_DOS_MANOS' ? 'Guia_Abierta_Origen' : 'Pendiente_Subir_SINIGAN';
+            const payload = { fecha, tipo_evento, animales_din_json, destino_o_detalle, cedula_transportador, estado_guia };
+
+            try {
+                const res = await fetch(`${getApiBase()}/api/sinigan/movimiento/guardar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const json = await res.json();
+                if (json.state) {
+                    appState = json.state;
+                    localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
+                }
+            } catch {
+                enqueueOfflineAction('sinigan_movimiento_guardar', payload);
+                if (!appState.movimientos_sinigan_hit) appState.movimientos_sinigan_hit = [];
+                appState.movimientos_sinigan_hit.unshift({ id: Date.now(), ...payload });
+                localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(appState));
+            }
+            document.getElementById('sinigan-dins').value = '';
+            document.getElementById('sinigan-detalle').value = '';
+            renderTablaMovimientosSinigan();
+            alert('Evento SINIGAN V6 / GSMI pre-liquidado.');
+        }
+
+        function exportarResumenAuditoriaBpg() {
+            const cfg = appState?.config_predio_ica || {};
+            const bovinos = (appState?.inventario_animales || []).filter(a => a.especie === 'Bovinos');
+            const conDin = bovinos.filter(b => b.cii_visual_din && b.rfid_iso_15digitos).length;
+            const retiro = bovinos.filter(b => b.orden_apartado_manga === 'APARTAR: LECHE EN RETIRO').map(b => b.codigo_nombre);
+            const win = window.open('', '_blank');
+            if (!win) { alert('Permite ventanas emergentes para imprimir el resumen BPG Leche.'); return; }
+            win.document.write(`<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Auditoría BPG Leche - Finca AgroMacarena</title><style>body{font-family:sans-serif;padding:24px;color:#1A1A1A;background:#fff}table{width:100%;border-collapse:collapse;margin-top:12px;font-size:12px}th,td{border:1px solid #333;padding:6px;text-align:left}</style></head><body><h2>Resumen Auditoría BPG Leche (Res. 67449/2020) y SINIGAN V6</h2><p><strong>Predio:</strong> ${cfg.nombre_predio || 'Finca AgroMacarena 35ha'} | <strong>RSPP:</strong> ${cfg.rspp_numero || '-'} | <strong>RUV:</strong> ${cfg.ruv_ciclo_actual || '-'} | <strong>Ley 2585 Bosque Protegido:</strong> ${cfg.hectareas_bosque_protegido ?? 6} ha</p><p><strong>Inventario Conciliado DIN (Res. 000219/2026):</strong> ${conDin}/${bovinos.length} | <strong>Vacas en Retiro BPMV:</strong> ${retiro.length ? retiro.join(', ') : 'Ninguna'}</p><table><thead><tr><th>Animal</th><th>CII Visual DIN</th><th>RFID ISO 11784</th><th>Prom. MLP</th><th>Apartado</th></tr></thead><tbody>${bovinos.map(b => `<tr><td>${b.codigo_nombre}</td><td>${b.cii_visual_din || '-'}</td><td>${b.rfid_iso_15digitos || '-'}</td><td>${b.litros_promedio_dia || 0} L/d</td><td>${b.orden_apartado_manga || 'NORMAL'}</td></tr>`).join('')}</tbody></table></body></html>`);
+            win.document.close();
+            win.print();
         }
 
         async function eliminarEventoSanitarioAnimal(id) {
@@ -7833,6 +8527,7 @@
             }
             const modals = [
                 { id: 'modal-aq-crear-placemark', fn: () => typeof cerrarModalAlpineCrearPlacemark === 'function' && cerrarModalAlpineCrearPlacemark() },
+                { id: 'modal-sinigan-bpg', fn: () => typeof cerrarModalSiniganBpg === 'function' && cerrarModalSiniganBpg() },
                 { id: 'modal-nfc-escaner', fn: () => typeof cerrarModalNfcEscaner === 'function' && cerrarModalNfcEscaner() },
                 { id: 'modal-ficha-clinica-animal', fn: () => typeof cerrarFichaClinicaAnimal === 'function' && cerrarFichaClinicaAnimal() },
                 { id: 'modal-historial-bajas', fn: () => typeof cerrarModalHistorialBajas === 'function' && cerrarModalHistorialBajas() },

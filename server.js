@@ -112,15 +112,45 @@ function initDatabase() {
     if (!cols.includes('token_digital_hash')) {
         db.exec("ALTER TABLE inventario_animales ADD COLUMN token_digital_hash TEXT DEFAULT NULL;");
     }
+    if (!cols.includes('cii_visual_din')) {
+        db.exec("ALTER TABLE inventario_animales ADD COLUMN cii_visual_din TEXT DEFAULT '';");
+    }
+    if (!cols.includes('rfid_iso_15digitos')) {
+        db.exec("ALTER TABLE inventario_animales ADD COLUMN rfid_iso_15digitos TEXT DEFAULT '';");
+    }
+    if (!cols.includes('tipo_din_ica')) {
+        db.exec("ALTER TABLE inventario_animales ADD COLUMN tipo_din_ica TEXT DEFAULT 'Combinado_Paleta_RFID';");
+    }
+    if (!cols.includes('fecha_aplicacion_din')) {
+        db.exec("ALTER TABLE inventario_animales ADD COLUMN fecha_aplicacion_din TEXT DEFAULT '2025-06-15';");
+    }
+    if (!cols.includes('orden_apartado_manga')) {
+        db.exec("ALTER TABLE inventario_animales ADD COLUMN orden_apartado_manga TEXT DEFAULT 'NORMAL';");
+    }
 
-    // Asignar NFC UID y Token Único Digital (NFT Hash SHA-256) a todos los animales que aún no lo tengan
+    // Asignar NFC UID, Token Digital, Código DIN Visual (CO-00000000XXXX-D) y RFID ISO 11784 (17002...) a quienes falten
     const todosAnimales = db.prepare('SELECT * FROM inventario_animales').all();
-    const stmtUpdateNft = db.prepare('UPDATE inventario_animales SET nfc_uid = ?, token_digital_hash = ? WHERE id = ?');
+    const stmtUpdateNft = db.prepare(`
+        UPDATE inventario_animales
+        SET nfc_uid = ?, token_digital_hash = ?, cii_visual_din = ?, rfid_iso_15digitos = ?, tipo_din_ica = ?, fecha_aplicacion_din = ?, orden_apartado_manga = ?
+        WHERE id = ?
+    `);
     for (const a of todosAnimales) {
         const uid = a.nfc_uid || `NFC-COLLAR-${String(a.id).padStart(2, '0')}`;
         const hash = a.token_digital_hash || generarTokenDigitalAnimal({ ...a, nfc_uid: uid });
-        if (a.nfc_uid !== uid || a.token_digital_hash !== hash) {
-            stmtUpdateNft.run(uid, hash, a.id);
+        const suf4 = String(1000 + Number(a.id)).slice(-4);
+        const dv = (Number(a.id) * 7 + 3) % 10;
+        const din = (a.cii_visual_din && a.cii_visual_din.trim()) ? a.cii_visual_din : `CO-00000000${suf4}-${dv}`;
+        const rfid = (a.rfid_iso_15digitos && a.rfid_iso_15digitos.trim()) ? a.rfid_iso_15digitos : `17002000000${suf4}`;
+        const tipoDin = a.tipo_din_ica || 'Combinado_Paleta_RFID';
+        const fechaDin = a.fecha_aplicacion_din || '2025-06-15';
+        const apartado = a.orden_apartado_manga || 'NORMAL';
+        if (
+            a.nfc_uid !== uid || a.token_digital_hash !== hash ||
+            a.cii_visual_din !== din || a.rfid_iso_15digitos !== rfid ||
+            a.tipo_din_ica !== tipoDin || a.fecha_aplicacion_din !== fechaDin || a.orden_apartado_manga !== apartado
+        ) {
+            stmtUpdateNft.run(uid, hash, din, rfid, tipoDin, fechaDin, apartado, a.id);
         }
     }
 
@@ -184,7 +214,7 @@ function initDatabase() {
         );
     `);
 
-    // Tabla de Ficha Clínica / Eventos Sanitarios por Animal (Vacunas, Purgas, Tratamientos)
+    // Tabla de Ficha Clínica / Eventos Sanitarios por Animal (Vacunas, Purgas, Tratamientos + BPMV/RUV)
     db.exec(`
         CREATE TABLE IF NOT EXISTS eventos_sanitarios_animal (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -193,7 +223,82 @@ function initDatabase() {
             tipo_evento TEXT NOT NULL,
             producto_dosis TEXT NOT NULL,
             proxima_fecha TEXT DEFAULT NULL,
-            notas TEXT DEFAULT ''
+            notas TEXT DEFAULT '',
+            registro_ica_producto TEXT DEFAULT '',
+            lote_med TEXT DEFAULT '',
+            dias_retiro_leche INTEGER DEFAULT 0,
+            fecha_fin_retiro_leche TEXT DEFAULT NULL,
+            acta_ruv_oficial TEXT DEFAULT ''
+        );
+    `);
+    const sanCols = db.prepare("PRAGMA table_info(eventos_sanitarios_animal)").all().map(c => c.name);
+    if (!sanCols.includes('registro_ica_producto')) db.exec("ALTER TABLE eventos_sanitarios_animal ADD COLUMN registro_ica_producto TEXT DEFAULT '';");
+    if (!sanCols.includes('lote_med')) db.exec("ALTER TABLE eventos_sanitarios_animal ADD COLUMN lote_med TEXT DEFAULT '';");
+    if (!sanCols.includes('dias_retiro_leche')) db.exec("ALTER TABLE eventos_sanitarios_animal ADD COLUMN dias_retiro_leche INTEGER DEFAULT 0;");
+    if (!sanCols.includes('fecha_fin_retiro_leche')) db.exec("ALTER TABLE eventos_sanitarios_animal ADD COLUMN fecha_fin_retiro_leche TEXT DEFAULT NULL;");
+    if (!sanCols.includes('acta_ruv_oficial')) db.exec("ALTER TABLE eventos_sanitarios_animal ADD COLUMN acta_ruv_oficial TEXT DEFAULT '';");
+
+    // Tabla de Configuración Predio ICA / SINIGAN V6 / Ley 2585 de 2026
+    db.exec(`
+        CREATE TABLE IF NOT EXISTS config_predio_ica (
+            id INTEGER PRIMARY KEY CHECK (id = 1),
+            nombre_predio TEXT DEFAULT 'Finca AgroMacarena 35ha',
+            rspp_numero TEXT DEFAULT 'RSPP-50370-001',
+            ruv_ciclo_actual TEXT DEFAULT 'RUV-2026-CICLO-II (Res. ICA 019881)',
+            fecha_ultimo_ruv TEXT DEFAULT '2026-10-01',
+            cedula_responsable TEXT DEFAULT 'TG Legacy S.A.S.',
+            estado_bpg_leche TEXT DEFAULT 'En Implementación Res. 67449/2020',
+            hectareas_totales REAL DEFAULT 35.0,
+            hectareas_bosque_protegido REAL DEFAULT 6.0
+        );
+    `);
+    const cfgIca = db.prepare('SELECT id FROM config_predio_ica WHERE id = 1').get();
+    if (!cfgIca) {
+        db.prepare(`
+            INSERT INTO config_predio_ica (id, nombre_predio, rspp_numero, ruv_ciclo_actual, fecha_ultimo_ruv, cedula_responsable, estado_bpg_leche, hectareas_totales, hectareas_bosque_protegido)
+            VALUES (1, 'Finca AgroMacarena 35ha', 'RSPP-50370-001', 'RUV-2026-CICLO-II (Res. ICA 019881)', '2026-10-01', 'TG Legacy S.A.S.', 'En Implementación Res. 67449/2020', 35.0, 6.0)
+        `).run();
+    }
+
+    // Tabla Control Lechero Alemán MLP (HERDEplus - Milchleistungsprüfung)
+    db.exec(`
+        CREATE TABLE IF NOT EXISTS control_lechero_mlp (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id_animal INTEGER NOT NULL,
+            fecha_control TEXT NOT NULL,
+            dias_en_leche INTEGER DEFAULT 60,
+            litros_manana REAL DEFAULT 0,
+            litros_tarde REAL DEFAULT 0,
+            litros_total_dia REAL DEFAULT 0,
+            numero_frasco_muestra TEXT DEFAULT '',
+            estado_salud_ubre TEXT DEFAULT 'Sana'
+        );
+    `);
+    const countMlp = db.prepare('SELECT COUNT(*) as c FROM control_lechero_mlp').get();
+    if (!countMlp || countMlp.c === 0) {
+        const vacasSeed = db.prepare("SELECT id, litros_promedio_dia FROM inventario_animales WHERE especie = 'Bovinos' AND estado_reproductivo != 'Reproductor_Activo' ORDER BY id ASC LIMIT 19").all();
+        const insMlp = db.prepare(`
+            INSERT INTO control_lechero_mlp (id_animal, fecha_control, dias_en_leche, litros_manana, litros_tarde, litros_total_dia, numero_frasco_muestra, estado_salud_ubre)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        `);
+        vacasSeed.forEach((v, idx) => {
+            const total = Number(v.litros_promedio_dia || 6.0);
+            const man = Number((total * 0.62).toFixed(1));
+            const tar = Number((total - man).toFixed(1));
+            insMlp.run(v.id, '2026-11-01', 45 + (idx * 7), man, tar, Number((man + tar).toFixed(1)), `MLP-Q1-${String(v.id).padStart(2, '0')}`, 'Sana');
+        });
+    }
+
+    // Tabla Movimientos Oficiales SINIGAN V6 / HI-Tier
+    db.exec(`
+        CREATE TABLE IF NOT EXISTS movimientos_sinigan_hit (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            fecha TEXT NOT NULL,
+            tipo_evento TEXT NOT NULL,
+            animales_din_json TEXT DEFAULT '[]',
+            destino_o_detalle TEXT DEFAULT '',
+            cedula_transportador TEXT DEFAULT '',
+            estado_guia TEXT DEFAULT 'Pendiente_Subir_SINIGAN'
         );
     `);
 
@@ -462,6 +567,9 @@ function getFullState() {
     const historial_bajas_animales = db.prepare('SELECT * FROM historial_bajas_animales ORDER BY id DESC').all();
     const eventos_sanitarios_animal = db.prepare('SELECT * FROM eventos_sanitarios_animal ORDER BY fecha DESC, id DESC').all();
     const placemarks_mapa = db.prepare('SELECT * FROM placemarks_mapa ORDER BY id ASC').all();
+    const config_predio_ica = db.prepare('SELECT * FROM config_predio_ica WHERE id = 1').get() || {};
+    const control_lechero_mlp = db.prepare('SELECT * FROM control_lechero_mlp ORDER BY fecha_control DESC, id DESC LIMIT 200').all();
+    const movimientos_sinigan_hit = db.prepare('SELECT * FROM movimientos_sinigan_hit ORDER BY fecha DESC, id DESC LIMIT 100').all();
 
     // Calcular saldos de los 3 Sobres Quincenales (24% Operativo, 20% Familia, 56% Obras)
     const sobres = {
@@ -501,7 +609,10 @@ function getFullState() {
         geojson_potreros,
         historial_bajas_animales,
         eventos_sanitarios_animal,
-        placemarks_mapa
+        placemarks_mapa,
+        config_predio_ica,
+        control_lechero_mlp,
+        movimientos_sinigan_hit
     };
 }
 
@@ -825,10 +936,92 @@ function applySyncQueue(queue) {
                 processed++;
             }
         } else if (item.action === 'evento_sanitario_agregar') {
+            const fechaEv = d.fecha || new Date().toISOString().slice(0, 10);
+            const diasRetiro = Number(d.dias_retiro_leche || 0);
+            const fechaFinRetiro = d.fecha_fin_retiro_leche || (diasRetiro > 0 ? addDaysISO(fechaEv, diasRetiro) : null);
             db.prepare(`
-                INSERT INTO eventos_sanitarios_animal (id_animal, fecha, tipo_evento, producto_dosis, proxima_fecha, notas)
+                INSERT INTO eventos_sanitarios_animal (id_animal, fecha, tipo_evento, producto_dosis, proxima_fecha, notas, registro_ica_producto, lote_med, dias_retiro_leche, fecha_fin_retiro_leche, acta_ruv_oficial)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `).run(
+                Number(d.id_animal), fechaEv, d.tipo_evento || 'Vacuna', d.producto_dosis || '',
+                d.proxima_fecha || null, d.notas || '',
+                d.registro_ica_producto || '', d.lote_med || '', diasRetiro, fechaFinRetiro, d.acta_ruv_oficial || ''
+            );
+            if (diasRetiro > 0) {
+                db.prepare("UPDATE inventario_animales SET orden_apartado_manga = 'APARTAR: LECHE EN RETIRO' WHERE id = ?").run(Number(d.id_animal));
+            }
+            processed++;
+        } else if (item.action === 'ica_predio_actualizar') {
+            db.prepare(`
+                UPDATE config_predio_ica
+                SET nombre_predio = COALESCE(?, nombre_predio),
+                    rspp_numero = COALESCE(?, rspp_numero),
+                    ruv_ciclo_actual = COALESCE(?, ruv_ciclo_actual),
+                    fecha_ultimo_ruv = COALESCE(?, fecha_ultimo_ruv),
+                    cedula_responsable = COALESCE(?, cedula_responsable),
+                    estado_bpg_leche = COALESCE(?, estado_bpg_leche),
+                    hectareas_totales = COALESCE(?, hectareas_totales),
+                    hectareas_bosque_protegido = COALESCE(?, hectareas_bosque_protegido)
+                WHERE id = 1
+            `).run(
+                d.nombre_predio ?? null, d.rspp_numero ?? null, d.ruv_ciclo_actual ?? null,
+                d.fecha_ultimo_ruv ?? null, d.cedula_responsable ?? null, d.estado_bpg_leche ?? null,
+                d.hectareas_totales !== undefined ? Number(d.hectareas_totales) : null,
+                d.hectareas_bosque_protegido !== undefined ? Number(d.hectareas_bosque_protegido) : null
+            );
+            processed++;
+        } else if (item.action === 'animal_din_apartado') {
+            const id = Number(d.id_animal || d.id);
+            const animal = db.prepare('SELECT * FROM inventario_animales WHERE id = ?').get(id);
+            if (animal) {
+                const nfc_uid = d.nfc_uid !== undefined ? String(d.nfc_uid).trim() : animal.nfc_uid;
+                const madre_codigo = d.madre_codigo !== undefined ? d.madre_codigo : animal.madre_codigo;
+                const cria_codigo = d.cria_codigo !== undefined ? d.cria_codigo : animal.cria_codigo;
+                const cii_visual_din = d.cii_visual_din !== undefined ? String(d.cii_visual_din).trim() : animal.cii_visual_din;
+                const rfid_iso_15digitos = d.rfid_iso_15digitos !== undefined ? String(d.rfid_iso_15digitos).trim() : animal.rfid_iso_15digitos;
+                const tipo_din_ica = d.tipo_din_ica !== undefined ? d.tipo_din_ica : animal.tipo_din_ica;
+                const fecha_aplicacion_din = d.fecha_aplicacion_din !== undefined ? d.fecha_aplicacion_din : animal.fecha_aplicacion_din;
+                const orden_apartado_manga = d.orden_apartado_manga !== undefined ? d.orden_apartado_manga : animal.orden_apartado_manga;
+                const token_digital_hash = generarTokenDigitalAnimal({ ...animal, madre_codigo, cria_codigo, nfc_uid });
+                db.prepare(`
+                    UPDATE inventario_animales
+                    SET cii_visual_din = ?, rfid_iso_15digitos = ?, tipo_din_ica = ?, fecha_aplicacion_din = ?, orden_apartado_manga = ?,
+                        nfc_uid = ?, madre_codigo = ?, cria_codigo = ?, token_digital_hash = ?
+                    WHERE id = ?
+                `).run(cii_visual_din, rfid_iso_15digitos, tipo_din_ica, fecha_aplicacion_din, orden_apartado_manga, nfc_uid, madre_codigo, cria_codigo, token_digital_hash, id);
+                processed++;
+            }
+        } else if (item.action === 'mlp_control_guardar') {
+            const id_animal = Number(d.id_animal);
+            const fecha_control = d.fecha_control || new Date().toISOString().slice(0, 10);
+            const dias_en_leche = Number(d.dias_en_leche || 60);
+            const litros_manana = Number(d.litros_manana || 0);
+            const litros_tarde = Number(d.litros_tarde || 0);
+            const litros_total_dia = Number((litros_manana + litros_tarde).toFixed(1));
+            const numero_frasco_muestra = d.numero_frasco_muestra || '';
+            const estado_salud_ubre = d.estado_salud_ubre || 'Sana';
+            db.prepare(`
+                INSERT INTO control_lechero_mlp (id_animal, fecha_control, dias_en_leche, litros_manana, litros_tarde, litros_total_dia, numero_frasco_muestra, estado_salud_ubre)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            `).run(id_animal, fecha_control, dias_en_leche, litros_manana, litros_tarde, litros_total_dia, numero_frasco_muestra, estado_salud_ubre);
+            db.prepare('UPDATE inventario_animales SET litros_promedio_dia = ? WHERE id = ?').run(litros_total_dia, id_animal);
+            processed++;
+        } else if (item.action === 'sinigan_movimiento_guardar') {
+            const animalesJson = typeof d.animales_din_json === 'string' ? d.animales_din_json : JSON.stringify(d.animales_din_json || []);
+            db.prepare(`
+                INSERT INTO movimientos_sinigan_hit (fecha, tipo_evento, animales_din_json, destino_o_detalle, cedula_transportador, estado_guia)
                 VALUES (?, ?, ?, ?, ?, ?)
-            `).run(Number(d.id_animal), d.fecha || new Date().toISOString().slice(0, 10), d.tipo_evento || 'Vacuna', d.producto_dosis || '', d.proxima_fecha || null, d.notas || '');
+            `).run(
+                d.fecha || new Date().toISOString().slice(0, 10),
+                d.tipo_evento || 'GSMI_DOS_MANOS',
+                animalesJson,
+                d.destino_o_detalle || '',
+                d.cedula_transportador || '',
+                d.estado_guia || 'Pendiente_Subir_SINIGAN'
+            );
+            processed++;
+        } else if (item.action === 'sinigan_movimiento_estado') {
+            db.prepare('UPDATE movimientos_sinigan_hit SET estado_guia = ? WHERE id = ?').run(d.estado_guia || 'Guia_Cerrada_Destino_QR', Number(d.id));
             processed++;
         } else if (item.action === 'evento_sanitario_eliminar') {
             db.prepare('DELETE FROM eventos_sanitarios_animal WHERE id = ?').run(Number(d.id));
@@ -1468,14 +1661,122 @@ const server = http.createServer(async (req, res) => {
             const producto_dosis = (body.producto_dosis || '').trim();
             const proxima_fecha = body.proxima_fecha || null;
             const notas = (body.notas || '').trim();
+            const registro_ica_producto = (body.registro_ica_producto || '').trim();
+            const lote_med = (body.lote_med || '').trim();
+            const dias_retiro_leche = Number(body.dias_retiro_leche || 0);
+            const fecha_fin_retiro_leche = body.fecha_fin_retiro_leche || (dias_retiro_leche > 0 ? addDaysISO(fecha, dias_retiro_leche) : null);
+            const acta_ruv_oficial = (body.acta_ruv_oficial || '').trim();
 
             db.prepare(`
-                INSERT INTO eventos_sanitarios_animal (id_animal, fecha, tipo_evento, producto_dosis, proxima_fecha, notas)
-                VALUES (?, ?, ?, ?, ?, ?)
-            `).run(id_animal, fecha, tipo_evento, producto_dosis, proxima_fecha, notas);
+                INSERT INTO eventos_sanitarios_animal (id_animal, fecha, tipo_evento, producto_dosis, proxima_fecha, notas, registro_ica_producto, lote_med, dias_retiro_leche, fecha_fin_retiro_leche, acta_ruv_oficial)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `).run(id_animal, fecha, tipo_evento, producto_dosis, proxima_fecha, notas, registro_ica_producto, lote_med, dias_retiro_leche, fecha_fin_retiro_leche, acta_ruv_oficial);
+
+            if (dias_retiro_leche > 0) {
+                db.prepare("UPDATE inventario_animales SET orden_apartado_manga = 'APARTAR: LECHE EN RETIRO' WHERE id = ?").run(id_animal);
+            }
 
             broadcastEvent('STATE_UPDATED', { section: 'sanidad' });
             return sendJson(res, 201, { ok: true, state: getFullState() });
+        }
+
+        // Actualizar Predio ICA / RUV / BPG Leche / Ley 2585
+        if (pathname === '/api/ica/predio/actualizar' && req.method === 'POST') {
+            const body = await parseBody(req);
+            db.prepare(`
+                UPDATE config_predio_ica
+                SET nombre_predio = COALESCE(?, nombre_predio),
+                    rspp_numero = COALESCE(?, rspp_numero),
+                    ruv_ciclo_actual = COALESCE(?, ruv_ciclo_actual),
+                    fecha_ultimo_ruv = COALESCE(?, fecha_ultimo_ruv),
+                    cedula_responsable = COALESCE(?, cedula_responsable),
+                    estado_bpg_leche = COALESCE(?, estado_bpg_leche),
+                    hectareas_totales = COALESCE(?, hectareas_totales),
+                    hectareas_bosque_protegido = COALESCE(?, hectareas_bosque_protegido)
+                WHERE id = 1
+            `).run(
+                body.nombre_predio ?? null, body.rspp_numero ?? null, body.ruv_ciclo_actual ?? null,
+                body.fecha_ultimo_ruv ?? null, body.cedula_responsable ?? null, body.estado_bpg_leche ?? null,
+                body.hectareas_totales !== undefined ? Number(body.hectareas_totales) : null,
+                body.hectareas_bosque_protegido !== undefined ? Number(body.hectareas_bosque_protegido) : null
+            );
+            broadcastEvent('STATE_UPDATED', { section: 'ica_predio' });
+            return sendJson(res, 200, { ok: true, state: getFullState() });
+        }
+
+        // Actualizar Identidad DIN / ISO 11784 / NFC / Apartado en Manga (HERDEplus Sorting)
+        if (pathname === '/api/animales/din-apartado' && req.method === 'POST') {
+            const body = await parseBody(req);
+            const id = Number(body.id_animal || body.id);
+            const animal = db.prepare('SELECT * FROM inventario_animales WHERE id = ?').get(id);
+            if (!animal) return sendJson(res, 404, { error: 'Animal no encontrado' });
+            const nfc_uid = body.nfc_uid !== undefined ? String(body.nfc_uid).trim() : animal.nfc_uid;
+            const madre_codigo = body.madre_codigo !== undefined ? body.madre_codigo : animal.madre_codigo;
+            const cria_codigo = body.cria_codigo !== undefined ? body.cria_codigo : animal.cria_codigo;
+            const cii_visual_din = body.cii_visual_din !== undefined ? String(body.cii_visual_din).trim() : animal.cii_visual_din;
+            const rfid_iso_15digitos = body.rfid_iso_15digitos !== undefined ? String(body.rfid_iso_15digitos).trim() : animal.rfid_iso_15digitos;
+            const tipo_din_ica = body.tipo_din_ica !== undefined ? body.tipo_din_ica : animal.tipo_din_ica;
+            const fecha_aplicacion_din = body.fecha_aplicacion_din !== undefined ? body.fecha_aplicacion_din : animal.fecha_aplicacion_din;
+            const orden_apartado_manga = body.orden_apartado_manga !== undefined ? body.orden_apartado_manga : animal.orden_apartado_manga;
+            const token_digital_hash = generarTokenDigitalAnimal({ ...animal, madre_codigo, cria_codigo, nfc_uid });
+
+            db.prepare(`
+                UPDATE inventario_animales
+                SET cii_visual_din = ?, rfid_iso_15digitos = ?, tipo_din_ica = ?, fecha_aplicacion_din = ?, orden_apartado_manga = ?,
+                    nfc_uid = ?, madre_codigo = ?, cria_codigo = ?, token_digital_hash = ?
+                WHERE id = ?
+            `).run(cii_visual_din, rfid_iso_15digitos, tipo_din_ica, fecha_aplicacion_din, orden_apartado_manga, nfc_uid, madre_codigo, cria_codigo, token_digital_hash, id);
+
+            broadcastEvent('STATE_UPDATED', { section: 'animales' });
+            return sendJson(res, 200, { ok: true, state: getFullState() });
+        }
+
+        // Guardar Control Lechero Alemán MLP (actualiza automáticamente litros_promedio_dia)
+        if (pathname === '/api/animales/mlp/guardar' && req.method === 'POST') {
+            const body = await parseBody(req);
+            const id_animal = Number(body.id_animal);
+            const fecha_control = body.fecha_control || new Date().toISOString().slice(0, 10);
+            const dias_en_leche = Number(body.dias_en_leche || 60);
+            const litros_manana = Number(body.litros_manana || 0);
+            const litros_tarde = Number(body.litros_tarde || 0);
+            const litros_total_dia = Number((litros_manana + litros_tarde).toFixed(1));
+            const numero_frasco_muestra = (body.numero_frasco_muestra || '').trim();
+            const estado_salud_ubre = (body.estado_salud_ubre || 'Sana').trim();
+
+            db.prepare(`
+                INSERT INTO control_lechero_mlp (id_animal, fecha_control, dias_en_leche, litros_manana, litros_tarde, litros_total_dia, numero_frasco_muestra, estado_salud_ubre)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            `).run(id_animal, fecha_control, dias_en_leche, litros_manana, litros_tarde, litros_total_dia, numero_frasco_muestra, estado_salud_ubre);
+
+            db.prepare('UPDATE inventario_animales SET litros_promedio_dia = ? WHERE id = ?').run(litros_total_dia, id_animal);
+            broadcastEvent('STATE_UPDATED', { section: 'mlp' });
+            return sendJson(res, 201, { ok: true, state: getFullState() });
+        }
+
+        // Registrar Movimiento Oficial SINIGAN V6 / HI-Tier (GSMI Dos Manos, Nacimiento, Muerte, etc.)
+        if (pathname === '/api/sinigan/movimiento/guardar' && req.method === 'POST') {
+            const body = await parseBody(req);
+            const animalesJson = typeof body.animales_din_json === 'string' ? body.animales_din_json : JSON.stringify(body.animales_din_json || []);
+            db.prepare(`
+                INSERT INTO movimientos_sinigan_hit (fecha, tipo_evento, animales_din_json, destino_o_detalle, cedula_transportador, estado_guia)
+                VALUES (?, ?, ?, ?, ?, ?)
+            `).run(
+                body.fecha || new Date().toISOString().slice(0, 10),
+                body.tipo_evento || 'GSMI_DOS_MANOS',
+                animalesJson,
+                body.destino_o_detalle || '',
+                body.cedula_transportador || '',
+                body.estado_guia || 'Pendiente_Subir_SINIGAN'
+            );
+            broadcastEvent('STATE_UPDATED', { section: 'sinigan' });
+            return sendJson(res, 201, { ok: true, state: getFullState() });
+        }
+
+        if (pathname === '/api/sinigan/movimiento/estado' && req.method === 'POST') {
+            const body = await parseBody(req);
+            db.prepare('UPDATE movimientos_sinigan_hit SET estado_guia = ? WHERE id = ?').run(body.estado_guia || 'Guia_Cerrada_Destino_QR', Number(body.id));
+            broadcastEvent('STATE_UPDATED', { section: 'sinigan' });
+            return sendJson(res, 200, { ok: true, state: getFullState() });
         }
 
         // Eliminar evento sanitario

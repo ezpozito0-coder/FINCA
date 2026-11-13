@@ -60,7 +60,12 @@ CREATE TABLE IF NOT EXISTS inventario_animales (
     collar_id TEXT DEFAULT NULL,
     es_elite_iatf INTEGER DEFAULT 0,
     cantidad_lote INTEGER DEFAULT 1,
-    notas TEXT DEFAULT ''
+    notas TEXT DEFAULT '',
+    cii_visual_din TEXT DEFAULT '',
+    rfid_iso_15digitos TEXT DEFAULT '',
+    tipo_din_ica TEXT DEFAULT 'Combinado_Paleta_RFID',
+    fecha_aplicacion_din TEXT DEFAULT '2025-06-15',
+    orden_apartado_manga TEXT DEFAULT 'NORMAL'
 );
 
 -- 5. ECONOMÍA CIRCULAR Y 35 POTREROS ROTACIONALES
@@ -268,3 +273,40 @@ INSERT INTO taller_diy_checklist (id, categoria, item, especificacion, costo_uni
 (6, 'Sujeción', 'Correa de Cinturón de Seguridad o Neumático + Hebilla', 'Cinta de cinturón de carro reciclado (1.10 m) resistente al barro y humedad de La Macarena', 8000, 1, 3),
 (7, 'Mecánica', 'Contrapeso Inferior de Hierro (500 g)', 'Platina o trozo de hierro en la parte baja de la correa para que el collar nunca se gire y la antena GPS mire al cielo', 6000, 1, 3),
 (8, 'Estación Base', 'Receptor Gateway LoRa en Techo de Zinc de la Casa', 'ESP32 LoRa SX1262 con antena externa 5dBi en la cumbrera de la lomita (cubre las 35 ha + camino 200m) conectado por USB al PC', 125000, 1, 1);
+
+-- 8. CONFIGURACIÓN PREDIO ICA / SINIGAN V6 / LEY 2585 DE 2026
+CREATE TABLE IF NOT EXISTS config_predio_ica (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    nombre_predio TEXT DEFAULT 'Finca AgroMacarena 35ha',
+    rspp_numero TEXT DEFAULT 'RSPP-50370-001',
+    ruv_ciclo_actual TEXT DEFAULT 'RUV-2026-CICLO-II (Res. ICA 019881)',
+    fecha_ultimo_ruv TEXT DEFAULT '2026-10-01',
+    cedula_responsable TEXT DEFAULT 'TG Legacy S.A.S.',
+    estado_bpg_leche TEXT DEFAULT 'En Implementación Res. 67449/2020',
+    hectareas_totales REAL DEFAULT 35.0,
+    hectareas_bosque_protegido REAL DEFAULT 6.0
+);
+
+-- 9. CONTROL LECHERO ALEMÁN MLP (HERDEplus - Milchleistungsprüfung)
+CREATE TABLE IF NOT EXISTS control_lechero_mlp (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_animal INTEGER NOT NULL,
+    fecha_control TEXT NOT NULL,
+    dias_en_leche INTEGER DEFAULT 60,
+    litros_manana REAL DEFAULT 0,
+    litros_tarde REAL DEFAULT 0,
+    litros_total_dia REAL DEFAULT 0,
+    numero_frasco_muestra TEXT DEFAULT '',
+    estado_salud_ubre TEXT DEFAULT 'Sana'
+);
+
+-- 10. MOVIMIENTOS OFICIALES SINIGAN V6 / HI-TIER
+CREATE TABLE IF NOT EXISTS movimientos_sinigan_hit (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fecha TEXT NOT NULL,
+    tipo_evento TEXT NOT NULL,
+    animales_din_json TEXT DEFAULT '[]',
+    destino_o_detalle TEXT DEFAULT '',
+    cedula_transportador TEXT DEFAULT '',
+    estado_guia TEXT DEFAULT 'Pendiente_Subir_SINIGAN'
+);
