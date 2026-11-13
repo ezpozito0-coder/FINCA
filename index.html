@@ -1908,55 +1908,85 @@
                          ========================================================= -->
 
                     <!-- MENÚ 1 (Ícono Montaña): MENÚ -->
-                    <div id="aq-menu-1" style="display:none; position:absolute; bottom:54px; left:6px; width:330px; max-width:calc(100vw - 20px); z-index:465; background:#d4d6d8; color:#111827; border-radius:4px; box-shadow:0 6px 20px rgba(0,0,0,0.5); font-family:var(--font-sans); padding:10px 14px;">
+                    <div id="aq-menu-1" style="display:none; position:absolute; bottom:52px; left:6px; width:330px; max-width:calc(100vw - 20px); max-height:76vh; overflow-y:auto; z-index:465; background:#d4d6d8; color:#111827; border-radius:4px 4px 0 0; box-shadow:0 6px 20px rgba(0,0,0,0.5); font-family:var(--font-sans); padding:10px 14px;">
                         <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #b8bcc0; padding-bottom:6px; margin-bottom:6px;">
                             <span style="font-size:12px; font-weight:700; color:#6b7280; letter-spacing:0.03em;">MENÚ</span>
                             <span style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:999px; background:#9ca3af; color:#fff; font-size:11px; font-weight:700;">?</span>
                         </div>
+                        <div style="display:flex; align-items:flex-start; gap:8px; font-size:12px; color:#2563eb; line-height:1.3; padding:2px 2px 8px 2px;">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="#2563eb" style="flex-shrink:0; margin-top:2px;"><circle cx="12" cy="12" r="10"/><rect x="11" y="10" width="2" height="7" fill="#fff"/><circle cx="12" cy="7" r="1.2" fill="#fff"/></svg>
+                            <span>Mantenga presionado un botón de menú desde la vista del mapa para llamar a su primer elemento.</span>
+                        </div>
                         <div style="display:flex; flex-direction:column; gap:2px; font-size:16px; font-weight:500;">
-                            <button type="button" onclick="ocultarMenusAlpineQuest()" style="display:flex; align-items:center; gap:14px; padding:9px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
-                                <span style="width:22px; display:flex; justify-content:center;">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+                            <button type="button" onclick="ocultarMenusAlpineQuest()" style="display:flex; align-items:center; justify-content:space-between; padding:8px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
+                                <span style="display:flex; align-items:center; gap:14px;">
+                                    <span style="width:22px; display:flex; justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg></span>
+                                    <span>Ocultar menu</span>
                                 </span>
-                                <span>Ocultar menu</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="#6b7280"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
                             </button>
-                            <button type="button" onclick="toggleHudAlpineQuestVisibility()" style="display:flex; align-items:center; gap:14px; padding:9px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
-                                <span style="width:22px; display:flex; justify-content:center;">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#111827"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4" fill="none" stroke="#111827" stroke-width="2"/></svg>
+                            <button type="button" onclick="toggleHudAlpineQuestVisibility()" style="display:flex; align-items:center; justify-content:space-between; padding:8px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
+                                <span style="display:flex; align-items:center; gap:14px;">
+                                    <span style="width:22px; display:flex; justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="#111827"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4" fill="none" stroke="#111827" stroke-width="2"/></svg></span>
+                                    <span>Bloqueo de pantalla</span>
                                 </span>
-                                <span>Bloqueo de pantalla</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="#6b7280"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
                             </button>
-                            <button type="button" onclick="abrirModalCoordenadasFinca()" style="display:flex; align-items:center; gap:14px; padding:9px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
-                                <span style="width:22px; display:flex; justify-content:center;">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2" stroke-linejoin="round"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3V6z"/><path d="M9 3v15m6-12v15"/></svg>
+                            <button type="button" onclick="abrirModalCoordenadasFinca()" style="display:flex; align-items:center; justify-content:space-between; padding:8px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
+                                <span style="display:flex; align-items:center; gap:14px;">
+                                    <span style="width:22px; display:flex; justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2" stroke-linejoin="round"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3V6z"/><path d="M9 3v15m6-12v15"/></svg></span>
+                                    <span>Nombrar mapa</span>
                                 </span>
-                                <span>Nombrar mapa / Coordenada Finca</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="#6b7280"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
                             </button>
-                            <button type="button" onclick="abrirModalCoordenadasFinca()" style="display:flex; align-items:center; gap:14px; padding:9px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
-                                <span style="width:22px; display:flex; justify-content:center;">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-                                </span>
+                            <button type="button" onclick="abrirModalCoordenadasFinca()" style="display:flex; align-items:center; gap:14px; padding:8px 4px; background:transparent; border:none; color:#4b5563; font-style:italic; text-align:left; cursor:pointer;">
+                                <span style="width:22px; display:flex; justify-content:center; font-size:18px;">+</span>
+                                <span>Botón de usuario</span>
+                            </button>
+                            <button type="button" onclick="abrirModalCoordenadasFinca()" style="display:flex; align-items:center; gap:14px; padding:8px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
+                                <span style="width:22px; display:flex; justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span>
                                 <span>Preferencias</span>
                             </button>
-                            <button type="button" onclick="ocultarMenusAlpineQuest(); switchTab('tab-ordeno');" style="display:flex; align-items:center; gap:14px; padding:9px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
-                                <span style="width:22px; display:flex; justify-content:center;">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                                </span>
+                            <button type="button" onclick="ocultarMenusAlpineQuest(); switchTab('tab-ordeno');" style="display:flex; align-items:center; gap:14px; padding:8px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
+                                <span style="width:22px; display:flex; justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
                                 <span>Salir (Volver a Leche)</span>
                             </button>
-                            <button type="button" onclick="ocultarMenusAlpineQuest()" style="display:flex; align-items:center; gap:14px; padding:9px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
+                            <button type="button" onclick="ocultarMenusAlpineQuest()" style="display:flex; align-items:center; gap:14px; padding:8px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
                                 <span style="width:22px; text-align:center; font-weight:800;">⋮</span>
                                 <span>Más...</span>
                             </button>
                         </div>
-                        <div style="border-top:1px solid #b8bcc0; margin-top:6px; padding-top:6px; font-size:12px; font-weight:700; color:#6b7280; display:flex; align-items:center; gap:10px;">
-                            <span>&#8963;&#8964;</span>
-                            <span>OPCIONES</span>
+
+                        <div style="border-top:1px solid #b8bcc0; margin-top:8px; padding-top:6px;">
+                            <div style="display:flex; align-items:center; justify-content:space-between; font-size:11.5px; font-weight:700; color:#6b7280; margin-bottom:4px;">
+                                <span>SWITCH WORKSPACE</span>
+                                <span style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:999px; background:#9ca3af; color:#fff; font-size:10px; font-weight:700;">?</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:10px; padding:6px 4px; font-size:15px; font-weight:500; color:#111827;">
+                                <span>▾</span>
+                                <span>Default workspace</span>
+                            </div>
+                        </div>
+
+                        <div onclick="toggleSeccionOpcionesAq(1)" style="border-top:1px solid #b8bcc0; margin-top:6px; padding-top:8px; font-size:12px; font-weight:700; color:#6b7280; display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span id="aq-opt-chev-1">&#8963;&#8964;</span>
+                                <span>OPCIONES</span>
+                            </div>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="#6b7280"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 00.12-.64l-1.92-3.32a.5.5 0 00-.61-.22l-2.39.96a7.03 7.03 0 00-1.63-.94l-.36-2.54a.5.5 0 00-.49-.42h-3.84a.5.5 0 00-.49.42l-.36 2.54c-.58.23-1.12.54-1.63.94l-2.39-.96a.5.5 0 00-.61.22L2.71 8.84a.5.5 0 00.12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L2.83 14.52a.5.5 0 00-.12.64l1.92 3.32c.14.24.42.34.68.22l2.39-.96c.5.4 1.05.72 1.63.94l.36 2.54c.04.24.25.42.49.42h3.84c.24 0 .45-.18.49-.42l.36-2.54c.58-.23 1.12-.54 1.63-.94l2.39.96c.26.1.54 0 .68-.22l1.92-3.32a.5.5 0 00-.12-.64l-2.03-1.58zM12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z"/></svg>
+                        </div>
+                        <div id="aq-opt-panel-1" style="display:flex; flex-direction:column; gap:9px; margin-top:8px; font-size:14.5px; font-weight:500;">
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" style="width:17px; height:17px; accent-color:#374151;" /><span>Mostrar cuadrícula: Lat/Long (Deg Min)</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; opacity:0.55; cursor:pointer;"><input type="checkbox" style="width:17px; height:17px; accent-color:#374151;" /><span>Mostrar cuadrícula: Ninguna</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" style="width:17px; height:17px; accent-color:#374151;" /><span>Mostrar escala circular</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked style="width:17px; height:17px; accent-color:#374151;" /><span>Modo nocturno</span></label>
+                            <div style="border-top:1px solid #b8bcc0; padding-top:6px; font-size:11.5px; font-weight:700; color:#6b7280; letter-spacing:0.03em;">INFORMATION BOX</div>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleHudBoxAq('hud-coords-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Pantalla central de coordenadas</span></label>
                         </div>
                     </div>
 
                     <!-- MENÚ 2 (Ícono Mapa): MAPAS Y CAPAS -->
-                    <div id="aq-menu-2" style="display:none; position:absolute; bottom:54px; left:6px; width:330px; max-width:calc(100vw - 20px); z-index:465; background:#d4d6d8; color:#111827; border-radius:4px; box-shadow:0 6px 20px rgba(0,0,0,0.5); font-family:var(--font-sans); padding:10px 14px;">
+                    <div id="aq-menu-2" style="display:none; position:absolute; bottom:52px; left:6px; width:330px; max-width:calc(100vw - 20px); max-height:76vh; overflow-y:auto; z-index:465; background:#d4d6d8; color:#111827; border-radius:4px 4px 0 0; box-shadow:0 6px 20px rgba(0,0,0,0.5); font-family:var(--font-sans); padding:10px 14px;">
                         <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #b8bcc0; padding-bottom:6px; margin-bottom:6px;">
                             <span style="font-size:12px; font-weight:700; color:#6b7280; letter-spacing:0.03em;">MAPAS Y CAPAS</span>
                             <span style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:999px; background:#9ca3af; color:#fff; font-size:11px; font-weight:700;">?</span>
@@ -1995,14 +2025,26 @@
                             </button>
                         </div>
 
-                        <div style="border-top:1px solid #b8bcc0; padding-top:6px; font-size:12px; font-weight:700; color:#6b7280; display:flex; align-items:center; gap:10px;">
-                            <span>&#8963;&#8964;</span>
-                            <span>OPCIONES</span>
+                        <div onclick="toggleSeccionOpcionesAq(2)" style="border-top:1px solid #b8bcc0; padding-top:8px; font-size:12px; font-weight:700; color:#6b7280; display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span id="aq-opt-chev-2">&#8963;&#8964;</span>
+                                <span>OPCIONES</span>
+                            </div>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="#6b7280"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 00.12-.64l-1.92-3.32a.5.5 0 00-.61-.22l-2.39.96a7.03 7.03 0 00-1.63-.94l-.36-2.54a.5.5 0 00-.49-.42h-3.84a.5.5 0 00-.49.42l-.36 2.54c-.58.23-1.12.54-1.63.94l-2.39-.96a.5.5 0 00-.61.22L2.71 8.84a.5.5 0 00.12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L2.83 14.52a.5.5 0 00-.12.64l1.92 3.32c.14.24.42.34.68.22l2.39-.96c.5.4 1.05.72 1.63.94l.36 2.54c.04.24.25.42.49.42h3.84c.24 0 .45-.18.49-.42l.36-2.54c.58-.23 1.12-.54 1.63-.94l2.39.96c.26.1.54 0 .68-.22l1.92-3.32a.5.5 0 00-.12-.64l-2.03-1.58zM12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z"/></svg>
+                        </div>
+                        <div id="aq-opt-panel-2" style="display:flex; flex-direction:column; gap:9px; margin-top:8px; font-size:14.5px; font-weight:500;">
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" style="width:17px; height:17px; accent-color:#374151;" /><span>Use only local storage</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" style="width:17px; height:17px; accent-color:#374151;" /><span>Cobertura de almacenamiento</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked style="width:17px; height:17px; accent-color:#374151;" /><span>Descargar datos de elevación auto.</span></label>
+                            <div style="border-top:1px solid #b8bcc0; padding-top:6px; font-size:11.5px; font-weight:700; color:#6b7280; letter-spacing:0.03em;">INFORMATION BOX</div>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" style="width:17px; height:17px; accent-color:#374151;" /><span>Nombre del mapa</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleHudBoxAq('hud-scale-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Escala del mapa</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleHudBoxAq('hud-scale-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Barra de la escala</span></label>
                         </div>
                     </div>
 
                     <!-- MENÚ 3 (Ícono Bandera): PUNTOS DE INTERÉS -->
-                    <div id="aq-menu-3" style="display:none; position:absolute; bottom:54px; left:6px; width:330px; max-width:calc(100vw - 20px); z-index:465; background:#d4d6d8; color:#111827; border-radius:4px; box-shadow:0 6px 20px rgba(0,0,0,0.5); font-family:var(--font-sans); padding:10px 14px;">
+                    <div id="aq-menu-3" style="display:none; position:absolute; bottom:52px; left:6px; width:330px; max-width:calc(100vw - 20px); max-height:76vh; overflow-y:auto; z-index:465; background:#d4d6d8; color:#111827; border-radius:4px 4px 0 0; box-shadow:0 6px 20px rgba(0,0,0,0.5); font-family:var(--font-sans); padding:10px 14px;">
                         <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #b8bcc0; padding-bottom:6px; margin-bottom:6px;">
                             <span style="font-size:12px; font-weight:700; color:#6b7280; letter-spacing:0.03em;">PUNTOS DE INTERÉS</span>
                             <span style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:999px; background:#9ca3af; color:#fff; font-size:11px; font-weight:700;">?</span>
@@ -2043,14 +2085,23 @@
                                 <span>Buscar ubicación</span>
                             </button>
                         </div>
-                        <div style="border-top:1px solid #b8bcc0; margin-top:6px; padding-top:6px; font-size:12px; font-weight:700; color:#6b7280; display:flex; align-items:center; gap:10px;">
-                            <span>&#8963;&#8964;</span>
-                            <span>OPCIONES</span>
+                        <div onclick="toggleSeccionOpcionesAq(3)" style="border-top:1px solid #b8bcc0; margin-top:6px; padding-top:8px; font-size:12px; font-weight:700; color:#6b7280; display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span id="aq-opt-chev-3">&#8963;&#8964;</span>
+                                <span>OPCIONES</span>
+                            </div>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="#6b7280"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 00.12-.64l-1.92-3.32a.5.5 0 00-.61-.22l-2.39.96a7.03 7.03 0 00-1.63-.94l-.36-2.54a.5.5 0 00-.49-.42h-3.84a.5.5 0 00-.49.42l-.36 2.54c-.58.23-1.12.54-1.63.94l-2.39-.96a.5.5 0 00-.61.22L2.71 8.84a.5.5 0 00.12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L2.83 14.52a.5.5 0 00-.12.64l1.92 3.32c.14.24.42.34.68.22l2.39-.96c.5.4 1.05.72 1.63.94l.36 2.54c.04.24.25.42.49.42h3.84c.24 0 .45-.18.49-.42l.36-2.54c.58-.23 1.12-.54 1.63-.94l2.39.96c.26.1.54 0 .68-.22l1.92-3.32a.5.5 0 00-.12-.64l-2.03-1.58zM12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z"/></svg>
+                        </div>
+                        <div id="aq-opt-panel-3" style="display:flex; flex-direction:column; gap:9px; margin-top:8px; font-size:14.5px; font-weight:500;">
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="if(typeof toggleCapasFincaRapido==='function') toggleCapasFincaRapido();" style="width:17px; height:17px; accent-color:#374151;" /><span>Etiquetas de placemarks</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleLineaAzulRumbo(this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Mostrar línea al objetivo</span></label>
+                            <div style="border-top:1px solid #b8bcc0; padding-top:6px; font-size:11.5px; font-weight:700; color:#6b7280; letter-spacing:0.03em;">INFORMATION BOX</div>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleHudBoxAq('hud-target-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Información de foco</span></label>
                         </div>
                     </div>
 
                     <!-- MENÚ 4 (Ícono Mira Verde): POSICIONAMIENTO -->
-                    <div id="aq-menu-4" style="display:none; position:absolute; bottom:54px; left:6px; width:330px; max-width:calc(100vw - 20px); z-index:465; background:#d4d6d8; color:#111827; border-radius:4px; box-shadow:0 6px 20px rgba(0,0,0,0.5); font-family:var(--font-sans); padding:10px 14px;">
+                    <div id="aq-menu-4" style="display:none; position:absolute; bottom:52px; left:6px; width:330px; max-width:calc(100vw - 20px); max-height:76vh; overflow-y:auto; z-index:465; background:#d4d6d8; color:#111827; border-radius:4px 4px 0 0; box-shadow:0 6px 20px rgba(0,0,0,0.5); font-family:var(--font-sans); padding:10px 14px;">
                         <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #b8bcc0; padding-bottom:6px; margin-bottom:6px;">
                             <span style="font-size:12px; font-weight:700; color:#6b7280; letter-spacing:0.03em;">POSICIONAMIENTO</span>
                             <span style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:999px; background:#9ca3af; color:#fff; font-size:11px; font-weight:700;">?</span>
@@ -2081,14 +2132,24 @@
                                 <input type="checkbox" id="chk-aq-track-rec" onchange="collarSeleccionadoId='COLLAR-01'; toggleTrack24hVacaSeleccionada();" style="width:20px; height:20px; accent-color:#0d9488; cursor:pointer;" />
                             </div>
                         </div>
-                        <div style="border-top:1px solid #b8bcc0; margin-top:6px; padding-top:6px; font-size:12px; font-weight:700; color:#6b7280; display:flex; align-items:center; gap:10px;">
-                            <span>&#8963;&#8964;</span>
-                            <span>OPCIONES</span>
+                        <div onclick="toggleSeccionOpcionesAq(4)" style="border-top:1px solid #b8bcc0; margin-top:6px; padding-top:8px; font-size:12px; font-weight:700; color:#6b7280; display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span id="aq-opt-chev-4">&#8963;&#8964;</span>
+                                <span>OPCIONES</span>
+                            </div>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="#6b7280"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 00.12-.64l-1.92-3.32a.5.5 0 00-.61-.22l-2.39.96a7.03 7.03 0 00-1.63-.94l-.36-2.54a.5.5 0 00-.49-.42h-3.84a.5.5 0 00-.49.42l-.36 2.54c-.58.23-1.12.54-1.63.94l-2.39-.96a.5.5 0 00-.61.22L2.71 8.84a.5.5 0 00.12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L2.83 14.52a.5.5 0 00-.12.64l1.92 3.32c.14.24.42.34.68.22l2.39-.96c.5.4 1.05.72 1.63.94l.36 2.54c.04.24.25.42.49.42h3.84c.24 0 .45-.18.49-.42l.36-2.54c.58-.23 1.12-.54 1.63-.94l2.39.96c.26.1.54 0 .68-.22l1.92-3.32a.5.5 0 00-.12-.64l-2.03-1.58zM12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z"/></svg>
+                        </div>
+                        <div id="aq-opt-panel-4" style="display:flex; flex-direction:column; gap:9px; margin-top:8px; font-size:14.5px; font-weight:500;">
+                            <label style="display:flex; align-items:center; gap:12px; opacity:0.6; cursor:pointer;"><input type="checkbox" style="width:17px; height:17px; accent-color:#374151;" /><span>Gire el mapa (usando GPS)</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; opacity:0.6; cursor:pointer;"><input type="checkbox" checked onchange="toggleLineaAzulRumbo(this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Línea desde la posición</span></label>
+                            <div style="border-top:1px solid #b8bcc0; padding-top:6px; font-size:11.5px; font-weight:700; color:#6b7280; letter-spacing:0.03em;">INFORMATION BOX</div>
+                            <label style="display:flex; align-items:center; gap:12px; opacity:0.6; cursor:pointer;"><input type="checkbox" checked style="width:17px; height:17px; accent-color:#374151;" /><span>Estado de posicionamiento</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; opacity:0.6; cursor:pointer;"><input type="checkbox" checked style="width:17px; height:17px; accent-color:#374151;" /><span>Grabadora de pista</span></label>
                         </div>
                     </div>
 
                     <!-- MENÚ 5 (Ícono Brújula): BRÚJULA ESTILO ALPINEQUEST -->
-                    <div id="aq-menu-5" style="display:none; position:absolute; bottom:54px; left:6px; width:330px; max-width:calc(100vw - 20px); z-index:465; background:#d4d6d8; color:#111827; border-radius:4px; box-shadow:0 6px 20px rgba(0,0,0,0.5); font-family:var(--font-sans); padding:10px 14px;">
+                    <div id="aq-menu-5" style="display:none; position:absolute; bottom:52px; left:6px; width:330px; max-width:calc(100vw - 20px); max-height:76vh; overflow-y:auto; z-index:465; background:#d4d6d8; color:#111827; border-radius:4px 4px 0 0; box-shadow:0 6px 20px rgba(0,0,0,0.5); font-family:var(--font-sans); padding:10px 14px;">
                         <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #b8bcc0; padding-bottom:6px; margin-bottom:6px;">
                             <span style="font-size:12px; font-weight:700; color:#6b7280; letter-spacing:0.03em;">BRÚJULA</span>
                             <button type="button" onclick="abrirModalCalibrarBrujula()" title="Calibración de Brújula" style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:999px; background:#9ca3af; color:#fff; font-size:12px; font-weight:800; border:none; cursor:pointer;">?</button>
@@ -5187,6 +5248,16 @@
                     if (svg1) svg1.setAttribute('stroke', '#1f2937');
                 }
             }
+        }
+
+        function toggleSeccionOpcionesAq(num) {
+            const panel = document.getElementById(`aq-opt-panel-${num}`);
+            if (!panel) return;
+            panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
+        }
+        function toggleHudBoxAq(id, visible) {
+            const el = document.getElementById(id);
+            if (el) el.style.display = visible ? '' : 'none';
         }
 
         function toggleHudAlpineQuestVisibility() {
