@@ -7321,11 +7321,15 @@
                 fillOpacity: 0.07
             }).bindTooltip('Radio de Cobertura LoRa SX1262 (1.000 m desde Techo de Zinc)').addTo(window.fincaLayerGroupNucleo);
 
+            const ocultarEtiq = !!window.aqOcultarEtiquetasPlacemarks;
+
             const casaIcon = L.divIcon({
                 className: '',
-                html: `<div style="background:#1B5E3A;color:#FFF;border:2px solid #FFF;border-radius:10px;padding:3px 9px;font-weight:800;font-size:11px;white-space:nowrap;box-shadow:0 3px 10px rgba(0,0,0,0.55);transform:translate(-50%,-50%);">Casa + Antena LoRa (Lomita)</div>`,
-                iconSize: [170, 26],
-                iconAnchor: [85, 13]
+                html: ocultarEtiq
+                    ? `<div style="width:14px;height:14px;border-radius:999px;background:#1B5E3A;border:2px solid #FFF;box-shadow:0 2px 6px rgba(0,0,0,0.65);cursor:pointer;"></div>`
+                    : `<div style="background:#1B5E3A;color:#FFF;border:2px solid #FFF;border-radius:10px;padding:3px 9px;font-weight:800;font-size:11px;white-space:nowrap;box-shadow:0 3px 10px rgba(0,0,0,0.55);transform:translate(-50%,-50%);">Casa + Antena LoRa (Lomita)</div>`,
+                iconSize: ocultarEtiq ? [14, 14] : [170, 26],
+                iconAnchor: ocultarEtiq ? [7, 7] : [85, 13]
             });
             L.marker([center.lat, center.lng], { icon: casaIcon })
                 .bindPopup(`<b>Núcleo Lomita (1.5 ha)</b><br/>Casa + Corral + Antena Receptora ESP32 LoRa (915 MHz)<br/>Coordenada: ${center.lat}, ${center.lng}<br/>Cobertura: 1.000 metros a la redonda`)
@@ -7345,9 +7349,11 @@
 
             const nacederoIcon = L.divIcon({
                 className: '',
-                html: `<div style="background:#0369A1;color:#FFF;border:2px solid #FFF;border-radius:8px;padding:2px 7px;font-weight:800;font-size:10px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.45);transform:translate(-50%,-50%);">Paso Nacedero / Alcantarilla (100m)</div>`,
-                iconSize: [185, 22],
-                iconAnchor: [92, 11]
+                html: ocultarEtiq
+                    ? `<div style="width:14px;height:14px;border-radius:999px;background:#0369A1;border:2px solid #FFF;box-shadow:0 2px 6px rgba(0,0,0,0.65);cursor:pointer;"></div>`
+                    : `<div style="background:#0369A1;color:#FFF;border:2px solid #FFF;border-radius:8px;padding:2px 7px;font-weight:800;font-size:10px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.45);transform:translate(-50%,-50%);">Paso Nacedero / Alcantarilla (100m)</div>`,
+                iconSize: ocultarEtiq ? [14, 14] : [185, 22],
+                iconAnchor: ocultarEtiq ? [7, 7] : [92, 11]
             });
             L.marker(puntoNacedero100m, { icon: nacederoIcon })
                 .bindPopup('<b>Paso Nacedero / Alcantarilla (a 100m de la Casa)</b><br/>Obra #1 Fase 1: Alcantarilla con 2 tubos y pedraplén.')
@@ -7355,9 +7361,11 @@
 
             const portadaIcon = L.divIcon({
                 className: '',
-                html: `<div style="background:#78350F;color:#FFF;border:2px solid #FCD34D;border-radius:8px;padding:2px 7px;font-weight:800;font-size:10px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.45);transform:translate(-50%,-50%);">Portada Leche (Carretera 200m)</div>`,
-                iconSize: [175, 22],
-                iconAnchor: [87, 11]
+                html: ocultarEtiq
+                    ? `<div style="width:14px;height:14px;border-radius:999px;background:#78350F;border:2px solid #FCD34D;box-shadow:0 2px 6px rgba(0,0,0,0.65);cursor:pointer;"></div>`
+                    : `<div style="background:#78350F;color:#FFF;border:2px solid #FCD34D;border-radius:8px;padding:2px 7px;font-weight:800;font-size:10px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.45);transform:translate(-50%,-50%);">Portada Leche (Carretera 200m)</div>`,
+                iconSize: ocultarEtiq ? [14, 14] : [175, 22],
+                iconAnchor: ocultarEtiq ? [7, 7] : [87, 11]
             });
             L.marker(puntoPortada200m, { icon: portadaIcon })
                 .bindPopup('<b>Portada Leche (a 200m de la Casa)</b><br/>Punto de entrega de cantinas en la carretera veredal.')
