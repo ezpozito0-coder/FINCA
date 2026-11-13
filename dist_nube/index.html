@@ -2075,7 +2075,7 @@
                                 </span>
                                 <span>Control de tiempo</span>
                             </button>
-                            <button type="button" onclick="ocultarMenusAlpineQuest(); abrirModalCoordenadasFinca();" style="display:flex; align-items:center; gap:14px; padding:9px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
+                            <button type="button" onclick="ocultarMenusAlpineQuest(); abrirModalBuscarUbicacion();" style="display:flex; align-items:center; gap:14px; padding:9px 4px; background:transparent; border:none; color:#111827; text-align:left; cursor:pointer;">
                                 <span style="width:22px; display:flex; justify-content:center;">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
                                 </span>
@@ -2313,6 +2313,68 @@
                         </div>
                         <!-- Contenido Scrollable -->
                         <div id="aq-shown-body" style="flex:1; overflow-y:auto; padding:0 0 12px 0;"></div>
+                    </div>
+
+                    <!-- Modal "Buscar ubicación" (AlpineQuest) -->
+                    <div id="modal-buscar-ubicacion" onclick="if(event.target===this) cerrarModalBuscarUbicacion()" style="display:none; position:fixed; inset:0; z-index:9996; background:rgba(0,0,0,0.55); align-items:center; justify-content:center; padding:16px; font-family:var(--font-sans);">
+                        <div style="width:100%; max-width:340px; background:#ffffff; color:#111827; border-radius:4px; box-shadow:0 10px 30px rgba(0,0,0,0.45); padding:18px 20px 14px 20px;">
+                            <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+                                <span style="font-size:19px; font-weight:600; color:#111827;">Buscar ubicación</span>
+                            </div>
+                            <div style="font-size:13px; color:#00796B; font-weight:500; margin-bottom:10px;">Formato de búsqueda</div>
+
+                            <!-- Radio 1: Buscar por nombre -->
+                            <div onclick="setModoBuscarUbicacion('nombre')" style="display:flex; align-items:center; justify-content:space-between; padding:6px 0; cursor:pointer;">
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <span id="aq-search-radio-nombre" style="width:20px; height:20px; border-radius:999px; border:2px solid #111827; display:inline-flex; align-items:center; justify-content:center;"></span>
+                                    <span style="font-size:15.5px; color:#111827;">Buscar por nombre</span>
+                                </div>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="1.8"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+                            </div>
+
+                            <!-- Radio 2: Formato de Coordenadas -->
+                            <div style="display:flex; align-items:center; gap:12px; padding:6px 0 14px 0;">
+                                <span id="aq-search-radio-coord" onclick="setModoBuscarUbicacion('coord')" style="width:20px; height:20px; border-radius:999px; border:2px solid #111827; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;">
+                                    <span style="width:10px; height:10px; border-radius:999px; background:#111827;"></span>
+                                </span>
+                                <button type="button" id="btn-aq-formato-actual" onclick="abrirModalFormatoCoordenadas()" style="flex:1; background:#d1d5db; border:none; border-radius:3px; padding:10px 12px; font-size:14px; font-weight:500; color:#111827; cursor:pointer; text-align:center;">LAT/LONG (DEG MIN SEC)</button>
+                            </div>
+
+                            <!-- Cuerpo Dinámico: Nombre / DMS / Simple / Proyección -->
+                            <div id="aq-search-inputs-area" style="margin-bottom:14px;"></div>
+
+                            <!-- Checkbox Campo simple (solo en modo coordenadas) -->
+                            <label id="aq-search-simple-row" style="display:flex; align-items:center; gap:10px; margin-bottom:16px; cursor:pointer; font-size:14.5px; color:#111827;">
+                                <input type="checkbox" id="chk-aq-search-simple" onchange="toggleCampoSimpleBuscar(this.checked)" style="width:18px; height:18px; accent-color:#111827; cursor:pointer;" />
+                                <span>Campo simple (para copiar / pegar)</span>
+                            </label>
+
+                            <!-- Acciones Footer -->
+                            <div style="display:flex; align-items:center; justify-content:space-between; padding-top:4px;">
+                                <button type="button" onclick="pegarEnBuscarUbicacion()" style="background:transparent; border:none; color:#00796B; font-size:14px; font-weight:600; letter-spacing:0.03em; padding:6px 4px; cursor:pointer;">PEGAR</button>
+                                <div style="display:flex; align-items:center; gap:16px;">
+                                    <button type="button" onclick="cerrarModalBuscarUbicacion()" style="background:transparent; border:none; color:#00796B; font-size:14px; font-weight:600; letter-spacing:0.03em; padding:6px 4px; cursor:pointer;">CANCELAR</button>
+                                    <button type="button" onclick="ejecutarBuscarUbicacion()" style="background:transparent; border:none; color:#00796B; font-size:14px; font-weight:600; letter-spacing:0.03em; padding:6px 4px; cursor:pointer;">BUSCAR</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Secundario "Formato de coordenadas" (AlpineQuest) -->
+                    <div id="modal-formato-coordenadas" onclick="if(event.target===this) cerrarModalFormatoCoordenadas()" style="display:none; position:fixed; inset:0; z-index:9997; background:rgba(0,0,0,0.6); align-items:center; justify-content:center; padding:16px; font-family:var(--font-sans);">
+                        <div style="width:100%; max-width:340px; max-height:86vh; background:#ffffff; color:#111827; border-radius:4px; box-shadow:0 10px 30px rgba(0,0,0,0.45); display:flex; flex-direction:column; padding:18px 20px 12px 20px;">
+                            <div style="font-size:19px; font-weight:600; color:#111827; margin-bottom:10px;">Formato de coordenadas</div>
+                            <div style="display:flex; align-items:center; border-bottom:1.5px solid #9ca3af; padding-bottom:4px; margin-bottom:10px;">
+                                <input id="inp-aq-filtrar-formato" type="text" placeholder="Filtrar" oninput="filtrarFormatosCoordenadas(this.value)" style="flex:1; border:none; outline:none; font-size:15px; color:#111827; background:transparent;" />
+                                <button type="button" onclick="document.getElementById('inp-aq-filtrar-formato').value=''; filtrarFormatosCoordenadas('');" style="background:transparent; border:none; color:#4b5563; font-size:16px; cursor:pointer; padding:2px 6px;">✕</button>
+                            </div>
+                            <div id="aq-formatos-lista" style="flex:1; overflow-y:auto; padding-right:4px; margin-bottom:10px;"></div>
+                            <div style="display:flex; align-items:center; justify-content:space-between; padding-top:6px; border-top:1px solid #f3f4f6;">
+                                <button type="button" onclick="filtrarFormatosCoordenadas(''); if(typeof mostrarToastFinca==='function') mostrarToastFinca('Todos los formatos WGS84 listados');" style="background:transparent; border:none; color:#00796B; font-size:14px; font-weight:600; padding:6px 4px; cursor:pointer;">MÁS...</button>
+                                <button type="button" onclick="cerrarModalFormatoCoordenadas()" style="background:transparent; border:none; color:#00796B; font-size:14px; font-weight:600; padding:6px 4px; cursor:pointer;">CANCELAR</button>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- =========================================================
@@ -5667,6 +5729,352 @@
                 }
             }
             body.innerHTML = html;
+        }
+        window.aqBuscarModo = 'coord';
+        window.aqBuscarFormato = 'dms';
+        window.aqBuscarSimple = false;
+        const AQ_FORMATOS_LISTA = [
+            { sec: 'BUSCAR POR NOMBRE', id: 'nombre', title: 'Buscar por nombre', sub: '', cloud: true },
+            { sec: 'BUSCAR POR NOMBRE', id: 'mostrados', title: 'Placemarks mostrados', sub: '' },
+            { sec: 'COORDENADAS', id: 'deg', title: 'Lat/Long (Deg)', sub: 'WGS84' },
+            { sec: 'COORDENADAS', id: 'dm', title: 'Lat/Long (Deg Min)', sub: 'WGS84' },
+            { sec: 'COORDENADAS', id: 'dms', title: 'Lat/Long (Deg Min Sec)', sub: 'WGS84' },
+            { sec: 'COORDENADAS', id: 'utm', title: 'UTM', sub: 'WGS84 · metro' },
+            { sec: 'COORDENADAS', id: 'mgrs', title: 'MGRS', sub: 'WGS84 · metro' },
+            { sec: 'PROYECTAR UNA UBICACIÓN', id: 'dist', title: 'Distancia', sub: '' },
+            { sec: 'PROYECTAR UNA UBICACIÓN', id: 'azimut', title: 'Azimut', sub: '' },
+            { sec: 'PROYECTAR UNA UBICACIÓN', id: 'azimut_inv', title: 'Azimut inverso', sub: '' },
+            { sec: 'PROYECTAR UNA UBICACIÓN', id: 'dist_azimut', title: 'Distancia & Azimut', sub: '' },
+            { sec: 'PROYECTAR UNA UBICACIÓN', id: 'dist_azimut_inv', title: 'Distancia & Azimut inverso', sub: '' }
+        ];
+        function _decToDmsParts(val, isLng) {
+            const abs = Math.abs(val);
+            const d = Math.floor(abs);
+            const minFloat = (abs - d) * 60;
+            const m = Math.floor(minFloat);
+            const s = ((minFloat - m) * 60).toFixed(2);
+            const hemi = isLng ? (val >= 0 ? 'E' : 'W') : (val >= 0 ? 'N' : 'S');
+            return {
+                d: String(d).padStart(isLng ? 3 : 2, '0'),
+                m: String(m).padStart(2, '0'),
+                s: s.padStart(5, '0'),
+                minFloat: minFloat.toFixed(4),
+                hemi
+            };
+        }
+        function _parseCoordStringAq(raw) {
+            if (!raw) return null;
+            const s = String(raw).trim();
+            const decMatch = s.match(/^(-?\d+(?:\.\d+)?)\s*[,;\s]\s*(-?\d+(?:\.\d+)?)$/);
+            if (decMatch) {
+                const lat = Number(decMatch[1]), lng = Number(decMatch[2]);
+                if (Number.isFinite(lat) && Number.isFinite(lng)) return { lat, lng };
+            }
+            const dmsRegex = /(\d{1,3})\s*[°º]\s*(\d{1,2})\s*['’]\s*(\d+(?:\.\d+)?)\s*["”]\s*([NSns])\s*[,;\s]*(\d{1,3})\s*[°º]\s*(\d{1,2})\s*['’]\s*(\d+(?:\.\d+)?)\s*["”]\s*([EWew])/;
+            const m = s.match(dmsRegex);
+            if (m) {
+                let lat = Number(m[1]) + Number(m[2]) / 60 + Number(m[3]) / 3600;
+                if (m[4].toUpperCase() === 'S') lat = -lat;
+                let lng = Number(m[5]) + Number(m[6]) / 60 + Number(m[7]) / 3600;
+                if (m[8].toUpperCase() === 'W') lng = -lng;
+                return { lat, lng };
+            }
+            const dmRegex = /(\d{1,3})\s*[°º]\s*(\d+(?:\.\d+)?)\s*['’]\s*([NSns])\s*[,;\s]*(\d{1,3})\s*[°º]\s*(\d+(?:\.\d+)?)\s*['’]\s*([EWew])/;
+            const dm = s.match(dmRegex);
+            if (dm) {
+                let lat = Number(dm[1]) + Number(dm[2]) / 60;
+                if (dm[3].toUpperCase() === 'S') lat = -lat;
+                let lng = Number(dm[4]) + Number(dm[5]) / 60;
+                if (dm[6].toUpperCase() === 'W') lng = -lng;
+                return { lat, lng };
+            }
+            return null;
+        }
+        function abrirModalBuscarUbicacion() {
+            const modal = document.getElementById('modal-buscar-ubicacion');
+            if (!modal) return;
+            renderBuscarUbicacionInputs();
+            modal.style.display = 'flex';
+        }
+        function cerrarModalBuscarUbicacion() {
+            const modal = document.getElementById('modal-buscar-ubicacion');
+            if (modal) modal.style.display = 'none';
+        }
+        function setModoBuscarUbicacion(modo) {
+            window.aqBuscarModo = modo === 'nombre' ? 'nombre' : 'coord';
+            renderBuscarUbicacionInputs();
+        }
+        function toggleCampoSimpleBuscar(checked) {
+            window.aqBuscarSimple = Boolean(checked);
+            renderBuscarUbicacionInputs();
+        }
+        function renderBuscarUbicacionInputs() {
+            const rNom = document.getElementById('aq-search-radio-nombre');
+            const rCoord = document.getElementById('aq-search-radio-coord');
+            const btnFmt = document.getElementById('btn-aq-formato-actual');
+            const simpleRow = document.getElementById('aq-search-simple-row');
+            const chkSimple = document.getElementById('chk-aq-search-simple');
+            const area = document.getElementById('aq-search-inputs-area');
+            if (!area) return;
+            const dotHtml = '<span style="width:10px; height:10px; border-radius:999px; background:#111827;"></span>';
+            if (rNom) rNom.innerHTML = window.aqBuscarModo === 'nombre' ? dotHtml : '';
+            if (rCoord) rCoord.innerHTML = window.aqBuscarModo === 'coord' ? dotHtml : '';
+            const fmtObj = AQ_FORMATOS_LISTA.find(f => f.id === window.aqBuscarFormato) || AQ_FORMATOS_LISTA[4];
+            if (btnFmt) btnFmt.textContent = fmtObj.title.toUpperCase();
+            if (chkSimple) chkSimple.checked = window.aqBuscarSimple;
+
+            if (window.aqBuscarModo === 'nombre') {
+                if (simpleRow) simpleRow.style.display = 'none';
+                area.innerHTML = `
+                    <div style="display:flex; align-items:center; border-bottom:2px solid #00796B; padding:6px 0;">
+                        <input id="inp-aq-buscar-nombre" type="text" placeholder="Nombre" style="flex:1; border:none; outline:none; font-size:17px; color:#111827; background:transparent;" />
+                        <button type="button" onclick="const el=document.getElementById('inp-aq-buscar-nombre'); if(el){el.value=''; el.focus();}" style="background:transparent; border:none; color:#4b5563; font-size:16px; cursor:pointer; padding:2px 6px;">✕</button>
+                    </div>`;
+                setTimeout(() => { const el = document.getElementById('inp-aq-buscar-nombre'); if (el) el.focus(); }, 40);
+                return;
+            }
+
+            const isProj = ['dist', 'azimut', 'azimut_inv', 'dist_azimut', 'dist_azimut_inv'].includes(window.aqBuscarFormato);
+            if (isProj) {
+                if (simpleRow) simpleRow.style.display = 'none';
+                area.innerHTML = `
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div style="border-bottom:1.5px solid #00796B; padding-bottom:4px;">
+                            <div style="font-size:11px; color:#6b7280;">Distancia (m)</div>
+                            <input id="inp-aq-proj-dist" type="number" value="250" style="width:100%; border:none; outline:none; font-size:16px; color:#111827; background:transparent;" />
+                        </div>
+                        <div style="border-bottom:1.5px solid #6b7280; padding-bottom:4px;">
+                            <div style="font-size:11px; color:#6b7280;">Azimut (°)</div>
+                            <input id="inp-aq-proj-azimut" type="number" value="45" style="width:100%; border:none; outline:none; font-size:16px; color:#111827; background:transparent;" />
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            if (simpleRow) simpleRow.style.display = 'flex';
+            const c = window.fincaLeafletMap ? window.fincaLeafletMap.getCenter() : getFincaCenterCoords();
+            const latP = _decToDmsParts(c.lat, false);
+            const lngP = _decToDmsParts(c.lng, true);
+            const formattedSimple = window.aqBuscarFormato === 'deg'
+                ? `${c.lat.toFixed(6)}, ${c.lng.toFixed(6)}`
+                : window.aqBuscarFormato === 'dm'
+                    ? `${latP.d}°${latP.minFloat}' ${latP.hemi} ${lngP.d}°${lngP.minFloat}' ${lngP.hemi}`
+                    : `${latP.d}°${latP.m}'${latP.s}" ${latP.hemi} ${lngP.d.replace(/^0/, '')}°${lngP.m}'${lngP.s}" ${lngP.hemi}`;
+
+            if (window.aqBuscarSimple || window.aqBuscarFormato === 'utm' || window.aqBuscarFormato === 'mgrs') {
+                area.innerHTML = `
+                    <div style="display:flex; align-items:center; border-bottom:2px solid #00796B; padding:6px 0;">
+                        <input id="inp-aq-buscar-simple" type="text" value="${formattedSimple}" style="flex:1; border:none; outline:none; font-size:16px; color:#111827; background:#99f6e4; padding:2px 4px; border-radius:2px;" />
+                        <button type="button" onclick="const el=document.getElementById('inp-aq-buscar-simple'); if(el){el.value=''; el.style.background='transparent'; el.focus();}" style="background:transparent; border:none; color:#4b5563; font-size:16px; cursor:pointer; padding:2px 6px;">✕</button>
+                    </div>`;
+                return;
+            }
+
+            if (window.aqBuscarFormato === 'deg') {
+                area.innerHTML = `
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div style="border-bottom:2px solid #00796B; padding-bottom:4px;">
+                            <div style="font-size:11px; color:#6b7280;">Latitud</div>
+                            <input id="inp-aq-deg-lat" type="number" step="0.000001" value="${c.lat.toFixed(6)}" style="width:100%; border:none; outline:none; font-size:16px; color:#111827; background:transparent;" />
+                        </div>
+                        <div style="border-bottom:1.5px solid #6b7280; padding-bottom:4px;">
+                            <div style="font-size:11px; color:#6b7280;">Longitud</div>
+                            <input id="inp-aq-deg-lng" type="number" step="0.000001" value="${c.lng.toFixed(6)}" style="width:100%; border:none; outline:none; font-size:16px; color:#111827; background:transparent;" />
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            if (window.aqBuscarFormato === 'dm') {
+                area.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:6px; margin-bottom:12px;">
+                        <input id="inp-aq-dm-lat-d" type="text" value="${latP.d}" style="width:46px; border:none; border-bottom:2px solid #00796B; outline:none; font-size:16px; color:#4b5563; text-align:left;" /><span>°</span>
+                        <input id="inp-aq-dm-lat-m" type="text" value="${latP.minFloat}" style="flex:1; min-width:70px; border:none; border-bottom:1.5px solid #6b7280; outline:none; font-size:16px; color:#4b5563;" /><span>'</span>
+                        <button type="button" id="btn-aq-hemi-lat" onclick="this.textContent=this.textContent==='N'?'S':'N'" style="width:36px; height:32px; background:#d1d5db; border:none; border-radius:2px; font-size:14px; font-weight:600; color:#111827; cursor:pointer;">${latP.hemi}</button>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <input id="inp-aq-dm-lng-d" type="text" value="${lngP.d}" style="width:46px; border:none; border-bottom:1.5px solid #6b7280; outline:none; font-size:16px; color:#4b5563; text-align:left;" /><span>°</span>
+                        <input id="inp-aq-dm-lng-m" type="text" value="${lngP.minFloat}" style="flex:1; min-width:70px; border:none; border-bottom:1.5px solid #6b7280; outline:none; font-size:16px; color:#4b5563;" /><span>'</span>
+                        <button type="button" id="btn-aq-hemi-lng" onclick="this.textContent=this.textContent==='W'?'E':'W'" style="width:36px; height:32px; background:#d1d5db; border:none; border-radius:2px; font-size:14px; font-weight:600; color:#111827; cursor:pointer;">${lngP.hemi}</button>
+                    </div>`;
+                return;
+            }
+
+            // Default: Lat/Long (Deg Min Sec) idéntico a captura 1
+            area.innerHTML = `
+                <div style="display:flex; align-items:center; gap:6px; margin-bottom:12px;">
+                    <input id="inp-aq-dms-lat-d" type="text" value="${latP.d}" style="width:44px; border:none; border-bottom:2px solid #00796B; outline:none; font-size:16px; color:#4b5563;" /><span>°</span>
+                    <input id="inp-aq-dms-lat-m" type="text" value="${latP.m}" style="width:42px; border:none; border-bottom:1.5px solid #6b7280; outline:none; font-size:16px; color:#4b5563;" /><span>'</span>
+                    <input id="inp-aq-dms-lat-s" type="text" value="${latP.s}" style="flex:1; min-width:60px; border:none; border-bottom:1.5px solid #6b7280; outline:none; font-size:16px; color:#4b5563;" /><span>"</span>
+                    <button type="button" id="btn-aq-hemi-lat" onclick="this.textContent=this.textContent==='N'?'S':'N'" style="width:36px; height:32px; background:#d1d5db; border:none; border-radius:2px; font-size:14px; font-weight:600; color:#111827; cursor:pointer;">${latP.hemi}</button>
+                </div>
+                <div style="display:flex; align-items:center; gap:6px;">
+                    <input id="inp-aq-dms-lng-d" type="text" value="${lngP.d}" style="width:44px; border:none; border-bottom:1.5px solid #6b7280; outline:none; font-size:16px; color:#4b5563;" /><span>°</span>
+                    <input id="inp-aq-dms-lng-m" type="text" value="${lngP.m}" style="width:42px; border:none; border-bottom:1.5px solid #6b7280; outline:none; font-size:16px; color:#4b5563;" /><span>'</span>
+                    <input id="inp-aq-dms-lng-s" type="text" value="${lngP.s}" style="flex:1; min-width:60px; border:none; border-bottom:1.5px solid #6b7280; outline:none; font-size:16px; color:#4b5563;" /><span>"</span>
+                    <button type="button" id="btn-aq-hemi-lng" onclick="this.textContent=this.textContent==='W'?'E':'W'" style="width:36px; height:32px; background:#d1d5db; border:none; border-radius:2px; font-size:14px; font-weight:600; color:#111827; cursor:pointer;">${lngP.hemi}</button>
+                </div>`;
+        }
+        function abrirModalFormatoCoordenadas() {
+            const m = document.getElementById('modal-formato-coordenadas');
+            if (!m) return;
+            const f = document.getElementById('inp-aq-filtrar-formato');
+            if (f) f.value = '';
+            filtrarFormatosCoordenadas('');
+            m.style.display = 'flex';
+        }
+        function cerrarModalFormatoCoordenadas() {
+            const m = document.getElementById('modal-formato-coordenadas');
+            if (m) m.style.display = 'none';
+        }
+        function filtrarFormatosCoordenadas(q) {
+            const cont = document.getElementById('aq-formatos-lista');
+            if (!cont) return;
+            const term = String(q || '').trim().toLowerCase();
+            const list = term ? AQ_FORMATOS_LISTA.filter(x => x.title.toLowerCase().includes(term) || x.sec.toLowerCase().includes(term)) : AQ_FORMATOS_LISTA;
+            const secs = [...new Set(list.map(x => x.sec))];
+            const activeId = window.aqBuscarModo === 'nombre' ? 'nombre' : window.aqBuscarFormato;
+            cont.innerHTML = secs.map(sec => {
+                const rows = list.filter(x => x.sec === sec).map(x => {
+                    const active = x.id === activeId;
+                    const radio = `<span style="width:20px; height:20px; border-radius:999px; border:2px solid #111827; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;">${active ? '<span style="width:10px; height:10px; border-radius:999px; background:#111827;"></span>' : ''}</span>`;
+                    const cloud = x.cloud ? `<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="1.8"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>` : '';
+                    return `<button type="button" onclick="seleccionarFormatoCoordenadas('${x.id}')" style="width:100%; display:flex; align-items:center; justify-content:space-between; padding:9px 2px; background:transparent; border:none; text-align:left; cursor:pointer;">
+                        <div style="display:flex; align-items:center; gap:14px;">
+                            ${radio}
+                            <div>
+                                <div style="font-size:15.5px; font-weight:${active ? '700' : '500'}; color:#111827;">${x.title}</div>
+                                ${x.sub ? `<div style="font-size:12.5px; font-style:italic; color:#6b7280;">${x.sub}</div>` : ''}
+                            </div>
+                        </div>
+                        ${cloud}
+                    </button>`;
+                }).join('');
+                return `<div style="margin-bottom:8px;">
+                    <div style="display:flex; align-items:center; gap:8px; font-size:11.5px; font-weight:700; color:#6b7280; letter-spacing:0.03em; padding:6px 0 4px 0; border-bottom:1px solid #e5e7eb;">
+                        <span>^</span><span>${sec}</span>
+                    </div>
+                    ${rows}
+                </div>`;
+            }).join('');
+        }
+        function seleccionarFormatoCoordenadas(id) {
+            cerrarModalFormatoCoordenadas();
+            if (id === 'mostrados') {
+                cerrarModalBuscarUbicacion();
+                abrirPlacemarksMostrados();
+                return;
+            }
+            if (id === 'nombre') {
+                window.aqBuscarModo = 'nombre';
+            } else {
+                window.aqBuscarModo = 'coord';
+                window.aqBuscarFormato = id;
+            }
+            renderBuscarUbicacionInputs();
+        }
+        async function pegarEnBuscarUbicacion() {
+            try {
+                const txt = await navigator.clipboard.readText();
+                if (!txt) return;
+                if (window.aqBuscarModo === 'nombre') {
+                    const el = document.getElementById('inp-aq-buscar-nombre');
+                    if (el) el.value = txt.trim();
+                    return;
+                }
+                const simpleEl = document.getElementById('inp-aq-buscar-simple');
+                if (simpleEl) {
+                    simpleEl.value = txt.trim();
+                    return;
+                }
+                const parsed = _parseCoordStringAq(txt);
+                if (parsed) {
+                    const latP = _decToDmsParts(parsed.lat, false);
+                    const lngP = _decToDmsParts(parsed.lng, true);
+                    const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+                    setVal('inp-aq-dms-lat-d', latP.d); setVal('inp-aq-dms-lat-m', latP.m); setVal('inp-aq-dms-lat-s', latP.s);
+                    setVal('inp-aq-dms-lng-d', lngP.d); setVal('inp-aq-dms-lng-m', lngP.m); setVal('inp-aq-dms-lng-s', lngP.s);
+                    setVal('inp-aq-deg-lat', parsed.lat.toFixed(6)); setVal('inp-aq-deg-lng', parsed.lng.toFixed(6));
+                    if (typeof mostrarToastFinca === 'function') mostrarToastFinca('Coordenadas pegadas');
+                }
+            } catch (e) {
+                if (typeof mostrarToastFinca === 'function') mostrarToastFinca('Permite el acceso al portapapeles para pegar');
+            }
+        }
+        async function ejecutarBuscarUbicacion() {
+            let targetLat = null, targetLng = null, label = 'Ubicación buscada';
+            if (window.aqBuscarModo === 'nombre') {
+                const q = (document.getElementById('inp-aq-buscar-nombre')?.value || '').trim();
+                if (!q) return;
+                const ql = q.toLowerCase();
+                const pm = (appState?.placemarks_mapa || []).find(p => String(p.nombre || '').toLowerCase().includes(ql));
+                if (pm) {
+                    targetLat = Number(pm.latitud ?? pm.lat);
+                    targetLng = Number(pm.longitud ?? pm.lng);
+                    label = pm.nombre || q;
+                }
+                if (targetLat == null) {
+                    try {
+                        const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(q)}`);
+                        const data = await res.json();
+                        if (Array.isArray(data) && data[0]) {
+                            targetLat = Number(data[0].lat);
+                            targetLng = Number(data[0].lon);
+                            label = data[0].display_name?.split(',')[0] || q;
+                        }
+                    } catch (e) {}
+                }
+            } else if (['dist', 'azimut', 'azimut_inv', 'dist_azimut', 'dist_azimut_inv'].includes(window.aqBuscarFormato)) {
+                const c = window.fincaLeafletMap ? window.fincaLeafletMap.getCenter() : getFincaCenterCoords();
+                const distM = Number(document.getElementById('inp-aq-proj-dist')?.value || 0);
+                let azDeg = Number(document.getElementById('inp-aq-proj-azimut')?.value || 0);
+                if (window.aqBuscarFormato.includes('inv')) azDeg = (azDeg + 180) % 360;
+                const R = 6371000;
+                const brng = azDeg * Math.PI / 180;
+                const lat1 = c.lat * Math.PI / 180;
+                const lng1 = c.lng * Math.PI / 180;
+                const lat2 = Math.asin(Math.sin(lat1) * Math.cos(distM / R) + Math.cos(lat1) * Math.sin(distM / R) * Math.cos(brng));
+                const lng2 = lng1 + Math.atan2(Math.sin(brng) * Math.sin(distM / R) * Math.cos(lat1), Math.cos(distM / R) - Math.sin(lat1) * Math.sin(lat2));
+                targetLat = lat2 * 180 / Math.PI;
+                targetLng = lng2 * 180 / Math.PI;
+                label = `Proyección ${distM}m ${azDeg}°`;
+            } else if (window.aqBuscarSimple || window.aqBuscarFormato === 'utm' || window.aqBuscarFormato === 'mgrs') {
+                const parsed = _parseCoordStringAq(document.getElementById('inp-aq-buscar-simple')?.value || '');
+                if (parsed) { targetLat = parsed.lat; targetLng = parsed.lng; }
+            } else if (window.aqBuscarFormato === 'deg') {
+                targetLat = Number(document.getElementById('inp-aq-deg-lat')?.value);
+                targetLng = Number(document.getElementById('inp-aq-deg-lng')?.value);
+            } else if (window.aqBuscarFormato === 'dm') {
+                const ld = Number(document.getElementById('inp-aq-dm-lat-d')?.value || 0);
+                const lm = Number(document.getElementById('inp-aq-dm-lat-m')?.value || 0);
+                const lh = document.getElementById('btn-aq-hemi-lat')?.textContent || 'N';
+                const gd = Number(document.getElementById('inp-aq-dm-lng-d')?.value || 0);
+                const gm = Number(document.getElementById('inp-aq-dm-lng-m')?.value || 0);
+                const gh = document.getElementById('btn-aq-hemi-lng')?.textContent || 'W';
+                targetLat = (ld + lm / 60) * (lh === 'S' ? -1 : 1);
+                targetLng = (gd + gm / 60) * (gh === 'W' ? -1 : 1);
+            } else {
+                const ld = Number(document.getElementById('inp-aq-dms-lat-d')?.value || 0);
+                const lm = Number(document.getElementById('inp-aq-dms-lat-m')?.value || 0);
+                const ls = Number(document.getElementById('inp-aq-dms-lat-s')?.value || 0);
+                const lh = document.getElementById('btn-aq-hemi-lat')?.textContent || 'N';
+                const gd = Number(document.getElementById('inp-aq-dms-lng-d')?.value || 0);
+                const gm = Number(document.getElementById('inp-aq-dms-lng-m')?.value || 0);
+                const gs = Number(document.getElementById('inp-aq-dms-lng-s')?.value || 0);
+                const gh = document.getElementById('btn-aq-hemi-lng')?.textContent || 'W';
+                targetLat = (ld + lm / 60 + ls / 3600) * (lh === 'S' ? -1 : 1);
+                targetLng = (gd + gm / 60 + gs / 3600) * (gh === 'W' ? -1 : 1);
+            }
+
+            if (!Number.isFinite(targetLat) || !Number.isFinite(targetLng)) {
+                if (typeof mostrarToastFinca === 'function') mostrarToastFinca('Ubicación no encontrada o formato inválido');
+                return;
+            }
+            cerrarModalBuscarUbicacion();
+            if (window.fincaLeafletMap) window.fincaLeafletMap.setView([targetLat, targetLng], 17);
+            window.objetivoCentroCoords = { lat: targetLat, lng: targetLng, nombre: label };
+            if (typeof actualizarHudAlpineQuest === 'function') actualizarHudAlpineQuest();
+            if (typeof mostrarToastFinca === 'function') mostrarToastFinca(`Centrado en ${label}`);
         }
         function volverCarpetaExploradorPlacemarks() {
             const bd = document.getElementById('aq-exp-drawer-backdrop');
