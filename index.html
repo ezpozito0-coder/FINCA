@@ -1197,7 +1197,7 @@
                                     <label class="text-xs font-bold block mb-1">Programa Genético / Origen</label>
                                     <select id="nueva-vaca-elite" class="input-finca text-xs">
                                         <option value="0">Monta Toro</option>
-                                        <option value="1">Élite IATF (F1 Gyrolando)</option>
+                                        <option value="1">Inseminación</option>
                                     </select>
                                 </div>
                                 <div class="flex flex-wrap justify-between md:justify-end gap-2">
@@ -4057,7 +4057,7 @@
                 const progBadge = isToro
                     ? '<span class="badge bg-purple-900 text-purple-200">Toro Reproductor</span>'
                     : Number(v.es_elite_iatf) === 1
-                    ? '<span class="badge bg-amber-500 text-black">ÉLITE IATF (F1 Gyrolando)</span>'
+                    ? '<span class="badge bg-amber-500 text-black">Inseminación</span>'
                     : '<span class="badge bg-emerald-900 text-emerald-200">Monta Toro</span>';
 
                 const rowYellowStyle = cumplioCiclo
@@ -4115,7 +4115,7 @@
                     <td class="font-bold text-emerald-400">${!esVacaAdulta || litrosDia === 0 ? '<span class="text-gray-500">0 L (No aplica)</span>' : litrosDia + ' L'}</td>
                     <td>
                         ${isToro ? progBadge : `
-                        <button onclick="toggleVacaEliteIATF(${v.id}, ${Number(v.es_elite_iatf) === 1 ? 0 : 1})" class="text-left" title="Clic para alternar entre Élite IATF y Monta Toro">
+                        <button onclick="toggleVacaEliteIATF(${v.id}, ${Number(v.es_elite_iatf) === 1 ? 0 : 1})" class="text-left" title="Clic para alternar entre Inseminación y Monta Toro">
                             ${progBadge}
                         </button>`}
                     </td>
