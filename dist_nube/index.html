@@ -3309,7 +3309,7 @@
         }
 
         async function loadStateFromServer() {
-            if (window.FINCA_CLOUD_STATIC_MODE || location.protocol === 'file:') {
+            if (window.FINCA_CLOUD_STATIC_MODE || location.protocol === 'file:' || (window.location.hostname || '').includes('github.io')) {
                 const okCloud = await loadStateFromGoogleSheetsCloud();
                 if (!okCloud) {
                     window.modoNubeGoogleSheetsActivo = false;
@@ -3370,7 +3370,7 @@
 
         // Suscripción en Tiempo Real (SSE) para ver al instante cambios entre Celular y PC
         function connectRealtimeSSE() {
-            if (window.FINCA_CLOUD_STATIC_MODE || location.protocol === 'file:') return;
+            if (window.FINCA_CLOUD_STATIC_MODE || location.protocol === 'file:' || (window.location.hostname || '').includes('github.io')) return;
             try {
                 const es = new EventSource(`${getApiBase()}/api/events`);
                 es.onmessage = (ev) => {
