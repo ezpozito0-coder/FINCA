@@ -10822,12 +10822,10 @@
             const statusTitle = document.getElementById('nfc-reader-status-title');
             const statusDesc = document.getElementById('nfc-reader-status-desc');
             if (statusTitle) {
-                statusTitle.textContent = ('NDEFReader' in window)
-                    ? 'Sensor Web NFC Disponible en este Dispositivo'
-                    : 'Modo Simulador PC (Sin antena Web NFC en este navegador)';
+                statusTitle.textContent = 'Sensor NFC Listo para Escanear';
             }
-            if (statusDesc && !('NDEFReader' in window)) {
-                statusDesc.textContent = 'En Chrome Android / APK con NFC activo se lee automáticamente al acercar el collar. En PC usa el selector de abajo para probar.';
+            if (statusDesc) {
+                statusDesc.textContent = 'Acerca la parte trasera del celular al sticker NFC del collar o chapeta para abrir al instante la Ficha Clínica, estado IATF/Toro y alertas de la vaca.';
             }
             modal.style.display = 'flex';
         }
