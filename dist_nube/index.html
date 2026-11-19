@@ -1978,7 +1978,7 @@
                             <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-circle-scale" onchange="toggleEscalaCircularAq(this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Mostrar escala circular</span></label>
                             <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-night-mode" onchange="toggleModoNocturnoAq(this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Modo nocturno</span></label>
                             <div style="border-top:1px solid #b8bcc0; padding-top:6px; font-size:11.5px; font-weight:700; color:#6b7280; letter-spacing:0.03em;">INFORMATION BOX</div>
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleHudBoxAq('hud-coords-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Pantalla central de coordenadas</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-hud-coords" checked onchange="toggleHudBoxAq('hud-coords-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Pantalla central de coordenadas</span></label>
                         </div>
                     </div>
 
@@ -2042,13 +2042,13 @@
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="#6b7280"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 00.12-.64l-1.92-3.32a.5.5 0 00-.61-.22l-2.39.96a7.03 7.03 0 00-1.63-.94l-.36-2.54a.5.5 0 00-.49-.42h-3.84a.5.5 0 00-.49.42l-.36 2.54c-.58.23-1.12.54-1.63.94l-2.39-.96a.5.5 0 00-.61.22L2.71 8.84a.5.5 0 00.12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L2.83 14.52a.5.5 0 00-.12.64l1.92 3.32c.14.24.42.34.68.22l2.39-.96c.5.4 1.05.72 1.63.94l.36 2.54c.04.24.25.42.49.42h3.84c.24 0 .45-.18.49-.42l.36-2.54c.58-.23 1.12-.54 1.63-.94l2.39.96c.26.1.54 0 .68-.22l1.92-3.32a.5.5 0 00-.12-.64l-2.03-1.58zM12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z"/></svg>
                         </div>
                         <div id="aq-opt-panel-2" style="display:none; flex-direction:column; gap:9px; margin-top:8px; font-size:14.5px; font-weight:500;">
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" onchange="window.aqSoloLocalStorage=this.checked; if(typeof mostrarToastFinca==='function') mostrarToastFinca(this.checked?'Solo caché local activo':'Mapas en línea activos');" style="width:17px; height:17px; accent-color:#374151;" /><span>Use only local storage</span></label>
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" onchange="if(typeof mostrarToastFinca==='function') mostrarToastFinca(this.checked?'Cobertura de caché visible':'Cobertura oculta');" style="width:17px; height:17px; accent-color:#374151;" /><span>Cobertura de almacenamiento</span></label>
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="if(typeof mostrarToastFinca==='function') mostrarToastFinca(this.checked?'Elevación automática activa':'Elevación manual');" style="width:17px; height:17px; accent-color:#374151;" /><span>Descargar datos de elevación auto.</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-only-local" onchange="window.aqSoloLocalStorage=this.checked; if(typeof mostrarToastFinca==='function') mostrarToastFinca(this.checked?'Solo caché local activo':'Mapas en línea activos');" style="width:17px; height:17px; accent-color:#374151;" /><span>Use only local storage</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-storage-cov" onchange="if(typeof mostrarToastFinca==='function') mostrarToastFinca(this.checked?'Cobertura de caché visible':'Cobertura oculta');" style="width:17px; height:17px; accent-color:#374151;" /><span>Cobertura de almacenamiento</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-auto-elev" checked onchange="if(typeof mostrarToastFinca==='function') mostrarToastFinca(this.checked?'Elevación automática activa':'Elevación manual');" style="width:17px; height:17px; accent-color:#374151;" /><span>Descargar datos de elevación auto.</span></label>
                             <div style="border-top:1px solid #b8bcc0; padding-top:6px; font-size:11.5px; font-weight:700; color:#6b7280; letter-spacing:0.03em;">INFORMATION BOX</div>
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" onchange="toggleHudBoxAq('hud-coords-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Nombre del mapa</span></label>
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleHudBoxAq('hud-scale-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Escala del mapa</span></label>
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleHudBoxAq('hud-scale-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Barra de la escala</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-hud-mapname" onchange="toggleHudBoxAq('hud-coords-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Nombre del mapa</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-hud-scale" checked onchange="toggleHudBoxAq('hud-scale-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Escala del mapa</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-hud-scalebar" checked onchange="toggleHudBoxAq('hud-scale-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Barra de la escala</span></label>
                         </div>
                     </div>
 
@@ -2102,10 +2102,10 @@
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="#6b7280"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 00.12-.64l-1.92-3.32a.5.5 0 00-.61-.22l-2.39.96a7.03 7.03 0 00-1.63-.94l-.36-2.54a.5.5 0 00-.49-.42h-3.84a.5.5 0 00-.49.42l-.36 2.54c-.58.23-1.12.54-1.63.94l-2.39-.96a.5.5 0 00-.61.22L2.71 8.84a.5.5 0 00.12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L2.83 14.52a.5.5 0 00-.12.64l1.92 3.32c.14.24.42.34.68.22l2.39-.96c.5.4 1.05.72 1.63.94l.36 2.54c.04.24.25.42.49.42h3.84c.24 0 .45-.18.49-.42l.36-2.54c.58-.23 1.12-.54 1.63-.94l2.39.96c.26.1.54 0 .68-.22l1.92-3.32a.5.5 0 00-.12-.64l-2.03-1.58zM12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z"/></svg>
                         </div>
                         <div id="aq-opt-panel-3" style="display:none; flex-direction:column; gap:9px; margin-top:8px; font-size:14.5px; font-weight:500;">
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleEtiquetasPlacemarksAq(this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Etiquetas de placemarks</span></label>
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleLineaAzulRumbo(this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Mostrar línea al objetivo</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-placemark-labels" checked onchange="toggleEtiquetasPlacemarksAq(this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Etiquetas de placemarks</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-target-line" checked onchange="toggleLineaAzulRumbo(this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Mostrar línea al objetivo</span></label>
                             <div style="border-top:1px solid #b8bcc0; padding-top:6px; font-size:11.5px; font-weight:700; color:#6b7280; letter-spacing:0.03em;">INFORMATION BOX</div>
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleHudBoxAq('hud-target-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Información de foco</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-hud-target" checked onchange="toggleHudBoxAq('hud-target-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Información de foco</span></label>
                         </div>
                     </div>
 
@@ -2149,11 +2149,11 @@
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="#6b7280"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 00.12-.64l-1.92-3.32a.5.5 0 00-.61-.22l-2.39.96a7.03 7.03 0 00-1.63-.94l-.36-2.54a.5.5 0 00-.49-.42h-3.84a.5.5 0 00-.49.42l-.36 2.54c-.58.23-1.12.54-1.63.94l-2.39-.96a.5.5 0 00-.61.22L2.71 8.84a.5.5 0 00.12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L2.83 14.52a.5.5 0 00-.12.64l1.92 3.32c.14.24.42.34.68.22l2.39-.96c.5.4 1.05.72 1.63.94l.36 2.54c.04.24.25.42.49.42h3.84c.24 0 .45-.18.49-.42l.36-2.54c.58-.23 1.12-.54 1.63-.94l2.39.96c.26.1.54 0 .68-.22l1.92-3.32a.5.5 0 00-.12-.64l-2.03-1.58zM12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z"/></svg>
                         </div>
                         <div id="aq-opt-panel-4" style="display:none; flex-direction:column; gap:9px; margin-top:8px; font-size:14.5px; font-weight:500;">
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" onchange="window.aqRotarMapaPorGps=this.checked; if(!this.checked && typeof aplicarRotacionMapaBrujula==='function') aplicarRotacionMapaBrujula(0);" style="width:17px; height:17px; accent-color:#374151;" /><span>Gire el mapa (usando GPS)</span></label>
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleLineaAzulRumbo(this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Línea desde la posición</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-gps-rotate" onchange="window.aqRotarMapaPorGps=this.checked; if(!this.checked && typeof aplicarRotacionMapaBrujula==='function') aplicarRotacionMapaBrujula(0);" style="width:17px; height:17px; accent-color:#374151;" /><span>Gire el mapa (usando GPS)</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-pos-line" checked onchange="toggleLineaAzulRumbo(this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Línea desde la posición</span></label>
                             <div style="border-top:1px solid #b8bcc0; padding-top:6px; font-size:11.5px; font-weight:700; color:#6b7280; letter-spacing:0.03em;">INFORMATION BOX</div>
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleHudBoxAq('hud-gps-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Estado de posicionamiento</span></label>
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" checked onchange="toggleHudBoxAq('hud-ruler-row', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Grabadora de pista</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-hud-gps" checked onchange="toggleHudBoxAq('hud-gps-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Estado de posicionamiento</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-hud-track" checked onchange="toggleHudBoxAq('hud-ruler-row', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Grabadora de pista</span></label>
                         </div>
                     </div>
 
@@ -5730,8 +5730,81 @@
                 else { if (map.hasLayer(g)) map.removeLayer(g); }
             });
         }
+        const STORAGE_KEY_AQ_OPCIONES = 'finca_aq_opciones_v1';
+        const AQ_PERSIST_CHECKBOX_IDS = [
+            'chk-aq-grid-latlon', 'chk-aq-grid-none', 'chk-aq-circle-scale', 'chk-aq-night-mode', 'chk-aq-hud-coords',
+            'chk-aq-only-local', 'chk-aq-storage-cov', 'chk-aq-auto-elev', 'chk-aq-hud-mapname', 'chk-aq-hud-scale', 'chk-aq-hud-scalebar',
+            'chk-aq-placemark-labels', 'chk-aq-target-line', 'chk-aq-hud-target',
+            'chk-aq-gps-rotate', 'chk-aq-pos-line', 'chk-aq-hud-gps', 'chk-aq-hud-track',
+            'chk-aq-rotate-map', 'chk-aq-compass-visual', 'chk-aq-compass-hud', 'chk-aq-compass', 'chk-aq-search-simple'
+        ];
+
+        function guardarOpcionesAqLocal() {
+            try {
+                const data = {};
+                AQ_PERSIST_CHECKBOX_IDS.forEach((id) => {
+                    const el = document.getElementById(id);
+                    if (el) data[id] = !!el.checked;
+                });
+                localStorage.setItem(STORAGE_KEY_AQ_OPCIONES, JSON.stringify(data));
+            } catch {}
+        }
+
+        function cargarOpcionesAqLocal() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY_AQ_OPCIONES);
+                if (!raw) return;
+                const data = JSON.parse(raw);
+                if (!data || typeof data !== 'object') return;
+
+                AQ_PERSIST_CHECKBOX_IDS.forEach((id) => {
+                    if (typeof data[id] !== 'boolean') return;
+                    const el = document.getElementById(id);
+                    if (el) el.checked = data[id];
+                });
+
+                if (typeof data['chk-aq-placemark-labels'] === 'boolean') {
+                    window.aqOcultarEtiquetasPlacemarks = !data['chk-aq-placemark-labels'];
+                }
+                if (typeof data['chk-aq-only-local'] === 'boolean') {
+                    window.aqSoloLocalStorage = data['chk-aq-only-local'];
+                }
+                if (typeof data['chk-aq-gps-rotate'] === 'boolean') {
+                    window.aqRotarMapaPorGps = data['chk-aq-gps-rotate'];
+                }
+                if (typeof data['chk-aq-grid-latlon'] === 'boolean' && typeof toggleCuadriculaMapaAq === 'function') {
+                    toggleCuadriculaMapaAq(data['chk-aq-grid-latlon']);
+                }
+                if (typeof data['chk-aq-circle-scale'] === 'boolean' && typeof toggleEscalaCircularAq === 'function') {
+                    toggleEscalaCircularAq(data['chk-aq-circle-scale']);
+                }
+                if (typeof data['chk-aq-night-mode'] === 'boolean' && typeof toggleModoNocturnoAq === 'function') {
+                    toggleModoNocturnoAq(data['chk-aq-night-mode']);
+                }
+                if (typeof toggleHudBoxAq === 'function') {
+                    if (typeof data['chk-aq-hud-coords'] === 'boolean') toggleHudBoxAq('hud-coords-box', data['chk-aq-hud-coords']);
+                    if (typeof data['chk-aq-hud-scale'] === 'boolean') toggleHudBoxAq('hud-scale-box', data['chk-aq-hud-scale']);
+                    if (typeof data['chk-aq-hud-target'] === 'boolean') toggleHudBoxAq('hud-target-box', data['chk-aq-hud-target']);
+                    if (typeof data['chk-aq-hud-gps'] === 'boolean') toggleHudBoxAq('hud-gps-box', data['chk-aq-hud-gps']);
+                    if (typeof data['chk-aq-hud-track'] === 'boolean') toggleHudBoxAq('hud-ruler-row', data['chk-aq-hud-track']);
+                }
+                if (typeof toggleLineaAzulRumbo === 'function') {
+                    if (typeof data['chk-aq-target-line'] === 'boolean') toggleLineaAzulRumbo(data['chk-aq-target-line']);
+                    else if (typeof data['chk-aq-pos-line'] === 'boolean') toggleLineaAzulRumbo(data['chk-aq-pos-line']);
+                    else if (typeof data['chk-aq-compass'] === 'boolean') toggleLineaAzulRumbo(data['chk-aq-compass']);
+                }
+                if (typeof data['chk-aq-search-simple'] === 'boolean' && typeof toggleCampoSimpleBuscar === 'function') {
+                    toggleCampoSimpleBuscar(data['chk-aq-search-simple']);
+                }
+                if (typeof actualizarOpcionesBrujulaUi === 'function') {
+                    actualizarOpcionesBrujulaUi();
+                }
+            } catch {}
+        }
+
         function toggleEtiquetasPlacemarksAq(visible) {
             window.aqOcultarEtiquetasPlacemarks = !visible;
+            guardarOpcionesAqLocal();
             if (typeof renderTab5TelemetriaLoRaYTaller === 'function') renderTab5TelemetriaLoRaYTaller();
             else if (typeof initOrUpdateGoogleMapFinca === 'function') initOrUpdateGoogleMapFinca();
         }
@@ -11732,6 +11805,14 @@
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('./sw.js').catch(() => {});
             }
+
+            cargarOpcionesAqLocal();
+            ['aq-menu-1', 'aq-menu-2', 'aq-menu-3', 'aq-menu-4', 'aq-menu-5'].forEach((menuId) => {
+                const m = document.getElementById(menuId);
+                if (m) m.addEventListener('change', (ev) => {
+                    if (ev.target && ev.target.type === 'checkbox') guardarOpcionesAqLocal();
+                });
+            });
 
             loadStateFromServer();
             connectRealtimeSSE();
