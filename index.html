@@ -1489,6 +1489,9 @@
                             <span id="hud-compass-deg">0.0° N</span>
                         </div>
 
+                        <!-- Caja 6: Alerta de Geocerca / Batería LoRa -->
+                        <div id="aq-geocerca-alerta" style="display:none; pointer-events:auto; background:rgba(220,38,38,0.92); color:#ffffff; padding:5px 10px; border-radius:6px; font-family:var(--font-sans); font-size:12px; font-weight:700; box-shadow:0 2px 8px rgba(0,0,0,0.45); align-items:center; gap:6px; max-width:260px;"></div>
+
                         <!-- Oculto: indicador interno de caché -->
                         <div id="hud-cache-pill" style="display:none;">
                             <span id="hud-cache-pct">100 %</span>
@@ -2042,7 +2045,7 @@
                         </div>
                         <div id="aq-opt-panel-2" style="display:none; flex-direction:column; gap:9px; margin-top:8px; font-size:14.5px; font-weight:500;">
                             <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-only-local" onchange="window.aqSoloLocalStorage=this.checked; if(typeof mostrarToastFinca==='function') mostrarToastFinca(this.checked?'Solo caché local activo':'Mapas en línea activos');" style="width:17px; height:17px; accent-color:#374151;" /><span>Use only local storage</span></label>
-                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-storage-cov" onchange="if(typeof mostrarToastFinca==='function') mostrarToastFinca(this.checked?'Cobertura de caché visible':'Cobertura oculta');" style="width:17px; height:17px; accent-color:#374151;" /><span>Cobertura de almacenamiento</span></label>
+                            <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-storage-cov" onchange="if(typeof toggleCoberturaAlmacenamientoAq==='function') toggleCoberturaAlmacenamientoAq(this.checked);" style="width:17px; height:17px; accent-color:#374151;" /><span>Cobertura de almacenamiento</span></label>
                             <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-auto-elev" checked onchange="if(typeof mostrarToastFinca==='function') mostrarToastFinca(this.checked?'Elevación automática activa':'Elevación manual');" style="width:17px; height:17px; accent-color:#374151;" /><span>Descargar datos de elevación auto.</span></label>
                             <div style="border-top:1px solid #b8bcc0; padding-top:6px; font-size:11.5px; font-weight:700; color:#6b7280; letter-spacing:0.03em;">INFORMATION BOX</div>
                             <label style="display:flex; align-items:center; gap:12px; cursor:pointer;"><input type="checkbox" id="chk-aq-hud-mapname" onchange="toggleHudBoxAq('hud-coords-box', this.checked)" style="width:17px; height:17px; accent-color:#374151;" /><span>Nombre del mapa</span></label>
@@ -2092,6 +2095,15 @@
                                 </span>
                                 <span>Buscar ubicación</span>
                             </button>
+                            <div style="border-top:1px solid #b8bcc0; margin:4px 0; padding-top:6px; display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                                <button type="button" onclick="ocultarMenusAlpineQuest(); if(typeof exportarPlacemarksGpx==='function') exportarPlacemarksGpx();" style="padding:7px 8px; border-radius:4px; border:1px solid #9ca3af; background:#e5e7eb; color:#111827; font-size:12px; font-weight:700; cursor:pointer;">Exportar GPX</button>
+                                <button type="button" onclick="ocultarMenusAlpineQuest(); if(typeof exportarPlacemarksKml==='function') exportarPlacemarksKml();" style="padding:7px 8px; border-radius:4px; border:1px solid #9ca3af; background:#e5e7eb; color:#111827; font-size:12px; font-weight:700; cursor:pointer;">Exportar KML</button>
+                                <label style="padding:7px 8px; border-radius:4px; border:1px solid #9ca3af; background:#e5e7eb; color:#111827; font-size:12px; font-weight:700; cursor:pointer; text-align:center;">
+                                    Importar GPX/KML
+                                    <input type="file" accept=".gpx,.kml" style="display:none;" onchange="ocultarMenusAlpineQuest(); if(typeof importarArchivoGpxKml==='function') importarArchivoGpxKml(this);" />
+                                </label>
+                                <button type="button" onclick="ocultarMenusAlpineQuest(); if(typeof exportarRespaldoJsonFinca==='function') exportarRespaldoJsonFinca();" style="padding:7px 8px; border-radius:4px; border:1px solid #9ca3af; background:#e5e7eb; color:#111827; font-size:12px; font-weight:700; cursor:pointer;">Respaldo JSON</button>
+                            </div>
                         </div>
                         <div onclick="toggleSeccionOpcionesAq(3)" style="border-top:1px solid #b8bcc0; margin-top:6px; padding-top:8px; font-size:12px; font-weight:700; color:#6b7280; display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
                             <div style="display:flex; align-items:center; gap:8px;">
@@ -2137,7 +2149,7 @@
                                     </span>
                                     <span>Grabadora de pista</span>
                                 </div>
-                                <input type="checkbox" id="chk-aq-track-rec" onchange="collarSeleccionadoId='COLLAR-01'; toggleTrack24hVacaSeleccionada();" style="width:20px; height:20px; accent-color:#0d9488; cursor:pointer;" />
+                                <input type="checkbox" id="chk-aq-track-rec" onchange="collarSeleccionadoId='COLLAR-01'; toggleTrack24hVacaSeleccionada(); if(typeof toggleGrabacionRutaGps==='function') toggleGrabacionRutaGps(this.checked);" style="width:20px; height:20px; accent-color:#0d9488; cursor:pointer;" />
                             </div>
                         </div>
                         <div onclick="toggleSeccionOpcionesAq(4)" style="border-top:1px solid #b8bcc0; margin-top:6px; padding-top:8px; font-size:12px; font-weight:700; color:#6b7280; display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
@@ -8878,6 +8890,7 @@
 
             // Inicializar / Actualizar Visor Cartográfico AlpineQuest / Google Satélite
             initOrUpdateGoogleMapFinca(collaresActivos);
+            if (typeof verificarGeocercasCollares === 'function') verificarGeocercasCollares(collaresActivos);
 
             // Renderizar Tarjetas Biométricas de cada Collar en la columna derecha
             const cardsContainer = document.getElementById('collares-cards-container');
@@ -11817,5 +11830,6 @@
             connectRealtimeSSE();
         });
     </script>
+    <script src="./js/finca-campo-pro.js"></script>
 </body>
 </html>

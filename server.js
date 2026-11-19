@@ -2306,6 +2306,14 @@ function generarPaqueteDistNube() {
     fs.writeFileSync(path.join(distDir, 'index.html'), html, 'utf8');
     fs.writeFileSync(path.join(distDir, 'manifest.json'), JSON.stringify(manifestObj, null, 2), 'utf8');
     fs.copyFileSync(path.join(__dirname, 'sw.js'), path.join(distDir, 'sw.js'));
+    const jsSrcDir = path.join(__dirname, 'js');
+    const jsDistDir = path.join(distDir, 'js');
+    if (fs.existsSync(jsSrcDir)) {
+        if (!fs.existsSync(jsDistDir)) fs.mkdirSync(jsDistDir, { recursive: true });
+        for (const f of fs.readdirSync(jsSrcDir)) {
+            if (f.endsWith('.js')) fs.copyFileSync(path.join(jsSrcDir, f), path.join(jsDistDir, f));
+        }
+    }
     fs.writeFileSync(path.join(distDir, 'icon-192.svg'), getOfficialFincaIconSvg(192), 'utf8');
     fs.writeFileSync(path.join(distDir, 'icon-512.svg'), getOfficialFincaIconSvg(512), 'utf8');
     for (const pngName of ['icon-192.png', 'icon-512.png']) {
@@ -2316,7 +2324,7 @@ function generarPaqueteDistNube() {
     return {
         ok: true,
         dir: distDir,
-        files: ['index.html', 'manifest.json', 'sw.js', 'icon-192.svg', 'icon-512.svg']
+        files: ['index.html', 'js/finca-campo-pro.js', 'manifest.json', 'sw.js', 'icon-192.svg', 'icon-512.svg']
     };
 }
 

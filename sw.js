@@ -1,8 +1,9 @@
-const CACHE_NAME = 'agromacarena-35ha-v4';
+const CACHE_NAME = 'agromacarena-35ha-v5';
 const TILE_CACHE_NAME = 'agromacarena-map-tiles-v1';
 const ASSETS = [
     './',
     './index.html',
+    './js/finca-campo-pro.js',
     './manifest.json',
     './icon-192.png',
     './icon-512.png',

@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "test": "node tests/verify-all.js",
     "reset-db": "node -e \"const fs=require('fs'); if(fs.existsSync('finca_macarena.db')) fs.unlinkSync('finca_macarena.db');\" && node server.js",
     "apk:init": "npx @capacitor/cli init \"AgroMacarena 35ha\" com.agromacarena.finca --web-dir .",
     "apk:android": "npx @capacitor/cli add android && npx @capacitor/cli copy android && npx @capacitor/cli open android"
